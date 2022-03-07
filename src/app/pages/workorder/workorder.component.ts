@@ -9,7 +9,18 @@ import { HttpClient } from '@angular/common/http';
 export class WorkorderComponent implements OnInit {
   data:any = [];
   errorMessage:any;
-
+  isShowTable: boolean = true ;
+  isShowDetalis: boolean = false ;
+  tittle: string = "List of Workorder";
+  idworkorder: string;
+  nama_pelapor: string;
+  no_pengaduan: string;
+  satwil_id: string;
+  status: string;
+  sub_kategori_id: string;
+  tgl_close: string;
+  tgl_kontak: string;
+  
   constructor(private http: HttpClient) { }
 
   ngOnInit() {
@@ -36,7 +47,22 @@ export class WorkorderComponent implements OnInit {
     })
   }
   showDetails (row:any){
-    // let don = this.
-      console.log(row);
+      this.idworkorder = row.idworkorder;
+      this.nama_pelapor = row.nama_pelapor;
+      this.no_pengaduan = row.no_pengaduan;
+      this.satwil_id = row.satwil_id;
+      this.status = row.status;
+      this.sub_kategori_id = row.sub_kategori_id;
+      this.tgl_close = row.tgl_close;
+      this.tgl_kontak = row.tgl_kontak;
+
+      this.isShowTable = false;
+      this.isShowDetalis = true;
+      this.tittle = "Details No Pengaduang " + this.no_pengaduan;
+  }
+  backToTable(){
+    this.isShowTable = true;
+    this.isShowDetalis = false;
+    this.tittle = "List of Workorder";
   }
 }

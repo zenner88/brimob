@@ -50,7 +50,7 @@ export class DashboardComponent implements OnInit {
 			data: chartExample1.data
 		});
 
-
+    // maps 
     let map = document.getElementById('map-canvas');
     let lat = map.getAttribute('data-lat');
     let lng = map.getAttribute('data-lng');
@@ -73,14 +73,29 @@ export class DashboardComponent implements OnInit {
     }
 
     map = new google.maps.Map(map, mapOptions);
-    var bandung = new google.maps.LatLng(7.0051, 110.4381);
-
-    var marker = new google.maps.Marker({
+    var bandung = new google.maps.LatLng(-6.914864, 107.608238);
+    var yogyakarta = new google.maps.LatLng(-7.797068, 110.370529);
+    
+    var marker1 = new google.maps.Marker({
         position: bandung,
         map: map,
         animation: google.maps.Animation.BOUNCE,
-        title: 'Bandung'
+        title: 'Bandung',
+        options: {
+          animation: google.maps.Animation.DROP,
+          icon: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'
+        }
     });
+    var marker2 = new google.maps.Marker({
+      position: yogyakarta,
+      map: map,
+      animation: google.maps.Animation.BOUNCE,
+      title: 'Bandung',
+      options: {
+        animation: google.maps.Animation.DROP,
+        icon: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'
+      }
+  });
 
     var contentString = '<div class="info-window-content"><h2>Bandung</h2>' +
         '<p>Ini Bandung bro!</p></div>';
@@ -89,9 +104,12 @@ export class DashboardComponent implements OnInit {
         content: contentString
     });
 
-    google.maps.event.addListener(marker, 'click', function() {
-        infowindow.open(map, marker);
+    google.maps.event.addListener(marker1, 'click', function() {
+        infowindow.open(map, marker1);
     });
+    google.maps.event.addListener(marker2, 'click', function() {
+      infowindow.open(map, marker1);
+  });
   }
 
 

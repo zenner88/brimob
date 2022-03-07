@@ -7,9 +7,9 @@
     <div class="col">
       <div class="card shadow">
         <div class="card-header border-0">
-          <h3 class="mb-0">Card tables</h3>
+          <h3 class="mb-0">{{tittle}}</h3>
         </div>
-        <div class="table-responsive">
+        <div class="table-responsive-md" *ngIf="isShowTable">
           <table class="table table-bordered table-sm row-border table-hover">
             <thead>
               <tr>
@@ -26,11 +26,11 @@
             <tbody>
               <!-- {{data}} -->
 
-              <tr *ngFor="let zz of data" (click)="showDetails(row)">
+              <tr *ngFor="let zz of data" (click)="showDetails(zz)">
                 <td>{{zz.no_pengaduan}}</td>
                 <td>{{zz.nama_pelapor}}</td>
                 <td>{{zz.satwil_id}}</td>
-                <td>{{zz.nama_pelapor}}</td>
+                <td>{{zz.sub_kategori_id}}</td>
                 <td>{{zz.tgl_kontak | date: 'EEEE, d MMMM y'}}</td>
                 <td>{{zz.nama_pelapor}}</td>
                 <td>{{zz.status}}</td>
@@ -67,6 +67,24 @@
             </ul>
           </nav>
         </div> -->
+        <div class="container-fluid" *ngIf="isShowDetalis">
+          <div class="row">
+            <div class="col">
+              {{idworkorder}}<br>
+              {{nama_pelapor}}<br>
+              {{no_pengaduan}}<br>
+              {{satwil_id}}<br>
+              {{status}}<br>
+              {{sub_kategori_id}}<br>
+              {{tgl_close}}<br>
+              {{tgl_kontak}}<br>
+              
+              <button class="btn btn-primary btn-block" (click)="backToTable()">
+                Back
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

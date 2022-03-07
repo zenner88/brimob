@@ -29,9 +29,4 @@ export class AppComponent {
       this.username = user.username;
     }
   }
-
-  // logout(): void {
-  //   this.tokenStorageService.signOut();
-  //   window.location.reload();
-  // }
 }
