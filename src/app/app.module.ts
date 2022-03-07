@@ -17,6 +17,7 @@ import { NgHttpLoaderModule } from 'ng-http-loader';
 import { registerLocaleData } from '@angular/common';
 import localeId from '@angular/common/locales/id'; 
 registerLocaleData(localeId, 'id'); 
+import { ListFilterPipe } from './_helpers/listFilterPipe';
 
 @NgModule({
   imports: [
@@ -33,7 +34,8 @@ registerLocaleData(localeId, 'id');
   declarations: [
     AppComponent,
     AdminLayoutComponent,
-    AuthLayoutComponent
+    AuthLayoutComponent,
+    ListFilterPipe
   ],
   providers: [ { provide: LOCALE_ID, useValue: "id-ID" }, authInterceptorProviders],
   bootstrap: [AppComponent]

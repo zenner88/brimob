@@ -19,6 +19,7 @@ export class LoginComponent implements OnInit {
   roles: string[] = [];
   token!: string;
   DashboardComponent: any;
+  fieldTextType: boolean;
   tokenStorageService: TokenStorageService;
   constructor(private authService: AuthService, private tokenStorage: TokenStorageService, public router: Router) { }
 
@@ -37,7 +38,6 @@ export class LoginComponent implements OnInit {
       next: data => {
         this.tokenStorage.saveToken(data.token);
         this.tokenStorage.saveUser(data);
-
         this.isLoginFailed = false;
         this.isLoggedIn = true;
         this.roles = this.tokenStorage.getUser().roles;
@@ -45,7 +45,7 @@ export class LoginComponent implements OnInit {
         return false;
       },
       error: err => {
-        this.errorMessage = err.error.message;
+        this.errorMessage = err.statusText;
         this.isLoginFailed = true;
       }
     });
@@ -60,5 +60,9 @@ export class LoginComponent implements OnInit {
     // this.tokenStorageService.signOut();
     window.sessionStorage.clear();
     window.location.reload();
+  }
+  // <!-- Switching method -->
+  toggleFieldTextType() {
+    this.fieldTextType = !this.fieldTextType;
   }
 }

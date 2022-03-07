@@ -1,3 +1,4 @@
+import { IfStmt } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 import Chart from 'chart.js';
 
@@ -29,11 +30,12 @@ export class DashboardComponent implements OnInit {
     let lat = map.getAttribute('data-lat');
     let lng = map.getAttribute('data-lng');
     let markers = [
-      { lat: -6.914864, lng: 107.608238, city: "bandung" },
-      { lat: -7.797068, lng: 110.370529, city: "Yogyakarta" },
-      { lat: -6.923700, lng: 106.928726, city: "Sukabumi" },
-      { lat: 3.597031, lng: 98.678513, city: "Medan" },
-      { lat: -1.269160, lng: 116.825264, city: "Balikpapan" },
+      { lat: -6.914864, lng: 107.608238, city: "bandung", type: 1 },
+      { lat: -7.797068, lng: 110.370529, city: "Yogyakarta", type: 1 },
+      { lat: -6.923700, lng: 106.928726, city: "Sukabumi", type: 1 },
+      { lat: -6.923700, lng: 106.948726, city: "Sukabumi2", type: 2 },
+      { lat: 3.597031, lng: 98.678513, city: "Medan", type: 1 },
+      { lat: -1.269160, lng: 116.825264, city: "Balikpapan", type: 2 },
     ];
     var myLatlng = new google.maps.LatLng(lat, lng);
     var mapOptions = {
@@ -51,31 +53,38 @@ export class DashboardComponent implements OnInit {
           {"featureType":"transit","elementType":"all","stylers":[{"visibility":"off"}]},
           {"featureType":"water","elementType":"all","stylers":[{"color":'#5e72e4'},{"visibility":"on"}]}]
     }
-
     map = new google.maps.Map(map, mapOptions);
-    // var bandung = new google.maps.LatLng(-6.914864, 107.608238);
-    // var yogyakarta = new google.maps.LatLng(-7.797068, 110.370529);
     markers.forEach(location => {
+      // custom logo for marker 
+      let markerLogo: string;
+      if (location.type == 1){ 
+        markerLogo='accident-logo.png';
+      }else if(location.type == 2){
+        markerLogo='traffic-logo.png';
+      }
+      // marker 
       var marker = new google.maps.Marker({
         position: new google.maps.LatLng(location.lat, location.lng),
         map: map,
-        animation: google.maps.Animation.BOUNCE,
         options: {
           animation: google.maps.Animation.DROP,
-          icon: '../../../assets/img/icons/accident-logo.png'
+          icon: "../../../assets/img/icons/"+markerLogo
         }
       });
-
-      var contentString = '<div class="info-window-content"><h2>Bandung</h2>' +
-      '<p>Ini Bandung bro!</p></div>';
-
+      // info window marker 
+      var contentString = '<div class="info-window-content"><h2>'+location.city+'</h2>' +
+      '<p>Ini '+location.city+' bro!</p></div>';
       var infowindow = new google.maps.InfoWindow({
           content: contentString
       });
+      google.maps.event.addListener(marker,'click', (function(marker,contentString,infowindow){ 
+        return function() {
+            infowindow.setContent(contentString);
+            infowindow.open(map,marker);
+        };
+    })
+    (marker,contentString,infowindow))
 
-      google.maps.event.addListener(markers, 'click', function() {
-          infowindow.open(map, markers);
-      });
   });
   // end maps 
 

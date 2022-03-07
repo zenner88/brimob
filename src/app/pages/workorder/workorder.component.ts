@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { TokenStorageService } from '../../_services/token-storage.service';
 
 @Component({
   selector: 'app-workorder',
@@ -21,24 +22,31 @@ export class WorkorderComponent implements OnInit {
   tgl_close: string;
   tgl_kontak: string;
   
-  constructor(private http: HttpClient) { }
+  searchTerm: string;
+  page = 1;
+  pageSize = 4;
+  collectionSize: number;
+  currentRate = 8;
+
+  constructor(private http: HttpClient, private tokenStorage: TokenStorageService) { }
 
   ngOnInit() {
-    let levelUser = "superadmin";
-    let polda = "";
-    let satwil = "";
+    let levelUser = this.tokenStorage.getUser().level_user;
+    let polda = this.tokenStorage.getUser().polda;
+    let satwil = this.tokenStorage.getUser().satwil;
     const body = {      
         "level_user" : levelUser,
         "polda" : polda,
         "satwil" : satwil,
         "start" : 1,
-        "limit" : 10
+        "limit" : 20
      };
      
     this.http.post<any>('http://202.67.10.238:5000/datatable', body).subscribe({
         next: data => {
-            this.data = data;
-            console.log(data);
+          this.collectionSize = data.length;
+          this.data = data;
+          console.log(data);
         },
         error: error => {
             this.errorMessage = error.message;
@@ -46,6 +54,12 @@ export class WorkorderComponent implements OnInit {
         }
     })
   }
+  
+  search(value: string): void {
+    this.data = this.data.filter((val) => val.name.toLowerCase().includes(value));
+    this.collectionSize = this.data.length;
+  }
+  
   showDetails (row:any){
       this.idworkorder = row.idworkorder;
       this.nama_pelapor = row.nama_pelapor;
