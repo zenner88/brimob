@@ -33,7 +33,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let zz of workorders | searchFilter: searchTerm;">
+              <tr *ngFor="let zz of workorders | slice: (page-1) * pageSize : page * pageSize; index as i" (click)="showDetails(zz)">
                 <td class="px-md-2">{{zz.no_pengaduan}}</td>
                 <td class="px-md-2" style="white-space: normal;">{{zz.nama_pelapor}}</td>
                 <td class="px-md-2" style="white-space: normal;width:200px;">{{zz.satwil}}</td>
@@ -45,7 +45,8 @@
               </tr>
             </tbody>
           </table>
-          <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [maxSize]="5" [boundaryLinks]="true" [pageSize]="pageSize" class="d-flex justify-content-center mt-4"></ngb-pagination>
+          <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [maxSize]="5" [boundaryLinks]="true"
+    [pageSize]="pageSize" class="d-flex justify-content-center"></ngb-pagination>
         </div>
         
         <!-- Details page  -->

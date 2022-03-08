@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { TokenStorageService } from '../../_services/token-storage.service';
 
 @Component({
@@ -23,6 +23,11 @@ export class WorkorderComponent implements OnInit {
   workorders:any = [];
   allWorkorders:any = [];
   term: string;
+  searchTerm: string;
+  page = 1;
+  pageSize = 8;
+  collectionSize: number;
+  currentRate = 8;
   
   constructor(private http: HttpClient, private tokenStorage: TokenStorageService) { }
 
@@ -30,6 +35,7 @@ export class WorkorderComponent implements OnInit {
     let levelUser = this.tokenStorage.getUser().level_user;
     let polda = this.tokenStorage.getUser().polda;
     let satwil = this.tokenStorage.getUser().satwil;
+    let token = this.tokenStorage.getUser().token;
     const body = {      
         "level_user" : levelUser,
         "polda" : polda,
@@ -37,9 +43,12 @@ export class WorkorderComponent implements OnInit {
         "start" : 1,
         "limit" : 1000
      };
-     
-    this.http.post<any>('http://202.67.10.238:5000/datatable', body).subscribe({
+        const url = '/datatable';
+        const header = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+        const headers = { headers: header };
+        this.http.post<any>('http://202.67.10.238:5000'+url, body, headers).subscribe({
         next: data => {
+          this.collectionSize = data.length;
           this.workorders = data;
           this.allWorkorders = this.workorders;
           console.log(data);
