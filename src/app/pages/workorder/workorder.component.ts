@@ -8,7 +8,6 @@ import { TokenStorageService } from '../../_services/token-storage.service';
   styleUrls: ['./workorder.component.scss']
 })
 export class WorkorderComponent implements OnInit {
-  data:any = [];
   errorMessage:any;
   isShowTable: boolean = true ;
   isShowDetalis: boolean = false ;
@@ -21,13 +20,10 @@ export class WorkorderComponent implements OnInit {
   sub_kategori_id: string;
   tgl_close: string;
   tgl_kontak: string;
+  workorders:any = [];
+  allWorkorders:any = [];
+  term: string;
   
-  searchTerm: string;
-  page = 1;
-  pageSize = 4;
-  collectionSize: number;
-  currentRate = 8;
-
   constructor(private http: HttpClient, private tokenStorage: TokenStorageService) { }
 
   ngOnInit() {
@@ -39,13 +35,13 @@ export class WorkorderComponent implements OnInit {
         "polda" : polda,
         "satwil" : satwil,
         "start" : 1,
-        "limit" : 20
+        "limit" : 1000
      };
      
     this.http.post<any>('http://202.67.10.238:5000/datatable', body).subscribe({
         next: data => {
-          this.collectionSize = data.length;
-          this.data = data;
+          this.workorders = data;
+          this.allWorkorders = this.workorders;
           console.log(data);
         },
         error: error => {
@@ -54,12 +50,9 @@ export class WorkorderComponent implements OnInit {
         }
     })
   }
-  
   search(value: string): void {
-    this.data = this.data.filter((val) => val.name.toLowerCase().includes(value));
-    this.collectionSize = this.data.length;
+    this.workorders = this.allWorkorders.filter((val) => val.name.toLowerCase().includes(value));
   }
-  
   showDetails (row:any){
       this.idworkorder = row.idworkorder;
       this.nama_pelapor = row.nama_pelapor;

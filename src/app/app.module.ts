@@ -16,8 +16,9 @@ import { authInterceptorProviders } from './_helpers/auth.interceptor';
 import { NgHttpLoaderModule } from 'ng-http-loader';
 import { registerLocaleData } from '@angular/common';
 import localeId from '@angular/common/locales/id'; 
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import { SearchFilterPipe } from './search-filter.pipe';
 registerLocaleData(localeId, 'id'); 
-import { ListFilterPipe } from './_helpers/listFilterPipe';
 
 @NgModule({
   imports: [
@@ -30,12 +31,12 @@ import { ListFilterPipe } from './_helpers/listFilterPipe';
     AppRoutingModule,
     DataTablesModule,
     NgHttpLoaderModule.forRoot(),
+    Ng2SearchPipeModule,
   ],
   declarations: [
     AppComponent,
     AdminLayoutComponent,
     AuthLayoutComponent,
-    ListFilterPipe
   ],
   providers: [ { provide: LOCALE_ID, useValue: "id-ID" }, authInterceptorProviders],
   bootstrap: [AppComponent]

@@ -5,17 +5,22 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { FooterComponent } from './footer/footer.component';
 import { RouterModule } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import { SearchFilterPipe } from './../search-filter.pipe';
 
 @NgModule({
   imports: [
     CommonModule,
     RouterModule,
-    NgbModule
+    NgbModule,
+    Ng2SearchPipeModule,
+    
   ],
   declarations: [
     FooterComponent,
     NavbarComponent,
-    SidebarComponent
+    SidebarComponent,
+    SearchFilterPipe
   ],
   exports: [
     FooterComponent,

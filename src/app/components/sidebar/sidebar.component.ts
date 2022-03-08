@@ -9,13 +9,15 @@ declare interface RouteInfo {
 }
 export const ROUTES: RouteInfo[] = [
     { path: '/dashboard', title: 'Dashboard',  icon: 'ni-tv-2 text-primary', class: '' },
+    { path: '/chart', title: 'Chart',  icon: 'ni-chart-pie-35 text-success', class: '' },
     { path: '/workorder', title: 'Work Order',  icon:'ni-books text-orange', class: '' },
-    { path: '/icons', title: 'Icons',  icon:'ni-planet text-blue', class: '' },
-    { path: '/maps', title: 'Maps',  icon:'ni-pin-3 text-orange', class: '' },
-    { path: '/user-profile', title: 'User profile',  icon:'ni-single-02 text-yellow', class: '' },
-    { path: '/tables', title: 'Tables',  icon:'ni-bullet-list-67 text-red', class: '' },
-    { path: '/login', title: 'Login',  icon:'ni-key-25 text-info', class: '' },
-    { path: '/register', title: 'Register',  icon:'ni-circle-08 text-pink', class: '' }
+    { path: '/callCenter', title: 'Call Center',  icon:'ni-headphones text-primary', class: '' },
+    { path: '/superadmin', title: 'Superadmin',  icon:'ni-single-02 text-danger', class: '' },
+    { path: '/sms', title: 'SMS',  icon:'ni-email-83 text-info', class: '' },
+    { path: '/report', title: 'Report',  icon:'ni-book-bookmark text-primary', class: '' },
+    { path: '/ebook', title: 'E-Book',  icon:'ni-collection text-success', class: '' },
+    { path: '/license', title: 'License',  icon:'ni-paper-diploma text-info', class: '' },
+    { path: '/sendnotif', title: 'Send Notif',  icon:'ni-send text-orange', class: '' },
 ];
 
 @Component({
