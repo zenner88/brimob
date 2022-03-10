@@ -28,6 +28,7 @@
     "chart.js": "^2.9.4",
     "clipboard": "2.0.6",
     "core-js": "3.15.2",
+    "datatables.net": "^1.11.5",
     "datatables.net-dt": "^1.11.5",
     "jquery": "^3.6.0",
     "ng-http-loader": "^11.0.1",

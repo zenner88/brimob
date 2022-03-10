@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { TokenStorageService } from '../../_services/token-storage.service';
+import { AuthInterceptor } from '../../_helpers/auth.interceptor';
+import { Subject } from 'rxjs';
+// import 'rxjs/add/operator/map';
 
 @Component({
   selector: 'app-workorder',
@@ -8,6 +11,8 @@ import { TokenStorageService } from '../../_services/token-storage.service';
   styleUrls: ['./workorder.component.scss']
 })
 export class WorkorderComponent implements OnInit {
+  dtOptions: DataTables.Settings = {};
+  dtTrigger: Subject<any> = new Subject<any>();
   errorMessage:any;
   isShowTable: boolean = true ;
   isShowDetalis: boolean = false ;
@@ -32,6 +37,10 @@ export class WorkorderComponent implements OnInit {
   constructor(private http: HttpClient, private tokenStorage: TokenStorageService) { }
 
   ngOnInit() {
+    this.dtOptions = {
+      pagingType: 'full_numbers',
+      pageLength: 2
+    };
     let levelUser = this.tokenStorage.getUser().level_user;
     let polda = this.tokenStorage.getUser().polda;
     let satwil = this.tokenStorage.getUser().satwil;
@@ -52,10 +61,15 @@ export class WorkorderComponent implements OnInit {
           this.workorders = data;
           this.allWorkorders = this.workorders;
           console.log(data);
+          this.dtTrigger.next;
         },
         error: error => {
             this.errorMessage = error.message;
             console.error('There was an error!', error);
+            if (error.status == 401 ){
+              AuthInterceptor.signOut();
+              this.dtTrigger.unsubscribe();
+            }
         }
     })
   }

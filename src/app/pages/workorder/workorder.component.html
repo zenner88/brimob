@@ -18,7 +18,7 @@
             </div>
           </div>         
         </div>
-        <div class="table-responsive" *ngIf="isShowTable">
+        <div class="table-responsive" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" *ngIf="isShowTable">
            <table class="table table-sm row-border table-hover">
             <thead class="table-dark">
               <tr>

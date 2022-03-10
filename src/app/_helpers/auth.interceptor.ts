@@ -3,14 +3,30 @@ import { Injectable } from '@angular/core';
 import { HttpInterceptor, HttpHandler, HttpRequest } from '@angular/common/http';
 
 import { TokenStorageService } from '../_services/token-storage.service';
-import { Observable } from 'rxjs';
+import { Observable, Subscription, of  } from 'rxjs';
+import { delay, timeout } from 'rxjs/operators';
+import { Router } from "@angular/router";
+import Swal from 'sweetalert2'
 
 // const TOKEN_HEADER_KEY = 'Authorization';       // for Spring Boot back-end
 const TOKEN_HEADER_KEY = 'x-access-token';   // for Node.js Express back-end
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  constructor(private token: TokenStorageService) { }
+  static signOut() {
+    Swal.fire({  
+      icon: 'error',  
+      title: 'Please Login!',  
+      text: 'Token expired please login again.',  
+    })  
+    window.sessionStorage.clear();
+    window.location.reload();
+    this.router.navigate(["login"])
+  }
+  static tokenSubscription: any;
+  static router: any;
+  constructor(private router: Router, private token: TokenStorageService) { }
+  tokenSubscription = new Subscription()
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     let authReq = req;
