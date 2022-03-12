@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { GlobalService } from '../global.service';
 
-const AUTH_API = 'http://202.67.10.238:5000/login_user';
 const TOKEN_KEY = 'auth-token';
 
 const httpOptions = {
@@ -15,19 +15,19 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class AuthService {
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private global: GlobalService) { }
   redirectUrl: string;
   public  statusLogin : boolean;
 
   login(username: string, password: string): Observable<any> {
-    return this.http.post(AUTH_API, {
+    return this.http.post(this.global.address+this.global.login, {
       username,
       password
     }, httpOptions);
   }
 
   register(username: string, email: string, password: string): Observable<any> {
-    return this.http.post(AUTH_API + 'signup', {
+    return this.http.post(this.global.address+this.global.login, {
       username,
       email,
       password

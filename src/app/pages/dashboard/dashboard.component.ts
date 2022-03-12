@@ -1,6 +1,10 @@
 import { IfStmt } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 import Chart from 'chart.js';
+import { TokenStorageService } from '../../_services/token-storage.service';
+import { AuthInterceptor } from '../../_helpers/auth.interceptor';
+import { GlobalService } from '../../global.service';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 // core components
 import {
@@ -17,14 +21,83 @@ declare const google: any;
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
+  errorMessage:any;
+  collectionSize: number;
+  workorders:any = [];
+  open: any;
+  opens:any = [];
+  received: any;
+  receiveds:any = [];
+  onprocess: any;
+  onprocesss:any = [];
+  close: any;
+  closes:any = [];
+  total: any;
+  totals:any = [];
 
   public datasets: any;
   public data: any;
   public salesChart;
   public clicked: boolean = true;
   public clicked1: boolean = false;
+  constructor(private http: HttpClient, private tokenStorage: TokenStorageService, private global: GlobalService) { }
   
   ngOnInit() {
+    // datatable 
+    let levelUser = this.tokenStorage.getUser().level_user;
+    let polda = this.tokenStorage.getUser().polda;
+    let satwil = this.tokenStorage.getUser().satwil;
+    let token = this.tokenStorage.getUser().token;
+    const body = {      
+        "level_user" : levelUser,
+        "polda" : polda,
+        "satwil" : satwil,
+        "start" : 1,
+        "limit" : 1000
+     };
+    const header = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    const headers = { headers: header };
+        
+    this.http.post<any>(this.global.address+this.global.workorder, body, headers).subscribe({
+    next: data => {
+      this.collectionSize = data.length;
+      this.workorders = data;
+      console.log(data);
+
+      let open = data.filter(element => {
+        return element.status == 1;
+      })
+      this.open = open.length;
+      console.log("open"+open.length);
+
+      let received = data.filter(element => {
+        return element.status == 2;
+      })
+      this.received = received.length;
+      console.log("received"+received.length);
+
+      let onprocess = data.filter(element => {
+        return element.status == 3;
+      })
+      this.onprocess = onprocess.length;
+      console.log("onprocess"+onprocess.length);
+
+      let close = data.filter(element => {
+        return element.status == 4;
+      })
+      this.close = close.length;
+      console.log("close"+close.length);
+
+    },
+    error: error => {
+        this.errorMessage = error.message;
+        console.error('There was an error!', error);
+        if (error.status == 401 ){
+          AuthInterceptor.signOut();
+        }
+    }
+    })
+
     // maps 
     let map = document.getElementById('map-canvas');
     let lat = map.getAttribute('data-lat');
