@@ -18,6 +18,7 @@ import { registerLocaleData } from '@angular/common';
 import localeId from '@angular/common/locales/id'; 
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { SearchFilterPipe } from './search-filter.pipe';
+import { UpperCasePipe } from '@angular/common';
 registerLocaleData(localeId, 'id'); 
 
 @NgModule({
@@ -38,7 +39,7 @@ registerLocaleData(localeId, 'id');
     AdminLayoutComponent,
     AuthLayoutComponent,
   ],
-  providers: [ { provide: LOCALE_ID, useValue: "id-ID" }, authInterceptorProviders],
+  providers: [ { provide: LOCALE_ID, useValue: "id-ID" }, authInterceptorProviders, UpperCasePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

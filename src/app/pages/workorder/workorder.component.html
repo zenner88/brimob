@@ -12,7 +12,7 @@
             <div class="col-6 col-md-3">
               <form>
                 <div class="form-group float-end" >
-                  <input placeholder="NO PENGADUAN" class="form-control form-control-sm form-control-success" type="text" [(ngModel)]="term" (input)="search($event.target.value)" />
+                  <input placeholder="NO PENGADUAN" class="form-control form-control-sm form-control-success" type="text" [(ngModel)]="filterTerm"/>
                 </div>
               </form>
             </div>
@@ -33,7 +33,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let zz of workorders | slice: (page-1) * pageSize : page * pageSize; index as i" (click)="showDetails(zz)">
+              <tr *ngFor="let zz of workorders | filter: filterTerm | slice: (page-1) * pageSize : page * pageSize; index as i" (click)="showDetails(zz)">
                 <td class="px-md-2">{{zz.no_pengaduan}}</td>
                 <td class="px-md-2" style="white-space: normal;">{{zz.nama_pelapor}}</td>
                 <td class="px-md-2" style="white-space: normal;width:200px;">{{zz.satwil}}</td>

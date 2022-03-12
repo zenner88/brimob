@@ -3,7 +3,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { TokenStorageService } from '../../_services/token-storage.service';
 import { AuthInterceptor } from '../../_helpers/auth.interceptor';
 import { Subject } from 'rxjs';
-// import 'rxjs/add/operator/map';
 
 @Component({
   selector: 'app-workorder',
@@ -27,8 +26,7 @@ export class WorkorderComponent implements OnInit {
   tgl_kontak: string;
   workorders:any = [];
   allWorkorders:any = [];
-  term: string;
-  searchTerm: string;
+  filterTerm: string;
   page = 1;
   pageSize = 8;
   collectionSize: number;
@@ -73,9 +71,7 @@ export class WorkorderComponent implements OnInit {
         }
     })
   }
-  search(value: string): void {
-    this.workorders = this.allWorkorders.filter((val) => val.name.toLowerCase().includes(value));
-  }
+
   showDetails (row:any){
       this.idworkorder = row.idworkorder;
       this.nama_pelapor = row.nama_pelapor;

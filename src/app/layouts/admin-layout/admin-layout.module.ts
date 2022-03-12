@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { ClipboardModule } from 'ngx-clipboard';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 import { AdminLayoutRoutes } from './admin-layout.routing';
 import { DashboardComponent } from '../../pages/dashboard/dashboard.component';
@@ -22,7 +23,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     FormsModule,
     HttpClientModule,
     NgbModule,
-    ClipboardModule
+    ClipboardModule,
+    Ng2SearchPipeModule
   ],
   declarations: [
     DashboardComponent,
