@@ -14,6 +14,8 @@ import { UserProfileComponent } from '../../pages/user-profile/user-profile.comp
 import { TablesComponent } from '../../pages/tables/tables.component';
 import { WorkorderComponent } from '../../pages/workorder/workorder.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgHttpLoaderModule } from 'ng-http-loader';
+
 // import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
@@ -24,7 +26,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     HttpClientModule,
     NgbModule,
     ClipboardModule,
-    Ng2SearchPipeModule
+    Ng2SearchPipeModule,
+    NgHttpLoaderModule.forRoot(),
   ],
   declarations: [
     DashboardComponent,

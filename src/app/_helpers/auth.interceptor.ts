@@ -21,7 +21,8 @@ export class AuthInterceptor implements HttpInterceptor {
     })  
     window.sessionStorage.clear();
     window.location.reload();
-    this.router.navigate(["login"])
+    this.router.navigate(["login"]);
+    return false;
   }
   static tokenSubscription: any;
   static router: any;
