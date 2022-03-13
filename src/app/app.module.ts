@@ -7,9 +7,7 @@ import { DataTablesModule } from 'angular-datatables';
 import { AppComponent } from './app.component';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component';
-
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-
 import { AppRoutingModule } from './app.routing';
 import { ComponentsModule } from './components/components.module';
 import { authInterceptorProviders } from './_helpers/auth.interceptor';
@@ -20,6 +18,8 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { SearchFilterPipe } from './search-filter.pipe';
 import { UpperCasePipe } from '@angular/common';
 import { GlobalService } from './global.service';
+import { WorkorderAddComponent } from './pages/workorder-add/workorder-add.component';
+
 registerLocaleData(localeId, 'id'); 
 
 @NgModule({
@@ -34,6 +34,7 @@ registerLocaleData(localeId, 'id');
     DataTablesModule,
     NgHttpLoaderModule.forRoot(),
     Ng2SearchPipeModule,
+
   ],
   declarations: [
     AppComponent,

@@ -1,0 +1,77 @@
+<div class="header bg-gradient-danger pb-5 pt-5 pt-md-8">
+</div>
+<!-- Page content -->
+<div class="container-fluid mt--7">
+  <!-- Table -->
+  <div class="row">
+    <div class="col">
+      <div class="card shadow mx--4">
+        <div class="card-header border-0 mb--4">
+          <div class="row">
+            <a href="#/workorder-add" class="btn btn-primary">
+          </a>
+            <div class="col-6 col-md-9"><h3 class="mb-0">{{tittle}}</h3></div>
+            <div class="col-6 col-md-3">
+              <form>
+                <div class="form-group float-end" >
+                  <!-- <input placeholder="NO PENGADUAN/ NAMA" class="form-control form-control-sm form-control-success" type="text" [(ngModel)]="filterTerm"/> -->
+                </div>
+              </form>
+            </div>
+          </div>         
+        </div>
+        <div class="table-responsive" *ngIf="isShowTable">
+           <table class="table table-sm row-border table-hover">
+            <thead class="table-dark">
+              <tr>
+                <th class="px-md-2">No Pengaduan</th>
+                <th class="px-md-2">Nama Pelapor</th>
+                <th class="px-md-2">Polres</th>
+                <th class="px-md-2">Kategori</th>
+                <th class="px-md-2">Tgl Kontak</th>
+                <th class="px-md-2">Durasi<BR> Penanganan</th>
+                <th class="px-md-2">Status</th>
+                <th class="px-md-2">Creator</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let zz of workorders | filter: filterTerm | slice: (page-1) * pageSize : page * pageSize; index as i" (click)="showDetails(zz)">
+                <td class="px-md-2">{{zz.no_pengaduan}}</td>
+                <td class="px-md-2" style="white-space: normal;">{{zz.nama_pelapor}}</td>
+                <td class="px-md-2" style="white-space: normal;width:200px;">{{zz.satwil}}</td>
+                <td class="px-md-2" style="white-space: normal;">{{zz.sub_kategori}}</td>
+                <td class="px-md-2">{{zz.tgl_kontak | date: 'EEEE, d MMMM y'}}</td>
+                <td class="px-md-2">0 Detik</td>
+                <td class="px-md-2">{{zz.keterangan}}</td>
+                <td class="px-md-2" style="white-space: normal;">{{zz.nama_pelapor}}</td>
+              </tr>
+            </tbody>
+          </table>
+          <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [maxSize]="5" [boundaryLinks]="true"
+    [pageSize]="pageSize" class="d-flex justify-content-center mt-4"></ngb-pagination>
+        </div>
+        
+        <!-- Details page  -->
+        <div class="container-fluid" *ngIf="isShowDetalis">
+          <div class="row">
+            <div class="col">
+              {{idworkorder}}<br>
+              {{nama_pelapor}}<br>
+              {{no_pengaduan}}<br>
+              {{satwil_id}}<br>
+              {{status}}<br>
+              {{sub_kategori_id}}<br>
+              {{tgl_close}}<br>
+              {{tgl_kontak}}<br>
+              
+              <button class="btn btn-primary btn-block" (click)="backToTable()">
+                Back
+              </button>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+</div>

@@ -14,7 +14,7 @@ import { SearchFilterPipe } from './../search-filter.pipe';
     RouterModule,
     NgbModule,
     Ng2SearchPipeModule,
-    
+
   ],
   declarations: [
     FooterComponent,

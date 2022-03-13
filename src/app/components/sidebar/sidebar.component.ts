@@ -12,7 +12,7 @@ export const ROUTESADMIN: RouteInfo[] = [
     { path: '/dashboard', title: 'Dashboard',  icon: 'ni-tv-2 text-primary', class: '' },
     { path: '/chart', title: 'Chart',  icon: 'ni-chart-pie-35 text-success', class: '' },
     { path: '/workorder', title: 'Work Order',  icon:'ni-books text-orange', class: '' },
-    { path: '/callCenter', title: 'Call Center',  icon:'ni-headphones text-primary', class: '' },
+    { path: '/callcenter', title: 'Call Center',  icon:'ni-headphones text-primary', class: '' },
     { path: '/superadmin', title: 'Superadmin',  icon:'ni-single-02 text-danger', class: '' },
     { path: '/sms', title: 'SMS',  icon:'ni-email-83 text-info', class: '' },
     { path: '/report', title: 'Report',  icon:'ni-book-bookmark text-primary', class: '' },
@@ -23,7 +23,7 @@ export const ROUTESADMIN: RouteInfo[] = [
 export const ROUTESCC: RouteInfo[] = [
   { path: '/dashboard', title: 'Dashboard',  icon: 'ni-tv-2 text-primary', class: '' },
   { path: '/workorder', title: 'Work Order',  icon:'ni-books text-orange', class: '' },
-  { path: '/callCenter', title: 'Call Center',  icon:'ni-headphones text-primary', class: '' },
+  { path: '/callcenter', title: 'Call Center',  icon:'ni-headphones text-primary', class: '' },
   { path: '/report', title: 'Report',  icon:'ni-book-bookmark text-primary', class: '' },
   { path: '/ebook', title: 'E-Book',  icon:'ni-collection text-success', class: '' },
   { path: '/license', title: 'License',  icon:'ni-paper-diploma text-info', class: '' },
@@ -31,7 +31,7 @@ export const ROUTESCC: RouteInfo[] = [
 export const ROUTESUSER: RouteInfo[] = [
   { path: '/dashboard', title: 'Dashboard',  icon: 'ni-tv-2 text-primary', class: '' },
   { path: '/workorder', title: 'Work Order',  icon:'ni-books text-orange', class: '' },
-  { path: '/callCenter', title: 'Call Center',  icon:'ni-headphones text-primary', class: '' },
+  { path: '/callcenter', title: 'Call Center',  icon:'ni-headphones text-primary', class: '' },
   { path: '/ebook', title: 'E-Book',  icon:'ni-collection text-success', class: '' },
   { path: '/license', title: 'License',  icon:'ni-paper-diploma text-info', class: '' },
 ];

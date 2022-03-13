@@ -28,6 +28,7 @@ import { NgHttpLoaderModule } from 'ng-http-loader';
     ClipboardModule,
     Ng2SearchPipeModule,
     NgHttpLoaderModule.forRoot(),
+
   ],
   declarations: [
     DashboardComponent,

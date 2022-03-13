@@ -1,0 +1,62 @@
+  <div class="header bg-gradient-danger pb-5 pt-5 pt-md-8">
+  </div>
+  <!-- Page content -->
+  <div class="container-fluid mt--7">
+    <!-- Table -->
+    <div class="row">
+      <div class="col">
+        <div class="card shadow mx--4">
+          <div class="card-header border-0 mb--4">
+            <div class="row">
+              <div class="col-6 col-md-9"><h3 class="mb-0">Tambah Pengaduan Baru</h3></div>
+            </div>         
+          </div>
+ 
+          <div class="container-fluid card shadow py-4 border-1 my-4">
+            <form class="row">
+              <div class="col-md-6">
+                <label class="form-label">No Pengaduan</label>
+                <input type="text" class="form-control" id="noPengaduan" placeholder="">
+
+                <label class="form-label mt-2">Nama Pelapor</label>
+                <input type="text" class="form-control" id="namaPelapor" placeholder="">
+
+                <label class="form-label mt-2">Telpon Pelapor</label>
+                <input type="text" class="form-control" id="telponPelapor" placeholder="">
+
+                <label class="form-label mt-2">Kategori</label>
+                <select id="kategori" class="form-select form-control">
+                  <option selected>Choose...</option>
+                  <option value="1">Non Pengaduan</option>
+                  <option value="2">Pengaduan</option>
+                </select>
+
+                <label class="form-label mt-2">Jenis Laporan</label>
+                <select id="jenisLaporan" class="form-select form-control">
+                  <option selected>Choose...</option>
+                  <option value="1">Lalu LIntas</option>
+                  <option value="2">Lain-lain</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label mt-2">Lokasi Kejadian</label>
+                <input type="text" class="form-control" id="lokasiKejadian" placeholder="">
+                <div class="form-group">
+                  <label>Enter address</label>
+                  <input type="text" class="form-control" (keydown.enter)="$event.preventDefault()" placeholder="Search Nearest Location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" #search>
+                </div>
+                
+    
+
+                <label class="form-label mt-2">Isi Pengaduan</label>
+                <textarea class="form-control" id="isiPengaduan" rows="3"></textarea>              </div>           
+              <div class="col-12 text-right">
+                <button type="submit" class="btn btn-primary">Simpan Laporan</button>
+              </div>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
