@@ -1,5 +1,5 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
-import { ROUTES } from '../sidebar/sidebar.component';
+import { ROUTESADMIN, ROUTESCC, ROUTESUSER } from '../sidebar/sidebar.component';
 import { Location, LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { Router } from '@angular/router';
 import { TokenStorageService } from '../../_services/token-storage.service';
@@ -28,7 +28,14 @@ export class NavbarComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.listTitles = ROUTES.filter(listTitle => listTitle);
+    let levelUser = this.tokenStorage.getUser().level_user;
+    if (levelUser == "superadmin"){
+      this.listTitles = ROUTESADMIN.filter(listTitle => listTitle);
+    }else if (levelUser == "callcenter"){
+      this.listTitles = ROUTESCC.filter(listTitle => listTitle);
+    }else if (levelUser == "user"){
+      this.listTitles = ROUTESUSER.filter(listTitle => listTitle);
+    }
     // this.isLoggedIn = !!this.tokenStorageService.getToken();
 
     if (this.tokenStorage.getToken()) {

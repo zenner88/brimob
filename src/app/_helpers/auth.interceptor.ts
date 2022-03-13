@@ -14,15 +14,14 @@ const TOKEN_HEADER_KEY = 'x-access-token';   // for Node.js Express back-end
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
   static signOut() {
+    window.sessionStorage.clear();
+    window.location.reload();
     Swal.fire({  
       icon: 'error',  
       title: 'Please Login!',  
       text: 'Token expired please login again.',  
     })  
-    window.sessionStorage.clear();
-    window.location.reload();
     // this.router.navigate(["login"]);
-    return true;
   }
   static tokenSubscription: any;
   static router: any;
