@@ -19,6 +19,7 @@ import { SearchFilterPipe } from './search-filter.pipe';
 import { UpperCasePipe } from '@angular/common';
 import { GlobalService } from './global.service';
 import { WorkorderAddComponent } from './pages/workorder-add/workorder-add.component';
+import { GoogleMapsModule } from '@angular/google-maps';
 
 registerLocaleData(localeId, 'id'); 
 
@@ -34,7 +35,7 @@ registerLocaleData(localeId, 'id');
     DataTablesModule,
     NgHttpLoaderModule.forRoot(),
     Ng2SearchPipeModule,
-
+    GoogleMapsModule
   ],
   declarations: [
     AppComponent,

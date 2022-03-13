@@ -4,8 +4,6 @@ import { TokenStorageService } from '../../_services/token-storage.service';
 import { AuthInterceptor } from '../../_helpers/auth.interceptor';
 import { GlobalService } from '../../global.service';
 
-import { Subject } from 'rxjs';
-
 @Component({
   selector: 'app-workorder',
   templateUrl: './workorder.component.html',

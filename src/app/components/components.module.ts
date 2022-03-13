@@ -7,6 +7,7 @@ import { RouterModule } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { SearchFilterPipe } from './../search-filter.pipe';
+import { GoogleMapsModule } from '@angular/google-maps';
 
 @NgModule({
   imports: [
@@ -14,7 +15,7 @@ import { SearchFilterPipe } from './../search-filter.pipe';
     RouterModule,
     NgbModule,
     Ng2SearchPipeModule,
-
+    GoogleMapsModule
   ],
   declarations: [
     FooterComponent,

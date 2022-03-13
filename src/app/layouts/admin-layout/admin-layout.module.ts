@@ -13,8 +13,11 @@ import { MapsComponent } from '../../pages/maps/maps.component';
 import { UserProfileComponent } from '../../pages/user-profile/user-profile.component';
 import { TablesComponent } from '../../pages/tables/tables.component';
 import { WorkorderComponent } from '../../pages/workorder/workorder.component';
+import { WorkorderAddComponent } from '../../pages/workorder-add/workorder-add.component';
+import { CallcenterComponent } from '../../pages/callcenter/callcenter.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgHttpLoaderModule } from 'ng-http-loader';
+import { GoogleMapsModule } from '@angular/google-maps';
 
 // import { ToastrModule } from 'ngx-toastr';
 
@@ -28,7 +31,7 @@ import { NgHttpLoaderModule } from 'ng-http-loader';
     ClipboardModule,
     Ng2SearchPipeModule,
     NgHttpLoaderModule.forRoot(),
-
+    GoogleMapsModule
   ],
   declarations: [
     DashboardComponent,
@@ -36,7 +39,9 @@ import { NgHttpLoaderModule } from 'ng-http-loader';
     TablesComponent,
     IconsComponent,
     MapsComponent,
-    WorkorderComponent
+    WorkorderComponent,
+    CallcenterComponent,
+    WorkorderAddComponent
   ]
 })
 

@@ -41,10 +41,40 @@
               <div class="col-md-6">
                 <label class="form-label mt-2">Lokasi Kejadian</label>
                 <input type="text" class="form-control" id="lokasiKejadian" placeholder="">
-                <div class="form-group">
-                  <label>Enter address</label>
-                  <input type="text" class="form-control" (keydown.enter)="$event.preventDefault()" placeholder="Search Nearest Location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" #search>
-                </div>
+                <google-map
+  
+                  #myGoogleMap
+
+                  height="500px"
+                  width="100%"
+                  [zoom]="zoom"
+                  [center]="center"
+                  [options]="options"
+                  (mapClick)="eventHandler($event,'mapClick')"
+                  (mapDblclick)="eventHandler($event,'mapDblclick')"
+                  (mapDrag)="eventHandler($event,'mapDrag')"
+                  (mapDragend)="eventHandler($event,'mapDragend')"
+                  (mapRightclick)="eventHandler($event,'mapRightclick')"
+                  (positionChanged)="eventHandler($event,'marker_positionChanged')"
+                  (zoomChanged)="eventHandler($event,'zoomChanged')"
+                >
+                  <map-marker
+                    #markerElem="mapMarker"
+                    *ngFor="let marker of markers"
+                    [position]="marker.position"
+                    [label]="marker.label"
+                    [title]="marker.title"
+                    [options]="marker.options"
+                    (mapClick)="openInfo(markerElem, marker.info)"
+                  >
+                  </map-marker>
+
+                  <map-info-window>{{ infoContent }}</map-info-window>
+                </google-map>
+
+                <button (click)="zoomIn()">Zoom in</button>
+                <button (click)="zoomOut()">Zoom out</button>
+                <button (click)="logCenter()">Log center</button>
                 
     
 
