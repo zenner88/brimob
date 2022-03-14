@@ -1,4 +1,6 @@
-import { Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit} from '@angular/core';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import Validation from '../../_utils/validation';
 
 declare const google: any;
 
@@ -9,8 +11,67 @@ declare const google: any;
 })
 
 export class WorkorderAddComponent implements OnInit {
- 
-  constructor() { }
+  form: FormGroup;
+  submitted = false;
+
+  constructor(private formBuilder: FormBuilder) { }
+
+  ngOnInit(): void {  
+    this.form = this.formBuilder.group(
+      
+      {
+      noPengaduan: ['1234567890'],  
+      namaPelapor: [
+        '',
+          [
+            Validators.required,
+            Validators.minLength(3),
+            Validators.maxLength(20)
+          ]
+        ],
+      telponPelapor: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(9),
+        ]
+      ],  
+      kategori: '',  
+      jenisLaporan: '',        
+      isiPengaduan: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(10),
+        ]
+      ],  
+      lokasiKejadian: [
+        '',
+        [
+          Validators.required,
+        ]
+      ],  
+      lat: [''],        
+      lang: [''],        
+      }
+    );
+  
+  }
+  
+  get f(): { [key: string]: AbstractControl } {
+    return this.form.controls;
+  }
+  onSubmit(): void {
+    this.submitted = true;
+    if (this.form.invalid) {
+      return;
+    }
+    console.log(JSON.stringify(this.form.value, null, 2));
+  }
+  onReset(): void {
+    this.submitted = false;
+    this.form.reset();
+  }
 
   userAddress: string = ''
   userLatitude: string = ''
@@ -23,8 +84,6 @@ export class WorkorderAddComponent implements OnInit {
 
     // maps 
     let map = document.getElementById('map-canvas');
-    let lat = map.getAttribute('data-lat');
-    let lng = map.getAttribute('data-lng');
     var myLatlng = new google.maps.LatLng(this.userLatitude, this.userLongitude);
     var mapOptions = {
         zoom: 10,
@@ -42,7 +101,7 @@ export class WorkorderAddComponent implements OnInit {
           {"featureType":"water","elementType":"all","stylers":[{"color":'#5e72e4'},{"visibility":"on"}]}]
     }
     map = new google.maps.Map(map, mapOptions);
-    var marker = new google.maps.Marker({
+    new google.maps.Marker({
       position: new google.maps.LatLng(this.userLatitude, this.userLongitude),
       map: map,
       options: {
@@ -52,33 +111,30 @@ export class WorkorderAddComponent implements OnInit {
     });
   }
 
-  simpanPengaduan(){
-    let noPengaduan = (<HTMLInputElement>document.getElementById("noPengaduan")).value;
-    let namaPelapor = (<HTMLInputElement>document.getElementById("namaPelapor")).value;
-    let telponPelapor = (<HTMLInputElement>document.getElementById("telponPelapor")).value;
-    let kategori = (<HTMLInputElement>document.getElementById("kategori")).value;
-    let jenisLaporan = (<HTMLInputElement>document.getElementById("jenisLaporan")).value;
-    let isiPengaduan = (<HTMLInputElement>document.getElementById("isiPengaduan")).value;
-    let lokasiKejadian = (<HTMLInputElement>document.getElementById("lokasiKejadian")).value;
+  // simpanPengaduan(){
+  //   let noPengaduan = (<HTMLInputElement>document.getElementById("noPengaduan")).value;
+  //   let namaPelapor = (<HTMLInputElement>document.getElementById("namaPelapor")).value;
+  //   let telponPelapor = (<HTMLInputElement>document.getElementById("telponPelapor")).value;
+  //   let kategori = (<HTMLInputElement>document.getElementById("kategori")).value;
+  //   let jenisLaporan = (<HTMLInputElement>document.getElementById("jenisLaporan")).value;
+  //   let isiPengaduan = (<HTMLInputElement>document.getElementById("isiPengaduan")).value;
+  //   let lokasiKejadian = (<HTMLInputElement>document.getElementById("lokasiKejadian")).value;
 
-    let gabung = [
-      {
-        noPengaduan : noPengaduan,
-        namaPelapor : namaPelapor, 
-        telponPelapor : telponPelapor,
-        kategori : kategori,
-        jenisLaporan : jenisLaporan,
-        isiPengaduan : isiPengaduan,
-        lokasiKejadian : lokasiKejadian,
-        lat : this.userLatitude,
-        lang : this.userLongitude
-      }
-    ];
-    console.log(gabung); 
-  }
-
-  ngOnInit() {       
-  }
+  //   let gabung = [
+  //     {
+  //       noPengaduan : noPengaduan,
+  //       namaPelapor : namaPelapor, 
+  //       telponPelapor : telponPelapor,
+  //       kategori : kategori,
+  //       jenisLaporan : jenisLaporan,
+  //       isiPengaduan : isiPengaduan,
+  //       lokasiKejadian : lokasiKejadian,
+  //       lat : this.userLatitude,
+  //       lang : this.userLongitude
+  //     }
+  //   ];
+  //   console.log(gabung); 
+  // }
 
 }
 

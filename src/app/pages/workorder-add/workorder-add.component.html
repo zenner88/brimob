@@ -13,75 +13,67 @@
           </div>
  
           <div class="container-fluid card shadow py-4 border-1 my-4">
-            <form class="row">
+            <form class="row" [formGroup]="form" (ngSubmit)="onSubmit()">
               <div class="col-md-6">
                 <label class="form-label">No Pengaduan</label>
-                <input type="text" class="form-control" id="noPengaduan" placeholder="">
+                <input type="number" class="form-control" formControlName="noPengaduan" placeholder="" disabled>
 
                 <label class="form-label mt-2">Nama Pelapor</label>
-                <input type="text" class="form-control" id="namaPelapor" placeholder="">
+                <input type="text" class="form-control" formControlName="namaPelapor" [ngClass]="{ 'is-invalid': submitted && f.namaPelapor.errors }">
+                <div *ngIf="submitted && f.namaPelapor.errors" class="invalid-feedback">
+                  <div *ngIf="f.namaPelapor.errors.required">Nama Pelapor is required</div>
+                  <div *ngIf="f.namaPelapor.errors.minlength">
+                    Nama Pelapor must be at least 3 characters
+                  </div>
+                  <div *ngIf="f.namaPelapor.errors.maxlength">
+                    Nama Pelapor must not exceed 20 characters
+                  </div>
+                </div>
 
                 <label class="form-label mt-2">Telpon Pelapor</label>
-                <input type="text" class="form-control" id="telponPelapor" placeholder="">
+                <input type="number" class="form-control" formControlName="telponPelapor" [ngClass]="{ 'is-invalid': submitted && f.namaPelapor.errors }">
+                <div *ngIf="submitted && f.telponPelapor.errors" class="invalid-feedback">
+                  <div *ngIf="f.telponPelapor.errors.required">Telpon Pelapor is required</div>
+                  <div *ngIf="f.telponPelapor.errors.minlength">
+                    Telpon Pelapor must be at least 9 characters
+                  </div>
+                </div>
 
                 <label class="form-label mt-2">Kategori</label>
-                <select id="kategori" class="form-select form-control">
-                  <option selected>Choose...</option>
-                  <option value="1">Non Pengaduan</option>
+                <select formControlName="kategori" class="form-select form-control">
+                  <option value="1" selected>Non Pengaduan</option>
                   <option value="2">Pengaduan</option>
                 </select>
 
                 <label class="form-label mt-2">Jenis Laporan</label>
-                <select id="jenisLaporan" class="form-select form-control">
-                  <option selected>Choose...</option>
-                  <option value="1">Lalu LIntas</option>
+                <select formControlName="jenisLaporan" class="form-select form-control">
+                  <option value="1" selected>Lalu LIntas</option>
                   <option value="2">Lain-lain</option>
                 </select>
-              </div>
-              <div class="col-md-6">
-                <label class="form-label mt-2">Lokasi Kejadian</label>
-                <input type="text" class="form-control" id="lokasiKejadian" placeholder="">
-                <google-map
-  
-                  #myGoogleMap
-
-                  height="500px"
-                  width="100%"
-                  [zoom]="zoom"
-                  [center]="center"
-                  [options]="options"
-                  (mapClick)="eventHandler($event,'mapClick')"
-                  (mapDblclick)="eventHandler($event,'mapDblclick')"
-                  (mapDrag)="eventHandler($event,'mapDrag')"
-                  (mapDragend)="eventHandler($event,'mapDragend')"
-                  (mapRightclick)="eventHandler($event,'mapRightclick')"
-                  (positionChanged)="eventHandler($event,'marker_positionChanged')"
-                  (zoomChanged)="eventHandler($event,'zoomChanged')"
-                >
-                  <map-marker
-                    #markerElem="mapMarker"
-                    *ngFor="let marker of markers"
-                    [position]="marker.position"
-                    [label]="marker.label"
-                    [title]="marker.title"
-                    [options]="marker.options"
-                    (mapClick)="openInfo(markerElem, marker.info)"
-                  >
-                  </map-marker>
-
-                  <map-info-window>{{ infoContent }}</map-info-window>
-                </google-map>
-
-                <button (click)="zoomIn()">Zoom in</button>
-                <button (click)="zoomOut()">Zoom out</button>
-                <button (click)="logCenter()">Log center</button>
-                
-    
 
                 <label class="form-label mt-2">Isi Pengaduan</label>
-                <textarea class="form-control" id="isiPengaduan" rows="3"></textarea>              </div>           
-              <div class="col-12 text-right">
-                <button type="submit" class="btn btn-primary">Simpan Laporan</button>
+                <textarea class="form-control mb-2" formControlName="isiPengaduan" rows="3" [ngClass]="{ 'is-invalid': submitted && f.isiPengaduan.errors }"></textarea> 
+                <div *ngIf="submitted && f.isiPengaduan.errors" class="invalid-feedback">
+                  <div *ngIf="f.isiPengaduan.errors.required">Isi Pengaduan is required</div>
+                  <div *ngIf="f.isiPengaduan.errors.minlength">
+                    Isi Pengaduan must be at least 10 characters
+                  </div>
+                </div>
+                
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Lokasi Kejadian</label>
+                <input ngx-google-places-autocomplete class="form-control" formControlName="lokasiKejadian" (onAddressChange)="handleAddressChange($event)" [ngClass]="{ 'is-invalid': submitted && f.lokasiKejadian.errors }">   
+                <input class="form-control" formControlName="lat" value="{{userLatitude}}">    
+                <input class="form-control" formControlName="lang" value="{{userLongitude}}">    
+                <div *ngIf="submitted && f.lokasiKejadian.errors" class="invalid-feedback">
+                  <div *ngIf="f.lokasiKejadian.errors.required">Isi Pengaduan is required</div>
+                </div>         
+                <div id="map-canvas" class="map-canvas" data-lat="0.7893" data-lng="113.9213" style="height: 400px;"></div>            
+              </div>            
+              <div class="col-12 card-footer">
+                <button type="submit" class="btn btn-primary mt-2">Simpan Laporan</button>
+                <button type="button" (click)="onReset()" class="btn btn-warning float-right">Reset</button>
               </div>
             </form>
           </div>
