@@ -1,92 +1,85 @@
-import { Component, OnInit, ViewChild, ElementRef, NgZone } from '@angular/core';
-import { GoogleMap, MapInfoWindow, MapMarker } from '@angular/google-maps';
+import { Component, OnInit, ViewChild} from '@angular/core';
+
+declare const google: any;
 
 @Component({
   selector: 'app-workorder-add',
   templateUrl: './workorder-add.component.html',
   styleUrls: ['./workorder-add.component.scss']
 })
+
 export class WorkorderAddComponent implements OnInit {
-  title = 'angular-google-maps-app';
+ 
+  constructor() { }
 
-  @ViewChild('myGoogleMap', { static: false })
-  map!: GoogleMap;
-  @ViewChild(MapInfoWindow, { static: false })
-  info!: MapInfoWindow;
+  userAddress: string = ''
+  userLatitude: string = ''
+  userLongitude: string = ''
 
-  zoom = 12;
-  maxZoom = 15;
-  minZoom = 8;
-  center!: google.maps.LatLngLiteral;
-  options: google.maps.MapOptions = {
-    zoomControl: false,
-    scrollwheel: false,
-    disableDoubleClickZoom: true,
-    mapTypeId: 'hybrid',
-    maxZoom:this.maxZoom,
-    minZoom:this.minZoom,
-  }
-  markers = []  as  any;
-  infoContent = ''
+  handleAddressChange(address: any) {
+    this.userAddress = address.formatted_address
+    this.userLatitude = address.geometry.location.lat()
+    this.userLongitude = address.geometry.location.lng()
 
-  constructor(
-   
-  ) { }
-  
-  ngOnInit() {
-    navigator.geolocation.getCurrentPosition((position) => {
-      this.center = {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude,
-      }
-    })
-  }
-
-  zoomIn() {
-    if (this.zoom < this.maxZoom) this.zoom++;
-    console.log('Get Zoom',this.map.getZoom());
-  }
-
-  zoomOut() {
-    if (this.zoom > this.minZoom) this.zoom--;
-  }
-
-  eventHandler(event: any ,name:string){
-    console.log(event,name);
-    
-    // Add marker on double click event
-    if(name === 'mapDblclick'){
-      this.dropMarker(event)
+    // maps 
+    let map = document.getElementById('map-canvas');
+    let lat = map.getAttribute('data-lat');
+    let lng = map.getAttribute('data-lng');
+    var myLatlng = new google.maps.LatLng(this.userLatitude, this.userLongitude);
+    var mapOptions = {
+        zoom: 10,
+        scrollwheel: false,
+        center: myLatlng,
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+        styles: [
+          {"featureType":"administrative","elementType":"labels.text.fill","stylers":[{"color":"#444444"}]},
+          {"featureType":"landscape","elementType":"all","stylers":[{"color":"#f2f2f2"}]},
+          // {"featureType":"poi","elementType":"all","stylers":[{"visibility":"off"}]},
+          {"featureType":"road","elementType":"all","stylers":[{"saturation":-100},{"lightness":45}]},
+          {"featureType":"road.highway","elementType":"all","stylers":[{"visibility":"simplified"}]},
+          // {"featureType":"road.arterial","elementType":"labels.icon","stylers":[{"visibility":"off"}]},
+          // {"featureType":"transit","elementType":"all","stylers":[{"visibility":"off"}]},
+          {"featureType":"water","elementType":"all","stylers":[{"color":'#5e72e4'},{"visibility":"on"}]}]
     }
-  }
-
-  // Markers
-  logCenter() {
-    console.log(JSON.stringify(this.map.getCenter()))
-  }
-
-  dropMarker(event:any) {
-    this.markers.push({
-      position: {
-        lat: event.latLng.lat(),
-        lng: event.latLng.lng(),
-      },
-      label: {
-        color: 'blue',
-        text: 'Marker label ' + (this.markers.length + 1),
-      },
-      title: 'Marker title ' + (this.markers.length + 1),
-      info: 'Marker info ' + (this.markers.length + 1),
+    map = new google.maps.Map(map, mapOptions);
+    var marker = new google.maps.Marker({
+      position: new google.maps.LatLng(this.userLatitude, this.userLongitude),
+      map: map,
       options: {
-        animation: google.maps.Animation.DROP,
-      },
-    })
+        animation: google.maps.Animation.BOUNCE,
+        // icon: "../../../assets/img/icons/"+markerLogo
+      }
+    });
   }
 
-  openInfo(marker: MapMarker, content: string) {
-    this.infoContent = content;
-    this.info.open(marker)
+  simpanPengaduan(){
+    let noPengaduan = (<HTMLInputElement>document.getElementById("noPengaduan")).value;
+    let namaPelapor = (<HTMLInputElement>document.getElementById("namaPelapor")).value;
+    let telponPelapor = (<HTMLInputElement>document.getElementById("telponPelapor")).value;
+    let kategori = (<HTMLInputElement>document.getElementById("kategori")).value;
+    let jenisLaporan = (<HTMLInputElement>document.getElementById("jenisLaporan")).value;
+    let isiPengaduan = (<HTMLInputElement>document.getElementById("isiPengaduan")).value;
+    let lokasiKejadian = (<HTMLInputElement>document.getElementById("lokasiKejadian")).value;
+
+    let gabung = [
+      {
+        noPengaduan : noPengaduan,
+        namaPelapor : namaPelapor, 
+        telponPelapor : telponPelapor,
+        kategori : kategori,
+        jenisLaporan : jenisLaporan,
+        isiPengaduan : isiPengaduan,
+        lokasiKejadian : lokasiKejadian,
+        lat : this.userLatitude,
+        lang : this.userLongitude
+      }
+    ];
+    console.log(gabung); 
   }
+
+  ngOnInit() {       
+  }
+
 }
 
 
