@@ -12,6 +12,7 @@ import { UserProfileComponent } from '../../pages/user-profile/user-profile.comp
 import { TablesComponent } from '../../pages/tables/tables.component';
 import { WorkorderComponent } from '../../pages/workorder/workorder.component';
 import { WorkorderAddComponent } from '../../pages/workorder-add/workorder-add.component';
+import { UserAddComponent } from '../../pages/user-add/user-add.component';
 import { CallcenterComponent } from '../../pages/callcenter/callcenter.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgHttpLoaderModule } from 'ng-http-loader';
@@ -41,7 +42,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     MapsComponent,
     WorkorderComponent,
     CallcenterComponent,
-    WorkorderAddComponent
+    WorkorderAddComponent,
+    UserAddComponent
   ]
 })
 

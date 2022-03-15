@@ -51,8 +51,8 @@ export class WorkorderAddComponent implements OnInit {
           Validators.required,
         ]
       ],  
-      lat: ['',[Validators.required,]],        
-      lang: ['',[Validators.required,]],        
+      lat: '',        
+      lang: '',        
       }
     );
   

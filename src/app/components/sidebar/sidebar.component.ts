@@ -13,7 +13,7 @@ export const ROUTESADMIN: RouteInfo[] = [
     { path: '/chart', title: 'Chart',  icon: 'ni-chart-pie-35 text-success', class: '' },
     { path: '/workorder', title: 'Work Order',  icon:'ni-books text-orange', class: '' },
     { path: '/callcenter', title: 'Call Center',  icon:'ni-headphones text-primary', class: '' },
-    { path: '/superadmin', title: 'Superadmin',  icon:'ni-single-02 text-danger', class: '' },
+    { path: '/superadmin', title: 'Superadmin',  icon:'ni-single-02 text-danger', class: 'nav-item nav-with-child' },
     { path: '/sms', title: 'SMS',  icon:'ni-email-83 text-info', class: '' },
     { path: '/report', title: 'Report',  icon:'ni-book-bookmark text-primary', class: '' },
     { path: '/ebook', title: 'E-Book',  icon:'ni-collection text-success', class: '' },

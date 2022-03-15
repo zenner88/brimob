@@ -7,4 +7,5 @@ export class GlobalService {
     public readonly address: string = 'http://202.67.10.238:5000';  
     public readonly workorder: string = '/datatable';  
     public readonly login: string = '/login_user';  
+    public readonly simpanUser: string = '/simpan_user';  
 }

@@ -8,14 +8,16 @@ import { TablesComponent } from '../../pages/tables/tables.component';
 import { WorkorderComponent } from 'src/app/pages/workorder/workorder.component';
 import { CallcenterComponent } from 'src/app/pages/callcenter/callcenter.component';
 import { WorkorderAddComponent } from 'src/app/pages/workorder-add/workorder-add.component';
+import { UserAddComponent } from 'src/app/pages/user-add/user-add.component';
 
 export const AdminLayoutRoutes: Routes = [
     { path: 'dashboard',      component: DashboardComponent },
     { path: 'workorder',      component: WorkorderComponent },
-    { path: 'callcenter',      component: CallcenterComponent },
+    { path: 'callcenter',     component: CallcenterComponent },
     { path: 'user-profile',   component: UserProfileComponent },
     { path: 'tables',         component: TablesComponent },
     { path: 'icons',          component: IconsComponent },
     { path: 'maps',           component: MapsComponent },
-    { path: 'workorder-add',           component: WorkorderAddComponent },
+    { path: 'workorder-add',  component: WorkorderAddComponent },
+    { path: 'user-add',  component: UserAddComponent },
 ];

@@ -1,0 +1,77 @@
+  <div class="header bg-gradient-danger pb-5 pt-5 pt-md-8">
+  </div>
+  <!-- Page content -->
+  <div class="container-fluid mt--7">
+    <!-- Table -->
+    <div class="row">
+      <div class="col">
+        <div class="card shadow mx--4">
+          <div class="card-header border-0 mb--4">
+            <div class="row">
+              <div class="col-6 col-md-9"><h3 class="mb-0">Tambah User</h3></div>
+            </div>         
+          </div>
+ 
+          <div class="container-fluid card shadow py-4 border-1 my-4">
+            <form class="row" [formGroup]="form" (ngSubmit)="onSubmit()">
+              <div class="col-md-6">
+                <label class="form-label">Username</label>
+                <input type="text" class="form-control" formControlName="username" [ngClass]="{ 'is-invalid': submitted && f.username.errors }">
+                <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+                  <div *ngIf="f.username.errors.required">Username is required</div>
+                  <div *ngIf="f.username.errors.minlength">
+                    Username must be at least 3 characters
+                  </div>
+                  <div *ngIf="f.username.errors.maxlength">
+                    Username must not exceed 20 characters
+                  </div>
+                </div>
+
+                <label class="form-label mt-2">Password</label>
+                <input type="password" class="form-control" formControlName="password" [ngClass]="{ 'is-invalid': submitted && f.password.errors }">
+                <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                  <div *ngIf="f.password.errors.required">Password is required</div>
+                  <div *ngIf="f.password.errors.minlength">
+                    Password must be at least 3 characters
+                  </div>
+                  <div *ngIf="f.password.errors.maxlength">
+                    Password must not exceed 20 characters
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-12 col-md-6">
+                    <label class="form-label mt-2">Polda</label>
+                    <select formControlName="polda" class="form-select form-control">
+                      <option value="1" selected>Non Pengaduan</option>
+                      <option value="2">Pengaduan</option>
+                    </select>
+                  </div>
+                  <div class="col-12 col-md-6">
+                    <label class="form-label mt-2">Satwil</label>
+                    <select formControlName="satwil" class="form-select form-control">
+                      <option value="1" selected>Lalu LIntas</option>
+                      <option value="2">Lain-lain</option>
+                    </select>
+                  </div>
+                </div>
+
+                <label class="form-label mt-2">Type</label>
+                <select formControlName="level_user" class="form-select form-control">
+                  <option value="user" selected>User</option>
+                  <option value="callcenter">Call Center</option>
+                </select>
+                <div class="col-12">
+                  <button type="submit" class="btn btn-primary mt-2">Simpan</button>
+                  <button type="button" (click)="onReset()" class="btn btn-warning float-right">Reset</button>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">List User</label>
+              </div>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
