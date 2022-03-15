@@ -51,8 +51,8 @@ export class WorkorderAddComponent implements OnInit {
           Validators.required,
         ]
       ],  
-      lat: [''],        
-      lang: [''],        
+      lat: ['',[Validators.required,]],        
+      lang: ['',[Validators.required,]],        
       }
     );
   
@@ -86,7 +86,7 @@ export class WorkorderAddComponent implements OnInit {
     let map = document.getElementById('map-canvas');
     var myLatlng = new google.maps.LatLng(this.userLatitude, this.userLongitude);
     var mapOptions = {
-        zoom: 10,
+        zoom: 12,
         scrollwheel: false,
         center: myLatlng,
         mapTypeId: google.maps.MapTypeId.ROADMAP,
@@ -110,31 +110,6 @@ export class WorkorderAddComponent implements OnInit {
       }
     });
   }
-
-  // simpanPengaduan(){
-  //   let noPengaduan = (<HTMLInputElement>document.getElementById("noPengaduan")).value;
-  //   let namaPelapor = (<HTMLInputElement>document.getElementById("namaPelapor")).value;
-  //   let telponPelapor = (<HTMLInputElement>document.getElementById("telponPelapor")).value;
-  //   let kategori = (<HTMLInputElement>document.getElementById("kategori")).value;
-  //   let jenisLaporan = (<HTMLInputElement>document.getElementById("jenisLaporan")).value;
-  //   let isiPengaduan = (<HTMLInputElement>document.getElementById("isiPengaduan")).value;
-  //   let lokasiKejadian = (<HTMLInputElement>document.getElementById("lokasiKejadian")).value;
-
-  //   let gabung = [
-  //     {
-  //       noPengaduan : noPengaduan,
-  //       namaPelapor : namaPelapor, 
-  //       telponPelapor : telponPelapor,
-  //       kategori : kategori,
-  //       jenisLaporan : jenisLaporan,
-  //       isiPengaduan : isiPengaduan,
-  //       lokasiKejadian : lokasiKejadian,
-  //       lat : this.userLatitude,
-  //       lang : this.userLongitude
-  //     }
-  //   ];
-  //   console.log(gabung); 
-  // }
 
 }
 

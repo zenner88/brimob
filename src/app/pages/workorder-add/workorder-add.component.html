@@ -64,8 +64,8 @@
               <div class="col-md-6">
                 <label class="form-label">Lokasi Kejadian</label>
                 <input ngx-google-places-autocomplete class="form-control" formControlName="lokasiKejadian" (onAddressChange)="handleAddressChange($event)" [ngClass]="{ 'is-invalid': submitted && f.lokasiKejadian.errors }">   
-                <input class="form-control" formControlName="lat" value="{{userLatitude}}">    
-                <input class="form-control" formControlName="lang" value="{{userLongitude}}">    
+                <input class="form-control" formControlName="lat" [ngModel]="userLatitude" hidden>    
+                <input class="form-control" formControlName="lang" [ngModel]="userLongitude" hidden>    
                 <div *ngIf="submitted && f.lokasiKejadian.errors" class="invalid-feedback">
                   <div *ngIf="f.lokasiKejadian.errors.required">Isi Pengaduan is required</div>
                 </div>         
