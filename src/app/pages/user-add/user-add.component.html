@@ -60,13 +60,49 @@
                   <option value="user" selected>User</option>
                   <option value="callcenter">Call Center</option>
                 </select>
-                <div class="col-12">
-                  <button type="submit" class="btn btn-primary mt-2">Simpan</button>
+                <div class="col-12 mt-4">
+                  <button type="submit" class="btn btn-primary">Simpan</button>
                   <button type="button" (click)="onReset()" class="btn btn-warning float-right">Reset</button>
                 </div>
               </div>
-              <div class="col-md-6">
-                <label class="form-label">List User</label>
+              <div class="col-md-6 mt-0">
+                <div class="card shadow">
+                  <div class="card-header border-0">
+                    <div class="row">
+                      <div class="col-6 col-md-6"><h3 class="mb-0">List User</h3></div>
+                      <div class="col-6 col-md-6">
+                        <form>
+                          <div class="form-group float-end" >
+                            <input placeholder="NO PENGADUAN/ NAMA" class="form-control form-control-sm form-control-success" type="text" [(ngModel)]="filterTerm"/>
+                          </div>
+                        </form>
+                      </div>
+                    </div>         
+                  </div>
+                  <div class="table-responsive">
+                     <table class="table table-sm row-border table-hover">
+                      <thead class="table-dark">
+                        <tr>
+                          <th class="px-md-2">Username</th>
+                          <th class="px-md-2">polda</th>
+                          <th class="px-md-2">satwil</th>
+                          <th class="px-md-2"></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let zz of workorders | filter: filterTerm | slice: (page-1) * pageSize : page * pageSize; index as i" (click)="showDetails(zz)">
+                          <td class="px-md-2" style="white-space: normal;">{{zz.nama_pelapor}}</td>
+                          <td class="px-md-2" style="white-space: normal;width:200px;">{{zz.satwil}}</td>
+                          <td class="px-md-2" style="white-space: normal;">{{zz.sub_kategori}}</td>
+                          <td class="px-md-2">{{zz.tgl_kontak | date: 'EEEE, d MMMM y'}}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [maxSize]="5" [boundaryLinks]="true"
+              [pageSize]="pageSize" class="d-flex justify-content-center mt-4"></ngb-pagination>
+                  </div>
+              
+                </div>
               </div>
             </form>
           </div>

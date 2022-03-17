@@ -21,6 +21,12 @@ export class UserAddComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder, private http: HttpClient, private tokenStorage: TokenStorageService, private global: GlobalService) { }
 
+  workorders:any = [];
+  collectionSize: number;
+  filterTerm: string;
+  page = 1;
+  pageSize = 8;
+  
   ngOnInit(): void {  
     this.form = this.formBuilder.group(
       
@@ -48,7 +54,34 @@ export class UserAddComponent implements OnInit {
       
       }
     );
-  
+    let levelUser = this.tokenStorage.getUser().level_user;
+    let polda = this.tokenStorage.getUser().polda;
+    let satwil = this.tokenStorage.getUser().satwil;
+    let token = this.tokenStorage.getUser().token;
+    const body = {      
+        "level_user" : levelUser,
+        "polda" : polda,
+        "satwil" : satwil,
+        "start" : 1,
+        "limit" : 1000
+     };
+    const header = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    const headers = { headers: header };
+        
+    this.http.post<any>(this.global.address+this.global.workorder, body, headers).subscribe({
+    next: data => {
+      this.collectionSize = data.length;
+      this.workorders = data;
+      console.log(data);
+    },
+    error: error => {
+        this.errorMessage = error.message;
+        console.error('There was an error!', error);
+        if (error.status == 401 ){
+          AuthInterceptor.signOut();
+        }
+    }
+    })
   }
   
   get f(): { [key: string]: AbstractControl } {
