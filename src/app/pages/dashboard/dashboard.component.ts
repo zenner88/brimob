@@ -1,9 +1,9 @@
 import { IfStmt } from '@angular/compiler';
-import { Component, OnInit } from '@angular/core';
 import Chart from 'chart.js';
+import { Component, OnInit } from '@angular/core';
+import { GlobalService } from '../../global.service';
 import { TokenStorageService } from '../../_services/token-storage.service';
 import { AuthInterceptor } from '../../_helpers/auth.interceptor';
-import { GlobalService } from '../../global.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 // core components
@@ -13,6 +13,7 @@ import {
   chartExample1,
   chartExample2
 } from "../../variables/charts";
+import { jsonpFactory } from '@angular/http/src/http_module';
 declare const google: any;
 
 @Component({
@@ -40,25 +41,14 @@ export class DashboardComponent implements OnInit {
   public salesChart;
   public clicked: boolean = true;
   public clicked1: boolean = false;
-  constructor(private http: HttpClient, private tokenStorage: TokenStorageService, private global: GlobalService) { }
+  
+  constructor(private http: HttpClient, private global: GlobalService) { }
   
   ngOnInit() {
-    // datatable 
-    let levelUser = this.tokenStorage.getUser().level_user;
-    let polda = this.tokenStorage.getUser().polda;
-    let satwil = this.tokenStorage.getUser().satwil;
-    let token = this.tokenStorage.getUser().token;
-    const body = {      
-        "level_user" : levelUser,
-        "polda" : polda,
-        "satwil" : satwil,
-        "start" : 1,
-        "limit" : 1000
-     };
-    const header = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    const headers = { headers: header };
-        
-    this.http.post<any>(this.global.address+this.global.workorder, body, headers).subscribe({
+    // datatable      
+    console.log("body : "+ JSON.stringify(this.global.body));
+
+    this.http.post<any>(this.global.address+this.global.workorder, this.global.body, this.global.headers).subscribe({
     next: data => {
       this.collectionSize = data.length;
       this.workorders = data;

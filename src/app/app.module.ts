@@ -15,10 +15,8 @@ import { NgHttpLoaderModule } from 'ng-http-loader';
 import { registerLocaleData } from '@angular/common';
 import localeId from '@angular/common/locales/id'; 
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
-import { SearchFilterPipe } from './search-filter.pipe';
 import { UpperCasePipe } from '@angular/common';
 import { GlobalService } from './global.service';
-import { WorkorderAddComponent } from './pages/workorder-add/workorder-add.component';
 import { GoogleMapsModule } from '@angular/google-maps';
 
 registerLocaleData(localeId, 'id'); 
