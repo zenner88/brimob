@@ -1,10 +1,9 @@
 import { Component, OnInit} from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { TokenStorageService } from '../../_services/token-storage.service';
 import { AuthInterceptor } from '../../_helpers/auth.interceptor';
 import { GlobalService } from '../../global.service';
-import Validation from '../../_utils/validation';
 
 declare const google: any;
 
@@ -59,7 +58,6 @@ export class UserAddComponent implements OnInit {
     next: data => {
       this.collectionSize = data.length;
       this.workorders = data;
-      console.log(data);
     },
     error: error => {
         this.errorMessage = error.message;

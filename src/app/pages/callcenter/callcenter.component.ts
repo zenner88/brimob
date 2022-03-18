@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { TokenStorageService } from '../../_services/token-storage.service';
 import { AuthInterceptor } from '../../_helpers/auth.interceptor';
 import { GlobalService } from '../../global.service';
-
-import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-callcenter',
@@ -31,17 +29,6 @@ export class CallcenterComponent implements OnInit {
   pageSize = 8;
   collectionSize: number;
   currentRate = 8;
-  
-  // open: number;
-  // opens:any = [];
-  // received: number;
-  // receiveds:any = [];
-  // onprocess: number;
-  // onprocesss:any = [];
-  // close: number;
-  // closes:any = [];
-  // total: number;
-  // totals:any = [];
 
   constructor(private http: HttpClient, private tokenStorage: TokenStorageService, private global: GlobalService) { }
 
@@ -50,33 +37,6 @@ export class CallcenterComponent implements OnInit {
     next: data => {
       this.collectionSize = data.length;
       this.workorders = data;
-      console.log(data);
-
-      // var open = data.filter(element => {
-      //   return element.status == 1;
-      // })
-      // console.log("open"+open.length);
-
-      // var received = data.filter(element => {
-      //   return element.status == 2;
-      // })
-      // console.log("received"+received.length);
-
-      // var onprocess = data.filter(element => {
-      //   return element.status == 3;
-      // })
-      // console.log("onprocess"+onprocess.length);
-
-      // var close = data.filter(element => {
-      //   return element.status == 4;
-      // })
-      // console.log("close"+close.length);
-
-      // var total = data.filter(element => {
-      //   return element.status == 5;
-      // })
-      // console.log("total"+total.length);
-
     },
     error: error => {
         this.errorMessage = error.message;

@@ -2,7 +2,6 @@ import { IfStmt } from '@angular/compiler';
 import Chart from 'chart.js';
 import { Component, OnInit } from '@angular/core';
 import { GlobalService } from '../../global.service';
-import { TokenStorageService } from '../../_services/token-storage.service';
 import { AuthInterceptor } from '../../_helpers/auth.interceptor';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
@@ -46,38 +45,30 @@ export class DashboardComponent implements OnInit {
   
   ngOnInit() {
     // datatable      
-    console.log("body : "+ JSON.stringify(this.global.body));
-
     this.http.post<any>(this.global.address+this.global.workorder, this.global.body, this.global.headers).subscribe({
     next: data => {
       this.collectionSize = data.length;
       this.workorders = data;
-      console.log(data);
 
       let open = data.filter(element => {
         return element.status == 1;
       })
       this.open = open.length;
-      console.log("open"+open);
-      console.log("open"+open.length);
 
       let received = data.filter(element => {
         return element.status == 2;
       })
       this.received = received.length;
-      console.log("received"+received.length);
 
       let onprocess = data.filter(element => {
         return element.status == 3;
       })
       this.onprocess = onprocess.length;
-      console.log("onprocess"+onprocess.length);
 
       let close = data.filter(element => {
         return element.status == 4;
       })
       this.close = close.length;
-      console.log("close"+close.length);
 
     },
     error: error => {
@@ -132,7 +123,7 @@ export class DashboardComponent implements OnInit {
         map: map,
         options: {
           animation: google.maps.Animation.DROP,
-          icon: "../../../assets/img/icons/"+markerLogo
+          icon: "./assets/img/icons/"+markerLogo
         }
       });
       // info window marker 
