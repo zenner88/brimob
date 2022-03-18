@@ -18,6 +18,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgHttpLoaderModule } from 'ng-http-loader';
 import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
 import { ReactiveFormsModule } from '@angular/forms';
+import { GlobalService } from '../../global.service';
 
 // import { ToastrModule } from 'ngx-toastr';
 
@@ -44,7 +45,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     CallcenterComponent,
     WorkorderAddComponent,
     UserAddComponent
-  ]
+  ],
+  providers: [ GlobalService ]
 })
 
 export class AdminLayoutModule {}
