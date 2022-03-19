@@ -15,7 +15,6 @@ export class AuthGuard implements CanActivate {
       if (this.auth.isLoggedIn()) {
         return true;
       }
-      Swal.fire('You don\'t have permission to view this page');
       Swal.fire({  
         icon: 'error',  
         title: 'Please Login!',  

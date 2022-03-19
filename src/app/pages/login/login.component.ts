@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../_services/auth.service';
 import { TokenStorageService } from '../../_services/token-storage.service';
-import { DashboardComponent } from '../dashboard/dashboard.component';
 import { Router, CanActivate } from '@angular/router';
+import { GlobalService } from '../../global.service';
+import Swal from 'sweetalert2'
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -21,7 +23,7 @@ export class LoginComponent implements OnInit {
   DashboardComponent: any;
   fieldTextType: boolean;
   tokenStorageService: TokenStorageService;
-  constructor(private authService: AuthService, private tokenStorage: TokenStorageService, public router: Router) { }
+  constructor(private authService: AuthService, private tokenStorage: TokenStorageService, public router: Router, private global: GlobalService) { }
 
   ngOnInit(): void {
     if (this.tokenStorage.getToken()) {
@@ -52,9 +54,20 @@ export class LoginComponent implements OnInit {
   }
 
   reloadPage(): void {
-    // window.location.reload();
-    this.router.navigate(['dashboard']);
-    // DashboardComponent;
+    let tokens = this.tokenStorage.getToken();
+     if (tokens == undefined){
+       Swal.fire({  
+         icon: 'error',  
+         title: 'Login Failed',  
+         text: 'Your Username or Password invalid',  
+       }).then(function() {
+         window.sessionStorage.clear();
+         window.location.reload();
+       });    }
+     else{
+       this.router.navigate(['dashboard']);
+      //  window.location.reload();
+     }
   }
   logout() {
     // this.tokenStorageService.signOut();
