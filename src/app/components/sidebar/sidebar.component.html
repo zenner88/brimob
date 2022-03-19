@@ -89,28 +89,108 @@
       </form>
       <!-- Navigation -->
       <ul class="navbar-nav">
-          <li *ngFor="let menuItem of menuItems" class="{{menuItem.class}} nav-item">
+          <!-- <li *ngFor="let menuItem of menuItems" class="{{menuItem.class}} nav-item">
               <a routerLinkActive="active" [routerLink]="[menuItem.path]" class="nav-link">
                   <i class="ni {{menuItem.icon}}"></i>
                   {{menuItem.title}}
               </a>
-              <!-- <ul *ngIf="[menuItem.path] == '/superadmin'" class="nav-item-child">
-                <li class="nav-item">
-                  <a class="nav-link" routerLink="/user-add">User</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" routerLink="">Instansi</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" routerLink="">Nomor HP</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" routerLink="">Link</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" routerLink="">Video</a>
-                </li>
-              </ul> -->
+          </li> -->
+          <li class="nav-item">
+              <a routerLinkActive="active" routerLink='/dashboard' class="nav-link">
+                  <i class="ni ni-tv-2 text-primary"></i>
+                  Dashboard
+              </a>
+          </li>
+          <li class="nav-item nav-with-child">
+            <a class="nav-link"  >
+              <i class="ni ni-chart-pie-35 text-success"></i> Chart
+            </a>
+            <ul class="nav-item-child">
+              <li class="nav-item">
+                <a class="nav-link" href="">
+               Multilevel 1
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="">
+               Multilevel 2
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a routerLinkActive="active" routerLink='/workorder' class="nav-link">
+                <i class="ni ni-books text-orange"></i>
+                Workorder
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLinkActive="active" routerLink='/callcenter' class="nav-link">
+                <i class="ni ni-headphones text-primary"></i>
+                Call Center
+            </a>
+          </li>
+          <li class="nav-item nav-with-child">
+            <a class="nav-link"  >
+              <i class="ni ni-single-02 text-danger"></i> Superadmin
+            </a>
+            <ul class="nav-item-child">
+              <li class="nav-item">
+                <a routerLink='/user-add' class="nav-link">
+                  User
+                </a>
+              </li>
+              <li class="nav-item">
+                <a routerLink='/user-add' class="nav-link">
+                  Instansi
+                </a>
+              </li>
+              <li class="nav-item">
+                <a routerLink='/user-add' class="nav-link">
+                  Nomor HP
+                </a>
+              </li>
+              <li class="nav-item">
+                <a routerLink='/user-add' class="nav-link">
+                  Link
+                </a>
+              </li>
+              <li class="nav-item">
+                <a routerLink='/user-add' class="nav-link">
+                  Video
+                </a>
+              </li>            
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a routerLink='/workorder' class="nav-link">
+                <i class="ni ni-email-83 text-info"></i>
+                SMS
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink='/workorder' class="nav-link">
+                <i class="ni ni-book-bookmark text-primary"></i>
+                Report
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLinkActive="active" routerLink='/workorder' class="nav-link">
+                <i class="ni ni-collection text-success"></i>
+                E-Book
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLinkActive="active" routerLink='/workorder' class="nav-link">
+                <i class="ni ni-paper-diploma text-info"></i>
+                License
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLinkActive="active" routerLink='/workorder' class="nav-link">
+                <i class="ni ni-send text-orange"></i>
+                Send Notif
+            </a>
           </li>
       </ul>
     </div>
