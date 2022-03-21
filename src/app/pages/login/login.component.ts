@@ -55,7 +55,8 @@ export class LoginComponent implements OnInit {
 
   reloadPage(): void {
     let tokens = this.tokenStorage.getToken();
-     if (tokens == undefined){
+    let valid = this.tokenStorage.getUser().valid;
+     if (tokens == undefined || valid == 2 ){
        Swal.fire({  
          icon: 'error',  
          title: 'Login Failed',  
@@ -64,7 +65,7 @@ export class LoginComponent implements OnInit {
          window.sessionStorage.clear();
          window.location.reload();
        });    }
-     else{
+     else {
        this.router.navigate(['dashboard']);
       //  window.location.reload();
      }
