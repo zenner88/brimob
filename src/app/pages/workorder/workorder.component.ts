@@ -12,6 +12,8 @@ export class WorkorderComponent implements OnInit {
   errorMessage:any;
   isShowTable: boolean = true ;
   isShowDetalis: boolean = false ;
+  isShowHeader: boolean = true ;
+  isShowBack: boolean = false ;
   tittle: string = "List of Workorder";
   idworkorder: string;
   nama_pelapor: string;
@@ -59,11 +61,18 @@ export class WorkorderComponent implements OnInit {
 
       this.isShowTable = false;
       this.isShowDetalis = true;
-      this.tittle = "Details No Pengaduang " + this.no_pengaduan;
-  }
+      this.isShowHeader = false;
+      this.isShowBack = true;
+    }
   backToTable(){
     this.isShowTable = true;
     this.isShowDetalis = false;
+    this.isShowHeader = true;
+    this.isShowBack = false;
     this.tittle = "List of Workorder";
+  }
+  showHeader (){
+      this.isShowTable = false;
+      this.isShowDetalis = true;
   }
 }

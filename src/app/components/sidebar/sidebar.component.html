@@ -11,7 +11,7 @@
     </a>
     <!-- User -->
     <ul class="nav align-items-center d-md-none">
-      <li class="nav-item" ngbDropdown placement="bottom-right">
+      <!-- <li class="nav-item" ngbDropdown placement="bottom-right">
         <a class="nav-link nav-link-icon" role="button" ngbDropdownToggle>
           <i class="ni ni-bell-55"></i>
         </a>
@@ -21,7 +21,7 @@
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="javascript:void(0)">Something else here</a>
         </div>
-      </li>
+      </li> -->
       <li class="nav-item" ngbDropdown placement="bottom-right">
         <a class="nav-link" role="button" ngbDropdownToggle>
           <div class="media align-items-center">
@@ -36,22 +36,26 @@
           </div>
           <a routerLinkActive="active" [routerLink]="['/user-profile']" class="dropdown-item">
             <i class="ni ni-single-02"></i>
-            <span>My profile</span>
+            <span>
+              {{ level_user }}<br>
+              polda {{ polda }}.<br>
+              satwil {{ satwil }}.
+            </span>
           </a>
           <a routerLinkActive="active" [routerLink]="['/user-profile']" class="dropdown-item">
             <i class="ni ni-settings-gear-65"></i>
             <span>Settings</span>
           </a>
-          <a routerLinkActive="active" [routerLink]="['/user-profile']" class="dropdown-item">
+          <!-- <a routerLinkActive="active" [routerLink]="['/user-profile']" class="dropdown-item">
             <i class="ni ni-calendar-grid-58"></i>
             <span>Activity</span>
           </a>
           <a routerLinkActive="active" [routerLink]="['/user-profile']" class="dropdown-item">
             <i class="ni ni-support-16"></i>
             <span>Support</span>
-          </a>
+          </a> -->
           <div class="dropdown-divider"></div>
-          <a href="#!" class="dropdown-item">
+          <a href (click)="logout()" class="dropdown-item" >
             <i class="ni ni-user-run"></i>
             <span>Logout</span>
           </a>
@@ -76,47 +80,19 @@
           </div>
         </div>
       </div>
-      <!-- Form -->
-      <form class="mt-4 mb-3 d-md-none">
-        <div class="input-group input-group-rounded input-group-merge">
-          <input type="search" class="form-control form-control-rounded form-control-prepended" placeholder="Search" aria-label="Search">
-          <div class="input-group-prepend">
-            <div class="input-group-text">
-              <span class="fa fa-search"></span>
-            </div>
-          </div>
-        </div>
-      </form>
       <!-- Navigation -->
       <ul class="navbar-nav">
-          <!-- <li *ngFor="let menuItem of menuItems" class="{{menuItem.class}} nav-item">
-              <a routerLinkActive="active" [routerLink]="[menuItem.path]" class="nav-link">
-                  <i class="ni {{menuItem.icon}}"></i>
-                  {{menuItem.title}}
-              </a>
-          </li> -->
           <li class="nav-item">
               <a routerLinkActive="active" routerLink='/dashboard' class="nav-link">
                   <i class="ni ni-tv-2 text-primary"></i>
                   Dashboard
               </a>
           </li>
-          <li class="nav-item nav-with-child">
-            <a class="nav-link"  >
-              <i class="ni ni-chart-pie-35 text-success"></i> Chart
-            </a>
-            <ul class="nav-item-child">
-              <li class="nav-item">
-                <a class="nav-link" href="">
-               Multilevel 1
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="">
-               Multilevel 2
-                </a>
-              </li>
-            </ul>
+          <li class="nav-item">
+              <a routerLinkActive="active" routerLink='/chart' class="nav-link">
+                  <i class="ni ni-chart-pie-35 text-success"></i>
+                  Chart
+              </a>
           </li>
           <li class="nav-item">
             <a routerLinkActive="active" routerLink='/workorder' class="nav-link">
@@ -136,58 +112,74 @@
             </a>
             <ul class="nav-item-child">
               <li class="nav-item">
-                <a routerLink='/user-add' class="nav-link">
+                <a routerLinkActive="active" routerLink='/user-add' class="nav-link">
                   User
                 </a>
               </li>
               <li class="nav-item">
-                <a routerLink='/user-add' class="nav-link">
+                <a routerLinkActive="active" routerLink='/user-add' class="nav-link">
                   Instansi
                 </a>
               </li>
               <li class="nav-item">
-                <a routerLink='/user-add' class="nav-link">
+                <a routerLinkActive="active" routerLink='/user-add' class="nav-link">
                   Nomor HP
                 </a>
               </li>
               <li class="nav-item">
-                <a routerLink='/user-add' class="nav-link">
+                <a routerLinkActive="active" routerLink='/user-add' class="nav-link">
                   Link
                 </a>
               </li>
               <li class="nav-item">
-                <a routerLink='/user-add' class="nav-link">
+                <a routerLinkActive="active" routerLink='/user-add' class="nav-link">
                   Video
                 </a>
               </li>            
             </ul>
           </li>
           <li class="nav-item">
-            <a routerLink='/workorder' class="nav-link">
+            <a routerLinkActive="active" routerLink='/sms' class="nav-link">
                 <i class="ni ni-email-83 text-info"></i>
                 SMS
             </a>
           </li>
-          <li class="nav-item">
-            <a routerLink='/workorder' class="nav-link">
-                <i class="ni ni-book-bookmark text-primary"></i>
-                Report
+          <li class="nav-item nav-with-child">
+            <a class="nav-link"  >
+              <i class="ni ni-book-bookmark text-primary"></i> Report
             </a>
+            <ul class="nav-item-child">
+              <li class="nav-item">
+                <a class="nav-link" routerLinkActive="active" routerLink='/user-add'>
+                Export Report
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" routerLinkActive="active" routerLink='/user-add'>
+                Penilaian
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" routerLinkActive="active" routerLink='/user-add'>
+                Tingkat Kepuasan
+                </a>
+              </li>
+            </ul>
           </li>
           <li class="nav-item">
-            <a routerLinkActive="active" routerLink='/workorder' class="nav-link">
+            <a routerLinkActive="active" routerLink='/ebook' class="nav-link">
                 <i class="ni ni-collection text-success"></i>
                 E-Book
             </a>
           </li>
           <li class="nav-item">
-            <a routerLinkActive="active" routerLink='/workorder' class="nav-link">
+            <a routerLinkActive="active" routerLink='/license' class="nav-link">
                 <i class="ni ni-paper-diploma text-info"></i>
                 License
             </a>
           </li>
           <li class="nav-item">
-            <a routerLinkActive="active" routerLink='/workorder' class="nav-link">
+            <a routerLinkActive="active" routerLink='/notif' class="nav-link">
                 <i class="ni ni-send text-orange"></i>
                 Send Notif
             </a>

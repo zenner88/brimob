@@ -7,7 +7,7 @@
     <div class="col">
       <div class="card shadow mx--4">
         <div class="card-header border-0 mb--4">
-          <div class="row">
+          <div class="row" *ngIf="isShowHeader">
             <div class="col-6 col-md-9"><h3 class="mb-0">{{tittle}}</h3></div>
             <div class="col-6 col-md-3">
               <form>
@@ -16,6 +16,11 @@
                 </div>
               </form>
             </div>
+          </div> 
+          <div class="row mb-4 mx-2" *ngIf="isShowBack">
+            <button class="btn btn-primary btn-block col-4 col-lg-1" (click)="backToTable()">
+              Back
+            </button>
           </div>         
         </div>
         <div class="table-responsive" *ngIf="isShowTable">
@@ -51,24 +56,167 @@
         
         <!-- Details page  -->
         <div class="container-fluid" *ngIf="isShowDetalis">
-          <div class="row">
+          <div class="row mx--4">
             <div class="col">
-              {{idworkorder}}<br>
-              {{nama_pelapor}}<br>
-              {{no_pengaduan}}<br>
-              {{satwil_id}}<br>
-              {{status}}<br>
-              {{sub_kategori_id}}<br>
-              {{tgl_close}}<br>
-              {{tgl_kontak}}<br>
-              
-              <button class="btn btn-primary btn-block" (click)="backToTable()">
-                Back
-              </button>
+              <div class="row">
+
+                <div class="col-lg-6 mb-2">
+                <div class="card shadow table-hover px-3">
+                  <div class="card-header border-1">
+                    <div class="row">
+                      <h3 class="mb-0">Detail Work Order</h3>
+                    </div>         
+                  </div>
+                  <div class="row px-2 py-2 divcol">
+                    <div class="col">
+                      <h4>No Pengaduan</h4>
+                    </div>
+                    <div class="col">
+                      {{no_pengaduan}}
+                    </div>
+                  </div> 
+                  <div class="row px-2 py-2">
+                    <div class="col">
+                      <h4>Nama</h4>
+                    </div>
+                    <div class="col">
+                      {{nama_pelapor}}
+                    </div>
+                  </div> 
+                  <div class="row px-2 py-2 divcol">
+                    <div class="col">
+                      <h4>Telepon</h4>
+                    </div>
+                    <div class="col">
+                      
+                    </div>
+                  </div> 
+                  <div class="row px-2 py-2">
+                    <div class="col">
+                      <h4>Alamat</h4>
+                    </div>
+                    <div class="col">
+                      
+                    </div>
+                  </div>  
+                  <div class="row px-2 py-2 divcol">
+                    <div class="col">
+                      <h4>Tanggal Kontak</h4>
+                    </div>
+                    <div class="col">
+                      
+                    </div>
+                  </div>    
+                  <div class="row px-2 py-2">
+                    <div class="col">
+                      <h4>Penyelesaian</h4>
+                    </div>
+                    <div class="col">
+                      
+                    </div>
+                  </div>       
+                  <div class="row px-2 py-2 divcol">
+                    <div class="col">
+                      <h4>Sub Kategori</h4>
+                    </div>
+                    <div class="col">
+                      
+                    </div>
+                  </div> 
+                  <div class="row px-2 py-2">
+                    <div class="col">
+                      <h4>Status</h4>
+                    </div>
+                    <div class="col">
+                      
+                    </div>
+                  </div>  
+                  <div class="row px-2 py-2 divcol">
+                    <div class="col">
+                      <h4>Pengaduan</h4>
+                    </div>
+                    <div class="col">
+                      
+                    </div>
+                  </div>          
+                </div>
+                </div>
+
+                <div class="col-lg-6 mb-2">
+                  <div class="card shadow table-hover px-3">
+                    <div class="card-header border-1">
+                      <!-- <div class="row">
+                        <h3 class="mb-0">Detail Work Order</h3>
+                      </div>          -->
+                    </div>
+                    <div class="row px-2 py-2">
+                      <h4>Petugas Operator/ Lapangan</h4>
+                      <select formControlName="satwil" class="form-select form-control">
+                        <option value="1" selected>Lalu LIntas</option>
+                        <option value="2">Lain-lain</option>
+                      </select>
+                    </div> 
+                    <div class="row px-2 py-2">
+                      <h4>Detail Penangan</h4>
+                      <select formControlName="satwil" class="form-select form-control">
+                        <option value="1" selected>Lalu LIntas</option>
+                        <option value="2">Lain-lain</option>
+                      </select>
+                    </div> 
+                    <div class="row px-2 py-2">
+                      <div class="col-12"><h4>Gambar</h4></div>
+                      <div class="col-12 col-lg-6">
+                        Sebelum
+                        <img src="../../../assets/img/icons/not-availabe.png" width="100%" style="max-width: 400px;">
+                      </div>
+                      <div class="col-12 col-lg-6">
+                        Sesudah
+                        <img src="../../../assets/img/icons/not-availabe.png" width="100%" style="max-width: 400px;">
+                      </div>
+                    </div> 
+                    
+                  </div>
+                  </div>
+
+              <div class="col-12">
+                <div class="card shadow table-hover px-3 pb-3 mb-3">
+                  <div class="card-header border-1">
+                    <div class="row">
+                      <h3 class="mb-0">History Penanganan</h3>
+                    </div>         
+                  </div>
+                    <div class="table-responsive">
+                      <table class="table table-sm row-border table-hover">
+                       <thead class="table-dark">
+                         <tr>
+                           <th class="px-md-2">Status</th>
+                           <th class="px-md-2">Tanggal</th>
+                           <th class="px-md-2">Lama Penanganan</th>
+                           <th class="px-md-2">Petugas</th>
+                           <th class="px-md-2">Detail Penanganan</th>
+                         </tr>
+                       </thead>
+                       <tbody>
+                         <!-- <tr *ngFor="let zz of workorders | filter: filterTerm | slice: (page-1) * pageSize : page * pageSize; index as i" (click)="showDetails(zz)">
+                           <td class="px-md-2">{{zz.no_pengaduan}}</td>
+                           <td class="px-md-2" style="white-space: normal;">{{zz.nama_pelapor}}</td>
+                           <td class="px-md-2" style="white-space: normal;width:200px;">{{zz.satwil}}</td>
+                           <td class="px-md-2" style="white-space: normal;">{{zz.sub_kategori}}</td>
+                           <td class="px-md-2">{{zz.tgl_kontak | date: 'EEEE, d MMMM y'}}</td>
+                           <td class="px-md-2">0 Detik</td>
+                           <td class="px-md-2">{{zz.keterangan}}</td>
+                           <td class="px-md-2" style="white-space: normal;">{{zz.nama_pelapor}}</td>
+                         </tr> -->
+                       </tbody>
+                     </table>
+                  </div>
+                </div>
+              </div>     
             </div>
           </div>
+
         </div>
-        
+
       </div>
     </div>
   </div>

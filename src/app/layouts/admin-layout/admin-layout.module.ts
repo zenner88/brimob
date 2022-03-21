@@ -11,6 +11,7 @@ import { MapsComponent } from '../../pages/maps/maps.component';
 import { UserProfileComponent } from '../../pages/user-profile/user-profile.component';
 import { TablesComponent } from '../../pages/tables/tables.component';
 import { WorkorderComponent } from '../../pages/workorder/workorder.component';
+import { EbookComponent } from '../../pages/ebook/ebook.component';
 import { WorkorderAddComponent } from '../../pages/workorder-add/workorder-add.component';
 import { UserAddComponent } from '../../pages/user-add/user-add.component';
 import { CallcenterComponent } from '../../pages/callcenter/callcenter.component';
@@ -19,6 +20,10 @@ import { NgHttpLoaderModule } from 'ng-http-loader';
 import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
 import { ReactiveFormsModule } from '@angular/forms';
 import { GlobalService } from '../../global.service';
+import { LicenseComponent } from 'src/app/pages/license/license.component';
+import { NotifComponent } from 'src/app/pages/notif/notif.component';
+import { SmsComponent } from 'src/app/pages/sms/sms.component';
+import { ChartComponent } from 'src/app/pages/chart/chart.component';
 
 // import { ToastrModule } from 'ngx-toastr';
 
@@ -44,7 +49,12 @@ import { GlobalService } from '../../global.service';
     WorkorderComponent,
     CallcenterComponent,
     WorkorderAddComponent,
-    UserAddComponent
+    UserAddComponent,
+    EbookComponent,
+    LicenseComponent,
+    NotifComponent,
+    SmsComponent,
+    ChartComponent
   ],
   providers: [ GlobalService ]
 })

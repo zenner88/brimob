@@ -9,6 +9,11 @@ import { WorkorderComponent } from 'src/app/pages/workorder/workorder.component'
 import { CallcenterComponent } from 'src/app/pages/callcenter/callcenter.component';
 import { WorkorderAddComponent } from 'src/app/pages/workorder-add/workorder-add.component';
 import { UserAddComponent } from 'src/app/pages/user-add/user-add.component';
+import { EbookComponent } from 'src/app/pages/ebook/ebook.component';
+import { LicenseComponent } from 'src/app/pages/license/license.component';
+import { NotifComponent } from 'src/app/pages/notif/notif.component';
+import { SmsComponent } from 'src/app/pages/sms/sms.component';
+import { ChartComponent } from 'src/app/pages/chart/chart.component';
 
 export const AdminLayoutRoutes: Routes = [
     { path: 'dashboard',      component: DashboardComponent },
@@ -20,4 +25,9 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'maps',           component: MapsComponent },
     { path: 'workorder-add',  component: WorkorderAddComponent },
     { path: 'user-add',  component: UserAddComponent },
+    { path: 'ebook',  component: EbookComponent },
+    { path: 'license',  component: LicenseComponent },
+    { path: 'notif',  component: NotifComponent },
+    { path: 'sms',  component: SmsComponent },
+    { path: 'chart',  component: ChartComponent },
 ];

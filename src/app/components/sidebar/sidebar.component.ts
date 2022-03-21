@@ -41,7 +41,17 @@ export const ROUTESUSER: RouteInfo[] = [
   styleUrls: ['./sidebar.component.scss']
 })
 export class SidebarComponent implements OnInit {
-
+  public focus;
+  public listTitles: any[];
+  public location: Location;
+  tokenStorageService: any;
+  isLoggedIn = false;
+  isLoginFailed = false;
+  roles: string[] = [];
+  token: string[] = [];
+  polda: string[] = [];
+  satwil: string[] = [];
+  level_user: string[] = [];
   public menuItems: any[];
   public isCollapsed = true;
 
@@ -59,27 +69,38 @@ export class SidebarComponent implements OnInit {
     this.router.events.subscribe((event) => {
       this.isCollapsed = true;
    });
-   
+   if (this.tokenStorage.getToken()) {
+    this.isLoggedIn = true;
+    this.roles = this.tokenStorage.getUser().name;
+    this.token = this.tokenStorage.getUser().token;
+    this.polda = this.tokenStorage.getUser().polda;
+    this.satwil = this.tokenStorage.getUser().satwil;
+    this.level_user = this.tokenStorage.getUser().level_user;
+    
+  }
   //  sub menu 
-   var NavWithChild = (function() {
+  var NavWithChild = (function() {
+  // Variables
+  var $nav = $('.nav-item.nav-with-child');
+  setTimeout(function(){
+    $nav.each(function(index, each) {
 
-    // Variables
+        $(each).on('click',function(event) {
+          if($(each).is('.nav-item-expanded')) {
+            $(each).removeClass('nav-item-expanded')
 
-    var $nav = $('.nav-item.nav-with-child');
-    setTimeout(function(){
-      $nav.each(function(index, each) {
+          } else {
+              $(each).addClass('nav-item-expanded')
+          }
+        })
+      });
+  },300)
 
-          $(each).on('click',function(event) {
-            if($(each).is('.nav-item-expanded')) {
-              $(each).removeClass('nav-item-expanded')
-
-            } else {
-                $(each).addClass('nav-item-expanded')
-            }
-          })
-        });
-    },300)
-
-})();
+  })();
+  }
+  logout(): void {
+    // this.tokenStorageService.signOut();
+    window.sessionStorage.clear();
+    window.location.reload();
   }
 }

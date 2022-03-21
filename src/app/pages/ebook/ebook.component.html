@@ -1,0 +1,41 @@
+<div class="header bg-gradient-danger pb-5 pt-5 pt-md-8">
+</div>
+<!-- Page content -->
+<div class="container-fluid mt--7">
+  <!-- Table -->
+  <div class="row">
+    <div class="col">
+      <div class="card shadow mx--4">
+        <div class="card-header border-0 mb--4">
+          <div class="row">
+            <div class="col-6 col-md-9"><h3 class="mb-0">{{tittle}}</h3></div>
+            <div class="col-6 col-md-3">
+              <form>
+                <div class="form-group float-end" >
+                  <input placeholder="NO PENGADUAN/ NAMA" class="form-control form-control-sm form-control-success" type="text" [(ngModel)]="filterTerm"/>
+                </div>
+              </form>
+            </div>
+          </div>         
+        </div>
+        <div class="table-responsive">
+           <table class="table table-sm row-border table-hover">
+            <thead class="table-dark">
+              <tr>
+                <th class="px-md-2">Nama File</th>
+                <th class="px-md-2">Tanggal</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let zz of workorders | filter: filterTerm | slice: (page-1) * pageSize : page * pageSize; index as i" (click)="showDetails(zz)">
+                <td class="px-md-2" style="white-space: normal;">{{zz.nama_pelapor}}</td>
+                <td class="px-md-2">{{zz.tgl_kontak | date: 'EEEE, d MMMM y'}}</td>
+              </tr>
+            </tbody>
+          </table>
+          <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [maxSize]="5" [boundaryLinks]="true"
+    [pageSize]="pageSize" class="d-flex justify-content-center mt-4"></ngb-pagination>
+        </div>
+    </div>
+  </div>
+</div>
