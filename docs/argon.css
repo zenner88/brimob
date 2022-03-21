@@ -40,7 +40,8 @@
     --danger: #f5365c;
     --light: #adb5bd;
     --dark: #212529;
-    --default: #172b4d;
+    --default: #212529;
+    /* --default: #172b4d; */
     --white: #fff;
     --neutral: #fff;
     --darker: black;
@@ -8031,7 +8032,7 @@ button.bg-dark:focus
 
 .bg-default
 {
-    background-color: #172b4d !important;
+    background-color: #212529 !important;
 }
 
 a.bg-default:hover,
