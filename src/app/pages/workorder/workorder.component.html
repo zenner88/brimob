@@ -38,7 +38,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let zz of workorders | filter: filterTerm | slice: (page-1) * pageSize : page * pageSize; index as i" (click)="showDetails(zz)">
+              <tr title="CLICK FOR DETAILS..." *ngFor="let zz of workorders | filter: filterTerm | slice: (page-1) * pageSize : page * pageSize; index as i" (click)="showDetails(zz)">
                 <td class="px-md-2">{{zz.no_pengaduan}}</td>
                 <td class="px-md-2" style="white-space: normal;">{{zz.nama_pelapor}}</td>
                 <td class="px-md-2" style="white-space: normal;width:200px;">{{zz.satwil}}</td>
