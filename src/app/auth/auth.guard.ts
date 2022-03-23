@@ -19,6 +19,7 @@ export class AuthGuard implements CanActivate {
         icon: 'error',  
         title: 'Please Login!',  
         text: 'You don\'t have permission to view this page',  
+        background: '#000000',
       }).then(function() {
         window.location.reload();
       });

@@ -58,9 +58,10 @@ export class LoginComponent implements OnInit {
     let valid = this.tokenStorage.getUser().valid;
      if (tokens == undefined || valid == 2 ){
        Swal.fire({  
-         icon: 'error',  
-         title: 'Login Failed',  
-         text: 'Your Username or Password invalid',  
+        icon: 'error',  
+        title: 'Login Failed',  
+        text: 'Your Username or Password invalid',  
+        background: '#000000',
        }).then(function() {
          window.sessionStorage.clear();
          window.location.reload();

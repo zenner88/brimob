@@ -21,6 +21,7 @@ export class AuthInterceptor implements HttpInterceptor {
       icon: 'error',  
       title: 'Please Login!',  
       text: 'Token expired please login again.',  
+      background: '#000000',
     }).then(function() {
       window.sessionStorage.clear();
       window.location.reload();
