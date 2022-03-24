@@ -49,8 +49,9 @@ export class SidebarComponent implements OnInit {
   isLoginFailed = false;
   roles: string[] = [];
   token: string[] = [];
-  polda: string[] = [];
-  satwil: string[] = [];
+  position_name: string[] = [];
+  department_name: string[] = [];
+  region_name: string[] = [];
   level_user: string[] = [];
   public menuItems: any[];
   public isCollapsed = true;
@@ -73,8 +74,9 @@ export class SidebarComponent implements OnInit {
     this.isLoggedIn = true;
     this.roles = this.tokenStorage.getUser().name;
     this.token = this.tokenStorage.getUser().token;
-    this.polda = this.tokenStorage.getUser().polda;
-    this.satwil = this.tokenStorage.getUser().satwil;
+    this.position_name = this.tokenStorage.getUser().position_name;
+    this.region_name = this.tokenStorage.getUser().region_name;
+    this.department_name = this.tokenStorage.getUser().department_name;
     this.level_user = this.tokenStorage.getUser().level_user;
     
   }

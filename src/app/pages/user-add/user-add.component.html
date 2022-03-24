@@ -28,7 +28,21 @@
                 </div>
 
                 <label class="form-label mt-2">Password</label>
-                <input type="password" class="form-control" formControlName="password" [ngClass]="{ 'is-invalid': submitted && f.password.errors }">
+                <div class="input-group input-group-alternative">
+                <input [type]="fieldTextType ? 'text' : 'password'" type="password" class="form-control" formControlName="password" [ngClass]="{ 'is-invalid': submitted && f.password.errors }">
+                <div class="input-group-append">
+                  <span class="input-group-text">
+                    <i
+                      class="fa"
+                      [ngClass]="{
+                        'fa-eye-slash': !fieldTextType,
+                        'fa-eye': fieldTextType
+                      }"
+                      (click)="toggleFieldTextType()"
+                    ></i>
+                  </span>
+                </div>
+                </div>
                 <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
                   <div *ngIf="f.password.errors.required">Password is required</div>
                   <div *ngIf="f.password.errors.minlength">
@@ -40,26 +54,25 @@
                 </div>
                 <div class="row">
                   <div class="col-12 col-md-6">
-                    <label class="form-label mt-2">Polda</label>
-                    <select formControlName="polda" class="form-select form-control">
-                      <option value="1" selected>Non Pengaduan</option>
-                      <option value="2">Pengaduan</option>
+                    <label class="form-label mt-2">Position</label>
+                    <select formControlName="position_id" class="form-select form-control">
+                      <option value="1" selected>WADAN</option>
                     </select>
                   </div>
                   <div class="col-12 col-md-6">
-                    <label class="form-label mt-2">Satwil</label>
-                    <select formControlName="satwil" class="form-select form-control">
-                      <option value="1" selected>Lalu LIntas</option>
-                      <option value="2">Lain-lain</option>
+                    <label class="form-label mt-2">Type</label>
+                    <select formControlName="level_user" class="form-select form-control">
+                      <option value="user" selected>User</option>
+                      <option value="superadmin">Superadmin</option>
                     </select>
                   </div>
                 </div>
 
-                <label class="form-label mt-2">Type</label>
+                <!-- <label class="form-label mt-2">Type</label>
                 <select formControlName="level_user" class="form-select form-control">
                   <option value="user" selected>User</option>
                   <option value="callcenter">Call Center</option>
-                </select>
+                </select> -->
                 <div class="col-12 my-4">
                   <button type="submit" class="btn btn-primary">Simpan</button>
                   <button type="button" (click)="onReset()" class="btn btn-warning float-right">Reset</button>

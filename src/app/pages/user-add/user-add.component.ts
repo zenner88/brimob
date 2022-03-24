@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { TokenStorageService } from '../../_services/token-storage.service';
 import { AuthInterceptor } from '../../_helpers/auth.interceptor';
 import { GlobalService } from '../../global.service';
+import Swal from 'sweetalert2'
 
 declare const google: any;
 
@@ -17,6 +18,7 @@ export class UserAddComponent implements OnInit {
   form: FormGroup;
   submitted = false;
   errorMessage: any;
+  fieldTextType: boolean;
 
   constructor(private formBuilder: FormBuilder, private http: HttpClient, private tokenStorage: TokenStorageService, private global: GlobalService) { }
 
@@ -46,10 +48,9 @@ export class UserAddComponent implements OnInit {
             Validators.maxLength(20)
           ]
         ],  
-      polda: ['',[Validators.required,]],        
-      satwil: ['',[Validators.required,]],        
+      position_id: ['',[Validators.required,]],        
       level_user: ['',[Validators.required,]],        
-      detail: 'add user',        
+      detail: 'add user from application',        
       
       }
     );
@@ -77,9 +78,26 @@ export class UserAddComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
-    this.http.post<any>(this.global.address+this.global.workorder, this.form.value).subscribe({
+    this.http.post<any>(this.global.address+this.global.simpanUser, this.form.value).subscribe({
       next: data => {
-        console.log(data);
+        let valid = data.valid;
+        if (valid == 1){
+          Swal.fire({  
+            icon: 'success',  
+            title: 'Sukses',  
+            text: 'User berhasil ditambahkan!',  
+            background: '#000000',
+          })
+          this.onReset();
+        }
+        else if (valid == 2){
+          Swal.fire({  
+            icon: 'error',  
+            title: 'Error',  
+            text: 'Username sudah ada coba username lain!',  
+            background: '#000000',
+          })
+        }
       },
       error: error => {
           this.errorMessage = error.message;
@@ -96,7 +114,9 @@ export class UserAddComponent implements OnInit {
     this.submitted = false;
     this.form.reset();
   }
-
+  toggleFieldTextType() {
+    this.fieldTextType = !this.fieldTextType;
+  }
 }
 
 

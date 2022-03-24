@@ -24,7 +24,7 @@ import { LicenseComponent } from 'src/app/pages/license/license.component';
 import { NotifComponent } from 'src/app/pages/notif/notif.component';
 import { SmsComponent } from 'src/app/pages/sms/sms.component';
 import { ChartComponent } from 'src/app/pages/chart/chart.component';
-
+import { ChartModule } from 'angular-highcharts';
 // import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
@@ -38,7 +38,8 @@ import { ChartComponent } from 'src/app/pages/chart/chart.component';
     Ng2SearchPipeModule,
     NgHttpLoaderModule.forRoot(),
     GooglePlaceModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ChartModule
   ],
   declarations: [
     DashboardComponent,

@@ -38,7 +38,7 @@
             </select>
           </div>          
           <div class="col-12 col-lg-3 px-2 pt-4">
-            <select class="form-select form-control">
+            <select class="form-select input-border-dark form-control">
               <option value="0" selected>Tahun</option>
               <option value="2019">2019</option>
               <option value="2020">2020</option>
@@ -73,10 +73,11 @@
           <div class="card border border-warning mt-4">
             <h1 class="text-center mt-3">SEMUA POLDA</h1>
             <div class="card-body">
-              <div class="chart">
-                <!-- Chart wrapper -->
+              <!-- <div class="chart">
                 <canvas id="chart-orders" class="chart-canvas"></canvas>
-              </div>
+              </div> -->
+              <div [chart]="chart"></div>
+
             </div>
           </div>              
         </div>        
