@@ -49,7 +49,7 @@ export class UserAddComponent implements OnInit {
           ]
         ],  
       position_id: ['',[Validators.required,]],        
-      level_user: ['',[Validators.required,]],        
+      level_user: ['user',[Validators.required,]],        
       detail: 'add user from application',        
       
       }

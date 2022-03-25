@@ -33,13 +33,15 @@
           <div class=" dropdown-header noti-title">
             <h6 class="text-overflow m-0">Welcome! <b>{{ level_user }}</b></h6>
           </div>
-          <a routerLinkActive="active" [routerLink]="['/user-profile']" class="dropdown-item">
-            <span>
-              <b>Possition :</b> {{ position_name }}<br>
-              <b>Department :</b> {{ department_name }}<br>
-              <b>Region :</b> {{ region_name }}<br>
-            </span>
-          </a>
+          <!-- <a routerLinkActive="active" [routerLink]="['/user-profile']" class="dropdown-item"> -->
+            <div class="dropdown-item">
+              <span>
+                <b>Possition :</b> {{ position_name }}<br>
+                <b>Department :</b> {{ department_name }}<br>
+                <b>Region :</b> {{ region_name }}<br>
+              </span>
+            </div>
+          <!-- </a> -->
           <!-- <a routerLinkActive="active" [routerLink]="['/user-profile']" class="dropdown-item">
             <i class="ni ni-settings-gear-65"></i>
             <span>Settings</span>

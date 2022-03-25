@@ -5,21 +5,21 @@
   <div class="row">
     <div class="col-12">
       <div class="card shadow border border-dark mx--4">
-        <div class="card-header bg-dark text-light mb--4">
+        <div class="card-header bg-dark text-light py-2">
           <div class="row">
             <h3 class="mb-0 text-light px-4">Filter Chart</h3>
           </div>         
         </div>
-        <div class="card-body">
+        <div class="card-body py-2">
         <div class="row">
-          <div class="col-12 col-lg-3 px-2 pt-4">
+          <div class="col-12 col-lg-3 px-2 py-2">
             <select class="form-select form-control">
-              <option value="0" selected>Semua POLDA</option>
+              <option value="0" selected>Semua Position</option>
               <option value="1">POLDA 1</option>
               <option value="2">POLDA 2</option>
             </select>
           </div>          
-          <div class="col-12 col-lg-3 px-2 pt-4">
+          <div class="col-12 col-lg-3 px-2 py-2">
             <select class="form-select form-control">
               <option value="0" selected>Bulan</option>
               <option value="1">Januari</option>
@@ -37,7 +37,7 @@
           
             </select>
           </div>          
-          <div class="col-12 col-lg-3 px-2 pt-4">
+          <div class="col-12 col-lg-3 px-2 py-2">
             <select class="form-select input-border-dark form-control">
               <option value="0" selected>Tahun</option>
               <option value="2019">2019</option>
@@ -50,7 +50,7 @@
               <option value="2026">2026</option>
             </select>
           </div>  
-          <div class="col-12 col-lg-3 px-2 pt-4">
+          <div class="col-12 col-lg-3 px-2 py-2">
             <button class="btn btn-primary btn-block">Go</button>
           </div>
         </div>        
@@ -64,42 +64,36 @@
   <div class="row mt-3">
     <div class="col-12">
       <div class="card shadow border border-dark mx--4">
-        <div class="card-header bg-dark text-light mb--4">
+        <div class="card-header bg-dark text-light py-2">
           <div class="row">
             <h3 class="mb-0 text-light px-4">Grafik Semua Bulan - 2022</h3>
           </div>         
         </div>
         <div class="card-body">
-          <div class="card border border-warning mt-4">
-            <h1 class="text-center mt-3">SEMUA POLDA</h1>
+          <div class="card border border-danger">
+            <h1 class="text-center mt-2">SEMUA POLDA</h1>
             <div class="card-body">
               <div id="chartdiv" style="width: 100%; height: 500px"></div>
             </div>
           </div>              
         </div>        
-        <div class="row mt-2">
-          <div class="col-12 col-lg-6">
+        <div class="card-body">
+          <div class="card border border-danger">
+            <h1 class="text-center mt-2">1</h1>
             <div class="card-body">
-              <div class="card border border-warning">
-                <h1 class="text-center mt-3">1</h1>
-                <div class="card-body">
-                  <div id="pie1" style="width: 100%; height: 500px"></div>
-                </div>
-              </div>              
-            </div>                   
-          </div>
-          <div class="col-12 col-lg-6">
+              <div id="pie1" style="width: 100%; height: 500px"></div>
+            </div>
+          </div>              
+        </div>                   
+        <div class="card-body">
+          <div class="card border border-danger">
+            <h1 class="text-center mt-2">2</h1>
             <div class="card-body">
-              <div class="card border border-warning">
-                <h1 class="text-center mt-3">2</h1>
-                <div class="card-body">
-                  <div id="pie2" style="width: 100%; height: 500px"></div>
-                </div>
-              </div>              
-            </div>                             
-          </div>
-        </div>
+              <div id="pie2" style="width: 100%; height: 500px"></div>
+            </div>
+          </div>              
+        </div>                             
       </div>
-  </div>
+    </div>
   </div>
 </div>
