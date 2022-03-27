@@ -20,7 +20,7 @@ export class GlobalService {
   public readonly body = {      
     "level_user" : this.levelUser,
     "position_id" : this.departmentId,
-    "start" : 1,
+    "start" : 0,
     "limit" : 1000
   };
   private header = new HttpHeaders().set('Authorization', `Bearer ${this.token}`);
@@ -30,4 +30,6 @@ export class GlobalService {
   public readonly workorder: string = '/workorder';  
   public readonly login: string = '/login_user';  
   public readonly simpanUser: string = '/simpan_user';  
+  public readonly listUser: string = '/users';  
+  public readonly editPassword: string = '/user_setpass';  
 }

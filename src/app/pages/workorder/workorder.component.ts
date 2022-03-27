@@ -34,6 +34,7 @@ export class WorkorderComponent implements OnInit {
   constructor(private http: HttpClient, private global: GlobalService) { }
 
   ngOnInit() {       
+    console.log(this.global.address+this.global.workorder, this.global.body, this.global.headers);
     this.http.post<any>(this.global.address+this.global.workorder, this.global.body, this.global.headers).subscribe({
     next: data => {
       this.collectionSize = data.length;

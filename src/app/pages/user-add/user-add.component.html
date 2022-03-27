@@ -6,12 +6,56 @@
     <div class="row">
       <div class="col">
           <div class="container-fluid">
-            <form class="row" [formGroup]="form" (ngSubmit)="onSubmit()">
+            <div class="row">
               <div class="col-lg-6 py-4">
+                <div class="card border border-dark shadow">
+                  <div class="card-header bg-dark py-2 px-2">
+                    <div class="row">
+                      <div class="col-6">
+                        <h3 class="mb-0 text-light">List User</h3>
+                      </div>
+                      <div class="col-6">
+                        <form>
+                          <div class="float-end" >
+                            <input placeholder="USERNAME" class="form-control form-control-sm border border-dark" type="text" [(ngModel)]="filterTerm"/>
+                          </div>
+                        </form>
+                      </div>
+                    </div>         
+                  </div>
+                  <div class="table-responsive">
+                     <table class="table table-sm row-border table-hover">
+                      <thead class="table-dark">
+                        <tr>
+                          <th class="px-md-2">Username</th>
+                          <th class="px-md-2">Level User</th>
+                          <th class="px-md-2"></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let zz of workorders | filter: filterTerm | slice: (page-1) * pageSize : page * pageSize; index as i">
+                          <td class="px-md-2" style="white-space: normal;">{{zz.username}}</td>
+                          <td class="px-md-2" style="white-space: normal;width:200px;">{{zz.level_user}}</td>
+                          <td class="px-md-2"><i class="fa fa-edit" title="Ganti Password" (click)="editPasswrord(zz)"></i></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [maxSize]="5" [boundaryLinks]="true"
+              [pageSize]="pageSize" class="d-flex justify-content-center mt-4"></ngb-pagination>
+                  </div>             
+                </div>
+                
+              </div>
+
+              <!-- ADD USER -->
+              <div class="col-lg-6 py-4" *ngIf="showAdd">
+                <form [formGroup]="form" (ngSubmit)="onSubmit()">
                 <div class="card border border-dark boshadow">
                 <div class="card-header bg-dark py-2">
                   <div class="row">
+                    <div class="col-6">
                     <h3 class="mb-0 text-light">Tambah User</h3>
+                    </div>
                   </div>         
                 </div>
                 <div class="px-4 py-2">
@@ -72,62 +116,95 @@
                     </select>
                   </div>
                 </div>
-
-                <!-- <label class="form-label mt-2">Type</label>
-                <select formControlName="level_user" class="form-select form-control">
-                  <option value="user" selected>User</option>
-                  <option value="callcenter">Call Center</option>
-                </select> -->
                 <div class="col-12 px-4 py-4">
                   <button type="submit" class="btn btn-primary">Simpan</button>
                   <button type="button" (click)="onReset()" class="btn btn-warning float-right">Reset</button>
                 </div>
               </div>
+              </form>
               </div>
-              <div class="col-lg-6 py-4">
-                <div class="card border border-dark shadow">
-                  <div class="card-header bg-dark py-2 px-2">
-                    <div class="row">
-                      <div class="col-6">
-                        <h3 class="mb-0 text-light">List User</h3>
-                      </div>
-                      <div class="col-6">
-                        <form>
-                          <div class="float-end" >
-                            <input placeholder="USERNAME" class="form-control form-control-sm border border-dark" type="text" [(ngModel)]="filterTerm"/>
-                          </div>
-                        </form>
-                      </div>
-                    </div>         
+
+              <!-- EDIT USER -->
+              <div class="col-lg-6 py-4" *ngIf="showEdit">
+                <form [formGroup]="formEdit" (ngSubmit)="onSubmitEdit()">
+                <div class="card border border-dark boshadow">
+                <div class="card-header bg-dark py-2">
+                  <div class="row">
+                    <div class="col-6">
+                      <h3 class="mb-0 text-light">Edit Password User</h3>
+                    </div>
+                    <div class="col-6">
+                      <h3 class="mb-0 text-light text-right"><i class="fa fa-times" (click)="closeEdit()"></i></h3>
+                    </div>
                   </div>
-                  <div class="table-responsive">
-                     <table class="table table-sm row-border table-hover">
-                      <thead class="table-dark">
-                        <tr>
-                          <th class="px-md-2">Username</th>
-                          <th class="px-md-2">polda</th>
-                          <th class="px-md-2">satwil</th>
-                          <th class="px-md-2"></th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr *ngFor="let zz of workorders | filter: filterTerm | slice: (page-1) * pageSize : page * pageSize; index as i" (click)="showDetails(zz)">
-                          <td class="px-md-2" style="white-space: normal;">{{zz.nama_pelapor}}</td>
-                          <td class="px-md-2" style="white-space: normal;width:200px;">{{zz.satwil}}</td>
-                          <td class="px-md-2" style="white-space: normal;">{{zz.sub_kategori}}</td>
-                          <td class="px-md-2">{{zz.tgl_kontak | date: 'EEEE, d MMMM y'}}</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [maxSize]="5" [boundaryLinks]="true"
-              [pageSize]="pageSize" class="d-flex justify-content-center mt-4"></ngb-pagination>
+                </div>
+                <div class="px-4 py-2">
+                  <label class="form-label">Username</label>
+                  <input type="text" class="form-control border border-dark" formControlName="username" value="{{username}}" disabled>
+                </div>
+                <div class="px-4 py-2">
+                  <label class="form-label mt-2">Password Lama</label>
+                  <div class="input-group input-group-alternative">
+                  <input type="password" class="form-control border border-dark" formControlName="password" [ngClass]="{ 'is-invalid': submitted && g.password.errors }">
+                  <div class="input-group-append">
+                    <span class="input-group-text border border-dark bg-dark text-light">
+                      <i
+                        class="fa"
+                        [ngClass]="{
+                          'fa-eye-slash': !fieldTextType,
+                          'fa-eye': fieldTextType
+                        }"
+                        (click)="toggleFieldTextType()"
+                      ></i>
+                    </span>
                   </div>
-              
+                  </div>
+                  <div *ngIf="submitted && g.password.errors" class="invalid-feedback">
+                    <div *ngIf="g.password.errors.required">Password is required</div>
+                    <div *ngIf="g.password.errors.minlength">
+                      Password must be at least 3 characters
+                    </div>
+                    <div *ngIf="g.password.errors.maxlength">
+                      Password must not exceed 20 characters
+                    </div>
+                  </div>
+                </div>
+                <div class="px-4 py-2">
+                  <label class="form-label mt-2">Password Baru</label>
+                  <div class="input-group input-group-alternative">
+                  <input [type]="fieldTextType ? 'text' : 'password'" type="password" class="form-control border border-dark" formControlName="ol_password" [ngClass]="{ 'is-invalid': submitted && g.ol_password.errors }">
+                  <div class="input-group-append">
+                    <span class="input-group-text border border-dark bg-dark text-light">
+                      <i
+                        class="fa"
+                        [ngClass]="{
+                          'fa-eye-slash': !fieldTextType,
+                          'fa-eye': fieldTextType
+                        }"
+                        (click)="toggleFieldTextType()"
+                      ></i>
+                    </span>
+                  </div>
+                  </div>
+                  <div *ngIf="submitted && g.ol_password.errors" class="invalid-feedback">
+                    <div *ngIf="g.ol_password.errors.required">Old Password is required</div>
+                    <div *ngIf="g.ol_password.errors.minlength">
+                      Password must be at least 3 characters
+                    </div>
+                    <div *ngIf="g.ol_password.errors.maxlength">
+                      Password must not exceed 20 characters
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 px-4 py-4">
+                  <button type="submit" class="btn btn-primary">Simpan</button>
+                  <button type="button" (click)="onReset()" class="btn btn-warning float-right">Reset</button>
                 </div>
               </div>
-            </form>
+              </form>
+              </div>
           </div>
-
+        </div>
 
       </div>
     </div>

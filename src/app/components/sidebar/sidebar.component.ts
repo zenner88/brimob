@@ -11,7 +11,8 @@ declare interface RouteInfo {
 export const ROUTESADMIN: RouteInfo[] = [
     { path: '/dashboard', title: 'Dashboard',  icon: 'ni-tv-2 text-primary', class: '' },
     { path: '/chart', title: 'Chart',  icon: 'ni-chart-pie-35 text-success', class: '' },
-    { path: '/workorder', title: 'Work Order',  icon:'ni-books text-orange', class: '' },
+    { path: '/workorder', title: 'Submit Laporan',  icon:'ni-books text-orange', class: '' },
+    { path: '/workorder-add', title: 'Submit Laporan',  icon:'ni-books text-orange', class: '' },
     { path: '/callcenter', title: 'Call Center',  icon:'ni-headphones text-primary', class: '' },
     { path: '/user-add', title: 'Superadmin',  icon:'ni-single-02 text-danger', class: 'nav-item nav-with-child' },
     { path: '/sms', title: 'SMS',  icon:'ni-email-83 text-info', class: '' },
@@ -29,7 +30,7 @@ export const ROUTESCC: RouteInfo[] = [
 ];
 export const ROUTESUSER: RouteInfo[] = [
   { path: '/dashboard', title: 'Dashboard',  icon: 'ni-tv-2 text-primary', class: '' },
-  { path: '/workorder', title: 'Work Order',  icon:'ni-books text-orange', class: '' },
+  { path: '/workorder', title: 'Submit Laporan',  icon:'ni-books text-orange', class: '' },
   { path: '/callcenter', title: 'Call Center',  icon:'ni-headphones text-primary', class: '' },
   { path: '/ebook', title: 'E-Book',  icon:'ni-collection text-success', class: '' },
   { path: '/license', title: 'License',  icon:'ni-paper-diploma text-info', class: '' },

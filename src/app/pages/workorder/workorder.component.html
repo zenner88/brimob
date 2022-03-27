@@ -7,8 +7,15 @@
     <div class="col">
       <div class="card shadow border border-dark mx--4">
         <div class="card-header bg-dark text-light mb--4 py-2">
-          <div class="row" *ngIf="isShowHeader">
-            <div class="col-6 col-md-9"><h3 class="mb-0 text-light">{{tittle}}</h3></div>
+          <div class="row px-2 py-2" *ngIf="isShowHeader">
+            <div class="col-6 col-md-9">
+              <!-- <h3 class="mb-0 text-light">{{tittle}}</h3> -->
+              <div class="col-6 col-md-9">
+                <a href="#/workorder-add" class="btn btn-primary mx-2 mb-4">
+                  Tambah Laporan
+                </a>
+              </div>
+            </div>
             <div class="col-6 col-md-3">
               <form>
                 <div class="form-group float-end" >
