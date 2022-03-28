@@ -140,54 +140,27 @@
                 </div>
                 <div class="px-4 py-2">
                   <label class="form-label">Username</label>
-                  <input type="text" class="form-control border border-dark" formControlName="username" value="{{username}}" disabled>
+                  <input type="text" class="form-control border border-dark" formControlName="username" [ngModel]="username2" disabled>
                 </div>
                 <div class="px-4 py-2">
                   <label class="form-label mt-2">Password Lama</label>
                   <div class="input-group input-group-alternative">
-                  <input type="password" class="form-control border border-dark" formControlName="password" [ngClass]="{ 'is-invalid': submitted && g.password.errors }">
+                  <input [type]="fieldTextType2 ? 'text' : 'password'" type="password" class="form-control border border-dark" formControlName="ol_password" [ngClass]="{ 'is-invalid': submitted && g.ol_password.errors }">
                   <div class="input-group-append">
                     <span class="input-group-text border border-dark bg-dark text-light">
                       <i
                         class="fa"
                         [ngClass]="{
-                          'fa-eye-slash': !fieldTextType,
-                          'fa-eye': fieldTextType
+                          'fa-eye-slash': !fieldTextType2,
+                          'fa-eye': fieldTextType2
                         }"
-                        (click)="toggleFieldTextType()"
-                      ></i>
-                    </span>
-                  </div>
-                  </div>
-                  <div *ngIf="submitted && g.password.errors" class="invalid-feedback">
-                    <div *ngIf="g.password.errors.required">Password is required</div>
-                    <div *ngIf="g.password.errors.minlength">
-                      Password must be at least 3 characters
-                    </div>
-                    <div *ngIf="g.password.errors.maxlength">
-                      Password must not exceed 20 characters
-                    </div>
-                  </div>
-                </div>
-                <div class="px-4 py-2">
-                  <label class="form-label mt-2">Password Baru</label>
-                  <div class="input-group input-group-alternative">
-                  <input [type]="fieldTextType ? 'text' : 'password'" type="password" class="form-control border border-dark" formControlName="ol_password" [ngClass]="{ 'is-invalid': submitted && g.ol_password.errors }">
-                  <div class="input-group-append">
-                    <span class="input-group-text border border-dark bg-dark text-light">
-                      <i
-                        class="fa"
-                        [ngClass]="{
-                          'fa-eye-slash': !fieldTextType,
-                          'fa-eye': fieldTextType
-                        }"
-                        (click)="toggleFieldTextType()"
+                        (click)="toggleFieldTextType2()"
                       ></i>
                     </span>
                   </div>
                   </div>
                   <div *ngIf="submitted && g.ol_password.errors" class="invalid-feedback">
-                    <div *ngIf="g.ol_password.errors.required">Old Password is required</div>
+                    <div *ngIf="g.ol_password.errors.required">Password is required</div>
                     <div *ngIf="g.ol_password.errors.minlength">
                       Password must be at least 3 characters
                     </div>
@@ -196,9 +169,36 @@
                     </div>
                   </div>
                 </div>
+                <div class="px-4 py-2">
+                  <label class="form-label mt-2">Password Baru</label>
+                  <div class="input-group input-group-alternative">
+                  <input [type]="fieldTextType3 ? 'text' : 'password'" type="password" class="form-control border border-dark" formControlName="password" [ngClass]="{ 'is-invalid': submitted && g.password.errors }">
+                  <div class="input-group-append">
+                    <span class="input-group-text border border-dark bg-dark text-light">
+                      <i
+                        class="fa"
+                        [ngClass]="{
+                          'fa-eye-slash': !fieldTextType3,
+                          'fa-eye': fieldTextType3
+                        }"
+                        (click)="toggleFieldTextType3()"
+                      ></i>
+                    </span>
+                  </div>
+                  </div>
+                  <div *ngIf="submitted && g.password.errors" class="invalid-feedback">
+                    <div *ngIf="g.password.errors.required">Old Password is required</div>
+                    <div *ngIf="g.password.errors.minlength">
+                      Password must be at least 3 characters
+                    </div>
+                    <div *ngIf="g.password.errors.maxlength">
+                      Password must not exceed 20 characters
+                    </div>
+                  </div>
+                </div>
                 <div class="col-12 px-4 py-4">
                   <button type="submit" class="btn btn-primary">Simpan</button>
-                  <button type="button" (click)="onReset()" class="btn btn-warning float-right">Reset</button>
+                  <button type="button" (click)="onResetEdit()" class="btn btn-warning float-right">Reset</button>
                 </div>
               </div>
               </form>

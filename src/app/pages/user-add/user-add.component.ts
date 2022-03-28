@@ -21,11 +21,14 @@ export class UserAddComponent implements OnInit {
   submittedz = false;
   errorMessage: any;
   username: any;
+  username2: any;
   fieldTextType: boolean;
+  fieldTextType2: boolean;
+  fieldTextType3: boolean;
   showAdd: boolean = true ;
   showEdit: boolean = false ;
 
-  constructor(private formBuilder: FormBuilder, private http: HttpClient, private tokenStorage: TokenStorageService, private global: GlobalService) { }
+  constructor(private formBuilder: FormBuilder, private formBuilder2: FormBuilder, private http: HttpClient, private tokenStorage: TokenStorageService, private global: GlobalService) { }
 
   workorders:any = [];
   collectionSize: number;
@@ -38,7 +41,7 @@ export class UserAddComponent implements OnInit {
       
       {
       username: [
-        this.username,
+        '',
           [
             Validators.required,
             Validators.minLength(3),
@@ -59,10 +62,12 @@ export class UserAddComponent implements OnInit {
       
       }
     );
-    this.formEdit = this.formBuilder.group(
+    this.formEdit = this.formBuilder2.group(
       
       {
-      username: [''],
+      username: [
+        this.username2,
+        ],
       password: [
         '',
           [
@@ -82,7 +87,6 @@ export class UserAddComponent implements OnInit {
      
       }
     );
-  
     this.http.post<any>(this.global.address+this.global.listUser, this.global.body, this.global.headers).subscribe({
     next: data => {
       this.collectionSize = data.length;
@@ -140,13 +144,25 @@ export class UserAddComponent implements OnInit {
       })
     console.log(JSON.stringify(this.form.value, null, 2));
   }
+
+  editPasswrord(row:any){
+    
+    let iduser = row.iduser;
+    this.username2 = row.username;
+    let level_user = row.level_user;
+    console.log(iduser, this.username2, level_user);
+    console.log(iduser, this.username2, level_user);
+    this.showAdd = false;
+    this.showEdit = true;
+  }
+
   onSubmitEdit(): void {
     this.submittedz = true;
-    if (this.formEdit.invalid) {
+    if (this.formEdit.value.invalid) {
       return;
       console.log("INVALID!!!");
     }
-    this.http.post<any>(this.global.address+this.global.editPassword, this.form.value, this.global.headers).subscribe({
+    this.http.post<any>(this.global.address+this.global.editPassword, this.formEdit.value, this.global.headers).subscribe({
       next: data => {
         let valid = data.valid;
         if (valid == 1){
@@ -156,9 +172,10 @@ export class UserAddComponent implements OnInit {
             text: 'Password berhasil diganti!',  
             background: '#000000',
           })
-          this.onReset();
+          this.onResetEdit();
+          this.closeEdit();
         }
-        else if (valid == 2){
+        else if (valid == 0){
           Swal.fire({  
             icon: 'error',  
             title: 'Error',  
@@ -176,23 +193,26 @@ export class UserAddComponent implements OnInit {
       }
       })
     console.log(JSON.stringify(this.formEdit.value, null, 2));
-  }
+}
   
   onReset(): void {
     this.submitted = false;
     this.form.reset();
   }
+  onResetEdit(): void {
+    this.submittedz = false;
+    this.formEdit.reset();
+  }
   toggleFieldTextType() {
     this.fieldTextType = !this.fieldTextType;
   }
-  editPasswrord(row:any){
-    let iduser = row.iduser;
-    this.username = row.username;
-    let level_user = row.level_user;
-    console.log(iduser, this.username, level_user);
-    this.showAdd = false;
-    this.showEdit = true;
+  toggleFieldTextType2() {
+    this.fieldTextType2 = !this.fieldTextType2;
   }
+  toggleFieldTextType3() {
+    this.fieldTextType3 = !this.fieldTextType3;
+  }
+  
   closeEdit(){
     this.showAdd = true;
     this.showEdit = false;
