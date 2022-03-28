@@ -4,25 +4,28 @@ import { AuthInterceptor } from '../../_helpers/auth.interceptor';
 import { GlobalService } from '../../global.service';
 
 @Component({
-  selector: 'app-workorder',
-  templateUrl: './workorder.component.html',
-  styleUrls: ['./workorder.component.scss']
+  selector: 'app-laporan',
+  templateUrl: './laporan.component.html',
+  styleUrls: ['./laporan.component.scss']
 })
-export class WorkorderComponent implements OnInit {
+export class LaporanComponent implements OnInit {
   errorMessage:any;
   isShowTable: boolean = true ;
   isShowDetalis: boolean = false ;
   isShowHeader: boolean = true ;
   isShowBack: boolean = false ;
-  tittle: string = "List of Workorder";
-  idworkorder: string;
-  nama_pelapor: string;
-  no_pengaduan: string;
-  satwil_id: string;
+  tittle: string = "Laporan";
+
+  idlaporan: string;
+  no_laporan: string;
+  position_name: string;
+  sub_kategori: string;
   status: string;
-  sub_kategori_id: string;
-  tgl_close: string;
-  tgl_kontak: string;
+  tgl_submitted: string;
+  tgl_approved: string;
+  keterangan: string;
+  user_id: string;
+
   workorders:any = [];
   allWorkorders:any = [];
   filterTerm: string;
@@ -51,27 +54,30 @@ export class WorkorderComponent implements OnInit {
   }
 
   showDetails (row:any){
-      this.idworkorder = row.idworkorder;
-      this.nama_pelapor = row.nama_pelapor;
-      this.no_pengaduan = row.no_pengaduan;
-      this.satwil_id = row.satwil_id;
-      this.status = row.status;
-      this.sub_kategori_id = row.sub_kategori_id;
-      this.tgl_close = row.tgl_close;
-      this.tgl_kontak = row.tgl_kontak;
+    this.idlaporan = row.idlaporan;
+    this.no_laporan = row.no_laporan;
+    this.position_name = row.position_name;
+    this.sub_kategori = row.sub_kategori;
+    this.status = row.status;
+    this.tgl_submitted = row.tgl_submitted;
+    this.tgl_approved = row.tgl_approved;
+    this.keterangan = row.keterangan;
+    this.user_id = row.user_id;
 
-      this.isShowTable = false;
-      this.isShowDetalis = true;
-      this.isShowHeader = false;
-      this.isShowBack = true;
+    this.isShowTable = false;
+    this.isShowDetalis = true;
+    this.isShowHeader = false;
+    this.isShowBack = true;
     }
+
   backToTable(){
     this.isShowTable = true;
     this.isShowDetalis = false;
     this.isShowHeader = true;
     this.isShowBack = false;
-    this.tittle = "List of Workorder";
+    this.tittle = "Laporan";
   }
+  
   showHeader (){
       this.isShowTable = false;
       this.isShowDetalis = true;

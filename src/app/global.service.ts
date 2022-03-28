@@ -27,7 +27,7 @@ export class GlobalService {
   public readonly headers = { headers: this.header };
 
   public readonly address: string = 'http://202.67.10.238:5000/cc';  
-  public readonly workorder: string = '/workorder';  
+  public readonly workorder: string = '/laporan';  
   public readonly login: string = '/login_user';  
   public readonly simpanUser: string = '/simpan_user';  
   public readonly listUser: string = '/users';  

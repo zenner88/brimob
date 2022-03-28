@@ -10,9 +10,9 @@ import { IconsComponent } from '../../pages/icons/icons.component';
 import { MapsComponent } from '../../pages/maps/maps.component';
 import { UserProfileComponent } from '../../pages/user-profile/user-profile.component';
 import { TablesComponent } from '../../pages/tables/tables.component';
-import { WorkorderComponent } from '../../pages/workorder/workorder.component';
+import { LaporanComponent } from '../../pages/laporan/laporan.component';
 import { EbookComponent } from '../../pages/ebook/ebook.component';
-import { WorkorderAddComponent } from '../../pages/workorder-add/workorder-add.component';
+import { LaporanAddComponent } from '../../pages/laporan-add/laporan-add.component';
 import { UserAddComponent } from '../../pages/user-add/user-add.component';
 import { CallcenterComponent } from '../../pages/callcenter/callcenter.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -47,9 +47,9 @@ import { ChartModule } from 'angular-highcharts';
     TablesComponent,
     IconsComponent,
     MapsComponent,
-    WorkorderComponent,
+    LaporanComponent,
     CallcenterComponent,
-    WorkorderAddComponent,
+    LaporanAddComponent,
     UserAddComponent,
     EbookComponent,
     LicenseComponent,

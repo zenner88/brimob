@@ -5,15 +5,15 @@
     <!-- Table -->
     <div class="row">
       <div class="col">
-        <div class="card shadow mx--4">
-          <div class="card-header border-0 mb--4 py-2">
+        <div class="card shadow border border-dark mx--4">
+          <div class="card-header bg-dark text-light mb--4 py-2">
             <div class="row">
-              <div class="col-6 col-md-9"><h3 class="mb-0">Tambah Pengaduan Baru</h3></div>
+              <div class="col-6 col-md-9"><h3 class="mb-0 text-light">Tambah Laporan</h3></div>
             </div>         
           </div>
  
-          <div class="container-fluid card shadow py-2 border-1 my-4">
-            <form class="row" [formGroup]="form" (ngSubmit)="onSubmit()">
+          <div class="card-body">
+            <form class="row pt-4" [formGroup]="form" (ngSubmit)="onSubmit()">
               <div class="col-md-6">
                 <label class="form-label">No Pengaduan</label>
                 <input type="number" class="form-control" formControlName="noPengaduan" placeholder="" disabled>
@@ -71,8 +71,8 @@
                 </div>         
                 <div id="map-canvas" class="map-canvas" data-lat="0.7893" data-lng="113.9213" style="height: 400px;"></div>            
               </div>            
-              <div class="col-12 card-footer">
-                <button type="submit" class="btn btn-primary mt-2">Simpan Laporan</button>
+              <div class="col-12 card-footer py-2">
+                <button type="submit" class="btn btn-primary">Simpan Laporan</button>
                 <button type="button" (click)="onReset()" class="btn btn-warning float-right">Reset</button>
               </div>
             </form>

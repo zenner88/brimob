@@ -11,7 +11,7 @@
             <div class="col-6 col-md-9">
               <!-- <h3 class="mb-0 text-light">{{tittle}}</h3> -->
               <div class="col-6 col-md-9">
-                <a href="#/workorder-add" class="btn btn-primary mx-2 mb-4">
+                <a href="#/laporan-add" class="btn btn-primary mx-2 mb-4">
                   Tambah Laporan
                 </a>
               </div>
@@ -34,26 +34,24 @@
            <table class="table table-sm row-border table-hover">
             <thead class="table-dark">
               <tr>
-                <th class="px-md-2">No Pengaduan</th>
+                <th class="px-md-2">No Laporan</th>
                 <th class="px-md-2">Nama Pelapor</th>
-                <th class="px-md-2">Polres</th>
+                <th class="px-md-2">Position</th>
                 <th class="px-md-2">Kategori</th>
-                <th class="px-md-2">Tgl Kontak</th>
-                <th class="px-md-2">Durasi<BR> Penanganan</th>
                 <th class="px-md-2">Status</th>
-                <th class="px-md-2">Creator</th>
+                <th class="px-md-2">Tgl Submit</th>
+                <th class="px-md-2">Tgl Approve</th>
               </tr>
             </thead>
             <tbody>
               <tr title="CLICK FOR DETAILS..." *ngFor="let zz of workorders | filter: filterTerm | slice: (page-1) * pageSize : page * pageSize; index as i" (click)="showDetails(zz)">
-                <td class="px-md-2">{{zz.no_pengaduan}}</td>
-                <td class="px-md-2" style="white-space: normal;">{{zz.nama_pelapor}}</td>
-                <td class="px-md-2" style="white-space: normal;width:200px;">{{zz.satwil}}</td>
+                <td class="px-md-2">{{zz.no_laporan}}</td>
+                <td class="px-md-2" style="white-space: normal;">{{zz.user_id}}</td>
+                <td class="px-md-2" style="white-space: normal;width:200px;">{{zz.position_name}}</td>
                 <td class="px-md-2" style="white-space: normal;">{{zz.sub_kategori}}</td>
-                <td class="px-md-2">{{zz.tgl_kontak | date: 'EEEE, d MMMM y'}}</td>
-                <td class="px-md-2">0 Detik</td>
-                <td class="px-md-2">{{zz.keterangan}}</td>
-                <td class="px-md-2" style="white-space: normal;">{{zz.nama_pelapor}}</td>
+                <td class="px-md-2" style="white-space: normal;">{{zz.keterangan}}</td>
+                <td class="px-md-2">{{zz.tgl_submitted | date: 'EEEE, d MMMM y'}}</td>
+                <td class="px-md-2">{{zz.tgl_approved | date: 'EEEE, d MMMM y'}}</td>
               </tr>
             </tbody>
           </table>
@@ -71,81 +69,65 @@
                 <div class="card shadow table-hover px-3">
                   <div class="card-header border-1 py-2">
                     <div class="row">
-                      <h3 class="mb-0">Detail Work Order</h3>
+                      <h3 class="mb-0">Detail Laporan</h3>
                     </div>         
                   </div>
                   <div class="row px-2 py-2 divcol">
                     <div class="col">
-                      <h4>No Pengaduan</h4>
+                      <h4>No Laporan</h4>
                     </div>
                     <div class="col">
-                      {{no_pengaduan}}
+                      {{no_laporan}}
                     </div>
                   </div> 
                   <div class="row px-2 py-2">
                     <div class="col">
-                      <h4>Nama</h4>
+                      <h4>Nama Pelapor</h4>
                     </div>
                     <div class="col">
-                      {{nama_pelapor}}
+                      {{user_id}}
                     </div>
                   </div> 
                   <div class="row px-2 py-2 divcol">
                     <div class="col">
-                      <h4>Telepon</h4>
+                      <h4>Position</h4>
                     </div>
                     <div class="col">
-                      
+                      {{position_name}}
                     </div>
                   </div> 
                   <div class="row px-2 py-2">
                     <div class="col">
-                      <h4>Alamat</h4>
+                      <h4>Kategori</h4>
                     </div>
                     <div class="col">
-                      
-                    </div>
-                  </div>  
-                  <div class="row px-2 py-2 divcol">
-                    <div class="col">
-                      <h4>Tanggal Kontak</h4>
-                    </div>
-                    <div class="col">
-                      
-                    </div>
-                  </div>    
-                  <div class="row px-2 py-2">
-                    <div class="col">
-                      <h4>Penyelesaian</h4>
-                    </div>
-                    <div class="col">
-                      
-                    </div>
-                  </div>       
-                  <div class="row px-2 py-2 divcol">
-                    <div class="col">
-                      <h4>Sub Kategori</h4>
-                    </div>
-                    <div class="col">
-                      
+                      {{sub_kategori}}
                     </div>
                   </div> 
-                  <div class="row px-2 py-2">
+                  <div class="row px-2 py-2 divcol">
                     <div class="col">
                       <h4>Status</h4>
                     </div>
                     <div class="col">
-                      
+                      {{keterangan}}
                     </div>
-                  </div>  
+                  </div>                   
+                  <div class="row px-2 py-2">
+                    <div class="col">
+                      <h4>Tanggal Submit</h4>
+                    </div>
+                    <div class="col">
+                      {{tgl_submitted | date: 'EEEE, d MMMM y'}}
+                    </div>
+                  </div>            
                   <div class="row px-2 py-2 divcol">
                     <div class="col">
-                      <h4>Pengaduan</h4>
+                      <h4>Tanggal Approve</h4>
                     </div>
                     <div class="col">
-                      
+                      {{tgl_approved | date: 'EEEE, d MMMM y'}}
                     </div>
-                  </div>          
+                  </div>            
                 </div>
                 </div>
 
@@ -156,7 +138,7 @@
                         <h3 class="mb-0">Detail Work Order</h3>
                       </div>          -->
                     </div>
-                    <div class="row px-2 py-2">
+                    <!-- <div class="row px-2 py-2">
                       <h4>Petugas Operator/ Lapangan</h4>
                       <select formControlName="satwil" class="form-select form-control">
                         <option value="1" selected>Lalu LIntas</option>
@@ -169,7 +151,7 @@
                         <option value="1" selected>Lalu LIntas</option>
                         <option value="2">Lain-lain</option>
                       </select>
-                    </div> 
+                    </div>  -->
                     <div class="row px-2 py-2">
                       <div class="col-12"><h4>Gambar</h4></div>
                       <div class="col-12 col-lg-6">

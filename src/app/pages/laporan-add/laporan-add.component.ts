@@ -4,12 +4,12 @@ import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/fo
 declare const google: any;
 
 @Component({
-  selector: 'app-workorder-add',
-  templateUrl: './workorder-add.component.html',
-  styleUrls: ['./workorder-add.component.scss']
+  selector: 'app-laporan-add',
+  templateUrl: './laporan-add.component.html',
+  styleUrls: ['./laporan-add.component.scss']
 })
 
-export class WorkorderAddComponent implements OnInit {
+export class LaporanAddComponent implements OnInit {
   form: FormGroup;
   submitted = false;
 
