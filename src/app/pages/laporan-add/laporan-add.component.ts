@@ -1,5 +1,9 @@
 import { Component, OnInit} from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+import { AuthInterceptor } from '../../_helpers/auth.interceptor';
+import { GlobalService } from '../../global.service';
+import Swal from 'sweetalert2'
 
 declare const google: any;
 
@@ -12,49 +16,53 @@ declare const google: any;
 export class LaporanAddComponent implements OnInit {
   form: FormGroup;
   submitted = false;
-
-  constructor(private formBuilder: FormBuilder) { }
+  kategori : any;
+  errorMessage : any; 
+  constructor(private formBuilder: FormBuilder, private http: HttpClient, private global: GlobalService,) { }
 
   ngOnInit(): void {  
     this.form = this.formBuilder.group(
       
       {
-      noPengaduan: ['1234567890'],  
-      namaPelapor: [
+      no_laporan: [
         '',
           [
             Validators.required,
-            Validators.minLength(3),
-            Validators.maxLength(20)
           ]
         ],
-      telponPelapor: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(9),
-        ]
-      ],  
-      kategori: '',  
-      jenisLaporan: '',        
-      isiPengaduan: [
+      sub_kategori_id: '',        
+      status: 1,        
+      laporan_text: [
         '',
         [
           Validators.required,
           Validators.minLength(10),
         ]
       ],  
-      lokasiKejadian: [
+      lokasiLaporan: [
         '',
         [
           Validators.required,
         ]
-      ],  
-      lat: '',        
-      lang: '',        
+      ],    
+      lat_pelapor: '',        
+      long_pelapor: '',        
       }
     );
-  
+  // Get Subkategori 
+  this.http.get<any>(this.global.address+this.global.subKategori).subscribe({
+    next: data => {
+      this.kategori = data;
+      console.log(data);
+    },
+    error: error => {
+        this.errorMessage = error.message;
+        console.error('There was an error!', error);
+        if (error.status == 401 ){
+          AuthInterceptor.signOut();
+        }
+    }
+    })
   }
   
   get f(): { [key: string]: AbstractControl } {
@@ -65,6 +73,35 @@ export class LaporanAddComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
+    this.http.post<any>(this.global.address+this.global.tambahLaporan, this.form.value, this.global.headers).subscribe({
+      next: data => {
+        let valid = data.result;
+        if (valid == "sucess"){
+          Swal.fire({  
+            icon: 'success',  
+            title: 'Sukses',  
+            text: 'Laporan berhasil ditambahkan!',  
+            background: '#000000',
+          })
+          this.onReset();
+        }
+        else if (valid == 2){
+          Swal.fire({  
+            icon: 'error',  
+            title: 'Error',  
+            text: 'Username sudah ada coba username lain!',  
+            background: '#000000',
+          })
+        }
+      },
+      error: error => {
+          this.errorMessage = error.message;
+          console.error('There was an error!', error);
+          if (error.status == 401 ){
+            AuthInterceptor.signOut();
+          }
+      }
+      })
     console.log(JSON.stringify(this.form.value, null, 2));
   }
   onReset(): void {

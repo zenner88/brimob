@@ -6,15 +6,12 @@
   <div class="row">
     <div class="col">
       <div class="card shadow border border-dark mx--4">
-        <div class="card-header bg-dark text-light mb--4 py-2">
-          <div class="row px-2 py-2" *ngIf="isShowHeader">
+        <div class="card-header bg-dark text-light px-4 py-2">
+          <div class="row" [class.hidden]="isShowHeader">
             <div class="col-6 col-md-9">
-              <!-- <h3 class="mb-0 text-light">{{tittle}}</h3> -->
-              <div class="col-6 col-md-9">
-                <a href="#/laporan-add" class="btn btn-primary mx-2 mb-4">
+                <a href="#/laporan-add" class="btn btn-primary">
                   Tambah Laporan
                 </a>
-              </div>
             </div>
             <div class="col-6 col-md-3">
               <form>
@@ -24,13 +21,13 @@
               </form>
             </div>
           </div> 
-          <div class="row mb-4 mx-2" *ngIf="isShowBack">
-            <button class="btn btn-primary btn-block col-4 col-lg-1" (click)="backToTable()">
-              Back
-            </button>
+          <div class="row" [class.hidden]="isShowBack">
+            <div class="col-12">
+            <button class="btn btn-primary btn-block col-4 col-lg-1" (click)="backToTable()">Back</button>
+            </div>
           </div>         
         </div>
-        <div class="table-responsive" *ngIf="isShowTable">
+        <div class="table-responsive" [class.hidden]="isShowTable">
            <table class="table table-sm row-border table-hover">
             <thead class="table-dark">
               <tr>
@@ -46,10 +43,14 @@
             <tbody>
               <tr title="CLICK FOR DETAILS..." *ngFor="let zz of workorders | filter: filterTerm | slice: (page-1) * pageSize : page * pageSize; index as i" (click)="showDetails(zz)">
                 <td class="px-md-2">{{zz.no_laporan}}</td>
-                <td class="px-md-2" style="white-space: normal;">{{zz.user_id}}</td>
+                <td class="px-md-2" hidden>{{zz.id}}</td>
+                <td class="px-md-2" hidden>{{zz.laporan_text}}</td>
+                <td class="px-md-2" style="white-space: normal;">{{zz.nama}}</td>
                 <td class="px-md-2" style="white-space: normal;width:200px;">{{zz.position_name}}</td>
                 <td class="px-md-2" style="white-space: normal;">{{zz.sub_kategori}}</td>
                 <td class="px-md-2" style="white-space: normal;">{{zz.keterangan}}</td>
+                <td class="px-md-2" style="white-space: normal;" hidden>{{zz.lat_pelapor}}</td>
+                <td class="px-md-2" style="white-space: normal;" hidden>{{zz.long_pelapor}}</td>
                 <td class="px-md-2">{{zz.tgl_submitted | date: 'EEEE, d MMMM y'}}</td>
                 <td class="px-md-2">{{zz.tgl_approved | date: 'EEEE, d MMMM y'}}</td>
               </tr>
@@ -60,118 +61,98 @@
         </div>
         
         <!-- Details page  -->
-        <div class="container-fluid" *ngIf="isShowDetalis">
+        <div class="container-fluid" [class.hidden]="isShowDetalis">
           <div class="row mx--4">
             <div class="col">
               <div class="row">
 
                 <div class="col-lg-6 mb-2">
-                <div class="card shadow table-hover px-3">
-                  <div class="card-header border-1 py-2">
+                <div class="card shadow table-hover my-4 border border-dark">
+                  <div class="card-header bg-dark border">
                     <div class="row">
-                      <h3 class="mb-0">Detail Laporan</h3>
+                      <h3 class="mb-0 text-light">Detail Laporan</h3>
                     </div>         
                   </div>
-                  <div class="row px-2 py-2 divcol">
-                    <div class="col">
-                      <h4>No Laporan</h4>
-                    </div>
-                    <div class="col">
-                      {{no_laporan}}
-                    </div>
-                  </div> 
-                  <div class="row px-2 py-2">
-                    <div class="col">
-                      <h4>Nama Pelapor</h4>
-                    </div>
-                    <div class="col">
-                      {{user_id}}
-                    </div>
-                  </div> 
-                  <div class="row px-2 py-2 divcol">
-                    <div class="col">
-                      <h4>Position</h4>
-                    </div>
-                    <div class="col">
-                      {{position_name}}
-                    </div>
-                  </div> 
-                  <div class="row px-2 py-2">
-                    <div class="col">
-                      <h4>Kategori</h4>
-                    </div>
-                    <div class="col">
-                      {{sub_kategori}}
-                    </div>
-                  </div> 
-                  <div class="row px-2 py-2 divcol">
-                    <div class="col">
-                      <h4>Status</h4>
-                    </div>
-                    <div class="col">
-                      {{keterangan}}
-                    </div>
-                  </div>                   
-                  <div class="row px-2 py-2">
-                    <div class="col">
-                      <h4>Tanggal Submit</h4>
-                    </div>
-                    <div class="col">
-                      {{tgl_submitted | date: 'EEEE, d MMMM y'}}
-                    </div>
-                  </div>            
-                  <div class="row px-2 py-2 divcol">
-                    <div class="col">
-                      <h4>Tanggal Approve</h4>
-                    </div>
-                    <div class="col">
-                      {{tgl_approved | date: 'EEEE, d MMMM y'}}
-                    </div>
-                  </div>            
+                  <div class="card-body">                      
+                    <div class="row py-2 divcol">
+                      <div class="col">
+                        <h4>No Laporan</h4>
+                      </div>
+                      <div class="col">
+                        {{no_laporan}}
+                      </div>
+                    </div> 
+                    <div class="row py-2">
+                      <div class="col">
+                        <h4>Nama Pelapor</h4>
+                      </div>
+                      <div class="col">
+                        {{nama}}
+                      </div>
+                    </div> 
+                    <div class="row py-2 divcol">
+                      <div class="col">
+                        <h4>Position</h4>
+                      </div>
+                      <div class="col">
+                        {{position_name}}
+                      </div>
+                    </div> 
+                    <div class="row py-2">
+                      <div class="col">
+                        <h4>Kategori</h4>
+                      </div>
+                      <div class="col">
+                        {{sub_kategori}}
+                      </div>
+                    </div> 
+                    <div class="row py-2 divcol">
+                      <div class="col">
+                        <h4>Status</h4>
+                      </div>
+                      <div class="col">
+                        {{keterangan}}
+                      </div>
+                    </div>                                   
+                    <div class="row py-2">
+                      <div class="col">
+                        <h4>Tanggal Submit</h4>
+                      </div>
+                      <div class="col">
+                        {{tgl_submitted | date: 'EEEE, d MMMM y'}}
+                      </div>
+                    </div>            
+                    <div class="row py-2 divcol">
+                      <div class="col">
+                        <h4>Tanggal Approve</h4>
+                      </div>
+                      <div class="col">
+                        {{tgl_approved | date: 'EEEE, d MMMM y'}}
+                      </div>
+                    </div>   
+                    <div class="row py-2 divcol">
+                      <div class="col">
+                        <h4>Laporan</h4>
+                      </div>
+                      <div class="col">
+                        {{laporan}}
+                      </div>
+                    </div>          
+                  </div>
                 </div>
                 </div>
 
                 <div class="col-lg-6 mb-2">
-                  <div class="card shadow table-hover px-3">
-                    <div class="card-header border-1 py-2">
-                      <!-- <div class="row">
-                        <h3 class="mb-0">Detail Work Order</h3>
-                      </div>          -->
-                    </div>
-                    <!-- <div class="row px-2 py-2">
-                      <h4>Petugas Operator/ Lapangan</h4>
-                      <select formControlName="satwil" class="form-select form-control">
-                        <option value="1" selected>Lalu LIntas</option>
-                        <option value="2">Lain-lain</option>
-                      </select>
-                    </div> 
-                    <div class="row px-2 py-2">
-                      <h4>Detail Penangan</h4>
-                      <select formControlName="satwil" class="form-select form-control">
-                        <option value="1" selected>Lalu LIntas</option>
-                        <option value="2">Lain-lain</option>
-                      </select>
-                    </div>  -->
-                    <div class="row px-2 py-2">
-                      <div class="col-12"><h4>Gambar</h4></div>
-                      <div class="col-12 col-lg-6">
-                        Sebelum
-                        <img src="../../../assets/img/icons/not-availabe.png" width="100%" style="max-width: 400px;">
-                      </div>
-                      <div class="col-12 col-lg-6">
-                        Sesudah
-                        <img src="../../../assets/img/icons/not-availabe.png" width="100%" style="max-width: 400px;">
-                      </div>
-                    </div> 
-                    
+                  <div class="card shadow table-hover my-4 border border-dark">
+                    <div id="map-canvas" class="map-canvas px-0" data-lat="0.7893" data-lng="113.9213" style="height: 320px;"></div>
                   </div>
-                  </div>
+                </div>
 
-              <div class="col-12">
-                <div class="card shadow table-hover px-3 pb-3 mb-3">
-                  <div class="card-header border-1 py-2">
+              <!-- <div class="col-12">
+                <div class="card shadow table-hover mx-2 my-2 border border-dark">
+                  <div class="card-header border bg-dark my-2">
                     <div class="row">
-                      <h3 class="mb-0">History Penanganan</h3>
+                      <h3 class="mb-0 text-light">History Penanganan</h3>
                     </div>         
                   </div>
                     <div class="table-responsive">
@@ -186,7 +167,7 @@
                          </tr>
                        </thead>
                        <tbody>
-                         <!-- <tr *ngFor="let zz of workorders | filter: filterTerm | slice: (page-1) * pageSize : page * pageSize; index as i" (click)="showDetails(zz)">
+                         <tr *ngFor="let zz of workorders | filter: filterTerm | slice: (page-1) * pageSize : page * pageSize; index as i" (click)="showDetails(zz)">
                            <td class="px-md-2">{{zz.no_pengaduan}}</td>
                            <td class="px-md-2" style="white-space: normal;">{{zz.nama_pelapor}}</td>
                            <td class="px-md-2" style="white-space: normal;width:200px;">{{zz.satwil}}</td>
@@ -195,12 +176,12 @@
                            <td class="px-md-2">0 Detik</td>
                            <td class="px-md-2">{{zz.keterangan}}</td>
                            <td class="px-md-2" style="white-space: normal;">{{zz.nama_pelapor}}</td>
-                         </tr> -->
+                         </tr>
                        </tbody>
                      </table>
                   </div>
                 </div>
-              </div>     
+              </div>      -->
             </div>
           </div>
 

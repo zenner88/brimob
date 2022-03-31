@@ -15,61 +15,36 @@
           <div class="card-body">
             <form class="row pt-4" [formGroup]="form" (ngSubmit)="onSubmit()">
               <div class="col-md-6">
-                <label class="form-label">No Pengaduan</label>
-                <input type="number" class="form-control" formControlName="noPengaduan" placeholder="" disabled>
-
-                <label class="form-label mt-2">Nama Pelapor</label>
-                <input type="text" class="form-control" formControlName="namaPelapor" [ngClass]="{ 'is-invalid': submitted && f.namaPelapor.errors }">
-                <div *ngIf="submitted && f.namaPelapor.errors" class="invalid-feedback">
-                  <div *ngIf="f.namaPelapor.errors.required">Nama Pelapor is required</div>
-                  <div *ngIf="f.namaPelapor.errors.minlength">
-                    Nama Pelapor must be at least 3 characters
-                  </div>
-                  <div *ngIf="f.namaPelapor.errors.maxlength">
-                    Nama Pelapor must not exceed 20 characters
-                  </div>
+                <label class="form-label mt-2">No Laporan</label>
+                <input type="text" class="form-control" formControlName="no_laporan" [ngClass]="{ 'is-invalid': submitted && f.no_laporan.errors }">
+                <div *ngIf="submitted && f.no_laporan.errors" class="invalid-feedback">
+                  <div *ngIf="f.no_laporan.errors.required">Nomor Laporan is required</div>
                 </div>
-
-                <label class="form-label mt-2">Telpon Pelapor</label>
-                <input type="number" class="form-control" formControlName="telponPelapor" [ngClass]="{ 'is-invalid': submitted && f.namaPelapor.errors }">
-                <div *ngIf="submitted && f.telponPelapor.errors" class="invalid-feedback">
-                  <div *ngIf="f.telponPelapor.errors.required">Telpon Pelapor is required</div>
-                  <div *ngIf="f.telponPelapor.errors.minlength">
-                    Telpon Pelapor must be at least 9 characters
-                  </div>
-                </div>
-
+                
                 <label class="form-label mt-2">Kategori</label>
-                <select formControlName="kategori" class="form-select form-control">
-                  <option value="1" selected>Non Pengaduan</option>
-                  <option value="2">Pengaduan</option>
+                <select formControlName="sub_kategori_id" class="form-select form-control" [ngModel]="1">
+                  <option *ngFor="let pos of kategori" value="{{pos.idsubkategori}}" selected>{{pos.sub_kategori}}</option>
                 </select>
 
-                <label class="form-label mt-2">Jenis Laporan</label>
-                <select formControlName="jenisLaporan" class="form-select form-control">
-                  <option value="1" selected>Lalu LIntas</option>
-                  <option value="2">Lain-lain</option>
-                </select>
-
-                <label class="form-label mt-2">Isi Pengaduan</label>
-                <textarea class="form-control mb-2" formControlName="isiPengaduan" rows="3" [ngClass]="{ 'is-invalid': submitted && f.isiPengaduan.errors }"></textarea> 
-                <div *ngIf="submitted && f.isiPengaduan.errors" class="invalid-feedback">
-                  <div *ngIf="f.isiPengaduan.errors.required">Isi Pengaduan is required</div>
-                  <div *ngIf="f.isiPengaduan.errors.minlength">
-                    Isi Pengaduan must be at least 10 characters
+                <label class="form-label mt-2">Laporan</label>
+                <textarea class="form-control mb-2" formControlName="laporan_text" rows="3" [ngClass]="{ 'is-invalid': submitted && f.laporan_text.errors }"></textarea> 
+                <div *ngIf="submitted && f.laporan_text.errors" class="invalid-feedback">
+                  <div *ngIf="f.laporan_text.errors.required">Isi Laporan is required</div>
+                  <div *ngIf="f.laporan_text.errors.minlength">
+                    Isi Laporan must be at least 10 characters
                   </div>
                 </div>
                 
               </div>
               <div class="col-md-6">
-                <label class="form-label">Lokasi Kejadian</label>
-                <input ngx-google-places-autocomplete class="form-control" formControlName="lokasiKejadian" (onAddressChange)="handleAddressChange($event)" [ngClass]="{ 'is-invalid': submitted && f.lokasiKejadian.errors }">   
-                <input class="form-control" formControlName="lat" [ngModel]="userLatitude" hidden>    
-                <input class="form-control" formControlName="lang" [ngModel]="userLongitude" hidden>    
-                <div *ngIf="submitted && f.lokasiKejadian.errors" class="invalid-feedback">
-                  <div *ngIf="f.lokasiKejadian.errors.required">Isi Pengaduan is required</div>
+                <label class="form-label">Lokasi Laporan</label>
+                <input ngx-google-places-autocomplete class="form-control" formControlName="lokasiLaporan" (onAddressChange)="handleAddressChange($event)" [ngClass]="{ 'is-invalid': submitted && f.lokasiLaporan.errors }">   
+                <input class="form-control" formControlName="lat_pelapor" [ngModel]="userLatitude" hidden>    
+                <input class="form-control" formControlName="long_pelapor" [ngModel]="userLongitude" hidden>    
+                <div *ngIf="submitted && f.lokasiLaporan.errors" class="invalid-feedback">
+                  <div *ngIf="f.lokasiLaporan.errors.required">Isi Pengaduan is required</div>
                 </div>         
-                <div id="map-canvas" class="map-canvas" data-lat="0.7893" data-lng="113.9213" style="height: 400px;"></div>            
+                <div id="map-canvas" class="map-canvas" data-lat="0.7893" data-lng="113.9213" style="height: 220px;"></div>            
               </div>            
               <div class="col-12 card-footer py-2">
                 <button type="submit" class="btn btn-primary">Simpan Laporan</button>
