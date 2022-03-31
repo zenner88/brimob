@@ -102,7 +102,7 @@
                   <div class="col-12 col-md-6">
                     <label class="form-label mt-2">Position</label>
                     <select formControlName="position_id" class="form-select form-control border border-dark" [ngModel]="1">
-                      <option value="1">WADAN</option>
+                      <option *ngFor="let pos of position" value="{{pos.position_id}}">{{pos.position_name}}</option>
                     </select>
                   </div>
                   <div *ngIf="submitted && f.password.errors" class="invalid-feedback">

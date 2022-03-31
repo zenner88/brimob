@@ -22,6 +22,7 @@ export class UserAddComponent implements OnInit {
   errorMessage: any;
   username: any;
   username2: any;
+  position: any;
   fieldTextType: boolean;
   fieldTextType2: boolean;
   fieldTextType3: boolean;
@@ -91,6 +92,20 @@ export class UserAddComponent implements OnInit {
     next: data => {
       this.collectionSize = data.length;
       this.workorders = data;
+    },
+    error: error => {
+        this.errorMessage = error.message;
+        console.error('There was an error!', error);
+        if (error.status == 401 ){
+          AuthInterceptor.signOut();
+        }
+    }
+    })
+    // Get Subkategori 
+    this.http.get<any>(this.global.address+this.global.position).subscribe({
+    next: data => {
+      this.position = data;
+      console.log(data);
     },
     error: error => {
         this.errorMessage = error.message;
