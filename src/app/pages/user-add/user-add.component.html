@@ -29,14 +29,15 @@
                         <tr>
                           <th class="px-md-2">Username</th>
                           <th class="px-md-2">Level User</th>
-                          <th class="px-md-2"></th>
+                          <th class="px-md-2" colspan="2"></th>
                         </tr>
                       </thead>
                       <tbody>
                         <tr *ngFor="let zz of workorders | filter: filterTerm | slice: (page-1) * pageSize : page * pageSize; index as i">
                           <td class="px-md-2" style="white-space: normal;">{{zz.username}}</td>
                           <td class="px-md-2" style="white-space: normal;width:200px;">{{zz.level_user}}</td>
-                          <td class="px-md-2"><i class="fa fa-edit" title="Ganti Password" (click)="editPasswrord(zz)"></i></td>
+                          <td class="px-md-2"><i class="fa fa-user-secret" title="Ganti Password" (click)="editPasswrord(zz)"></i></td>
+                          <td class="px-md-2"><i class="fa fa-edit" title="Update User Data" (click)="editUser(zz)"></i></td>
                         </tr>
                       </tbody>
                     </table>
@@ -186,8 +187,150 @@
               </div>
               </form>
               </div>
+              <!-- update user data  -->
+              <div class="col-lg-6 py-4" *ngIf="showEdits">
+                <form [formGroup]="formEdits" (ngSubmit)="onSubmitEdits()">
+                <div class="card border border-dark boshadow">
+                <div class="card-header bg-dark py-2">
+                  <div class="row">
+                    <div class="col-6">
+                    <h3 class="mb-0 text-light">Update User Data</h3>
+                    </div>
+                    <div class="col-6">
+                      <h3 class="mb-0 text-light text-right"><i class="fa fa-times" (click)="closeEdits()"></i></h3>
+                    </div>
+                  </div>       
+                </div>
+                <div class="row px-4 py-1 mt-2">
+                  <div class="col-12 col-lg-3">
+                    <label class="form-label">No KTP</label>
+                  </div>
+                  <div class="col-12 col-lg-9">
+                    <input type="number" class="form-control border border-dark" formControlName="ktp" [ngClass]="{ 'is-invalid': submitted && f.ktp.errors }">
+                    <div *ngIf="submitted && f.ktp.errors" class="invalid-feedback">
+                      <div *ngIf="f.ktp.errors.required">KTP is required</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row px-4 py-1">
+                  <div class="col-12 col-lg-3">
+                    <label class="form-label">Nama</label>
+                  </div>
+                  <div class="col-12 col-lg-9">
+                    <input type="text" class="form-control border border-dark" formControlName="nama" [ngClass]="{ 'is-invalid': submitted && f.nama.errors }">
+                    <div *ngIf="submitted && f.nama.errors" class="invalid-feedback">
+                      <div *ngIf="f.nama.errors.required">Nama is required</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row px-4 py-1">
+                  <div class="col-12 col-lg-3">
+                    <label class="form-label">Alamat</label>
+                  </div>
+                  <div class="col-12 col-lg-9">
+                    <textarea class="form-control border border-dark" formControlName="alamat" [ngClass]="{ 'is-invalid': submitted && f.alamat.errors }"></textarea> 
+                    <div *ngIf="submitted && f.alamat.errors" class="invalid-feedback">
+                      <div *ngIf="f.alamat.errors.required">Alamat is required</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row px-4 py-1">
+                  <div class="col-12 col-lg-3">
+                    <label class="form-label">Telepon</label>
+                  </div>
+                  <div class="col-12 col-lg-9">
+                    <input type="number" class="form-control border border-dark" formControlName="telepon" [ngClass]="{ 'is-invalid': submitted && f.telepon.errors }">
+                    <div *ngIf="submitted && f.telepon.errors" class="invalid-feedback">
+                      <div *ngIf="f.telepon.errors.required">Telepon is required</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row px-4 py-1">
+                  <div class="col-12 col-lg-3">
+                    <label class="form-label">Email</label>
+                  </div>
+                  <div class="col-12 col-lg-9">
+                    <input type="email" class="form-control border border-dark" formControlName="email" [ngClass]="{ 'is-invalid': submitted && f.email.errors }">
+                    <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                      <div *ngIf="f.email.errors.required">Email is required</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row px-4 py-1">
+                  <div class="col-12 col-lg-3">
+                    <label class="form-label">Username</label>
+                  </div>
+                  <div class="col-12 col-lg-9">
+                    <input type="text" class="form-control border border-dark" formControlName="username" [ngClass]="{ 'is-invalid': submitted && f.username.errors }" [ngModel]="username">
+                    <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+                      <div *ngIf="f.username.errors.required">Username is required</div>
+                      <div *ngIf="f.username.errors.minlength">
+                        Username must be at least 3 characters
+                      </div>
+                      <div *ngIf="f.username.errors.maxlength">
+                        Username must not exceed 20 characters
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row px-4 py-1">
+                  <div class="col-12 col-lg-3">
+                    <label class="form-label">Password</label>
+                  </div>
+                  <div class="col-12 col-lg-9">
+                    <div class="input-group input-group-alternative">
+                    <input [type]="fieldTextType ? 'text' : 'password'" type="password" class="form-control border border-dark" formControlName="password" [ngClass]="{ 'is-invalid': submitted && f.password.errors }">
+                    <div class="input-group-append">
+                      <span class="input-group-text border border-dark bg-dark text-light">
+                        <i
+                          class="fa"
+                          [ngClass]="{
+                            'fa-eye-slash': !fieldTextType,
+                            'fa-eye': fieldTextType
+                          }"
+                          (click)="toggleFieldTextType()"
+                        ></i>
+                      </span>
+                    </div>
+                    </div>
+                    <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                      <div *ngIf="f.password.errors.required">Password is required</div>
+                      <div *ngIf="f.password.errors.minlength">
+                        Password must be at least 3 characters
+                      </div>
+                      <div *ngIf="f.password.errors.maxlength">
+                        Password must not exceed 20 characters
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row px-4 py-1">
+                  <div class="col-12 col-md-6">
+                    <label class="form-label">Position</label>
+                    <select formControlName="position_id" class="form-select form-control border border-dark" [ngModel]="1">
+                      <option *ngFor="let pos of position" value="{{pos.position_id}}">{{pos.position_name}}</option>
+                    </select>
+                  </div>
+                  <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                    <div *ngIf="f.password.errors.required">Password is required</div>
+                  </div>
+                  <div class="col-12 col-md-6">
+                    <label class="form-label">Type</label>
+                    <select formControlName="level_user" class="form-select form-control border border-dark" [ngModel]="level_user">
+                      <option value="user">User</option>
+                      <option value="superadmin">Superadmin</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-12 px-4 py-4">
+                  <button type="submit" class="btn btn-primary">Simpan</button>
+                  <button type="button" (click)="onReset()" class="btn btn-warning float-right">Reset</button>
+                </div>
+              </div>
+              </form>
+              </div>
 
-              <!-- EDIT USER -->
+              <!-- EDIT Password USER -->
               <div class="col-lg-6 py-4" *ngIf="showEdit">
                 <form [formGroup]="formEdit" (ngSubmit)="onSubmitEdit()">
                 <div class="card border border-dark boshadow">

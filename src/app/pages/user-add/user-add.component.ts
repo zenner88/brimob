@@ -17,6 +17,7 @@ declare const google: any;
 export class UserAddComponent implements OnInit {
   form: FormGroup;
   formEdit: FormGroup;
+  formEdits: FormGroup;
   submitted = false;
   submittedz = false;
   errorMessage: any;
@@ -28,6 +29,7 @@ export class UserAddComponent implements OnInit {
   fieldTextType3: boolean;
   showAdd: boolean = true ;
   showEdit: boolean = false ;
+  showEdits: boolean = false ;
 
   constructor(private formBuilder: FormBuilder, private formBuilder2: FormBuilder, private http: HttpClient, private tokenStorage: TokenStorageService, private global: GlobalService) { }
 
@@ -39,6 +41,36 @@ export class UserAddComponent implements OnInit {
   
   ngOnInit(): void {  
     this.form = this.formBuilder.group(
+      
+      {
+      username: [
+        '',
+          [
+            Validators.required,
+            Validators.minLength(3),
+            Validators.maxLength(20)
+          ]
+        ],
+      password: [
+        '',
+          [
+            Validators.required,
+            Validators.minLength(3),
+            Validators.maxLength(20)
+          ]
+        ],  
+      position_id: ['',[Validators.required,]],        
+      level_user: ['user',[Validators.required,]],        
+      detail: 'add user from application',        
+      alamat: ['',[Validators.required,]],        
+      nama: ['',[Validators.required,]],        
+      ktp: ['',[Validators.required,]],        
+      telepon: ['',[Validators.required,]],        
+      email: ['',[Validators.required,]],        
+      
+      }
+    );
+    this.formEdits = this.formBuilder.group(
       
       {
       username: [
@@ -174,6 +206,18 @@ export class UserAddComponent implements OnInit {
     console.log(iduser, this.username2, level_user);
     this.showAdd = false;
     this.showEdit = true;
+    this.showEdits = false;
+  }
+  editUser(row:any){
+    
+    let iduser = row.iduser;
+    this.username = row.username;
+    let level_user = row.level_user;
+
+    console.log(iduser, this.username, level_user);
+    this.showAdd = false;
+    this.showEdit = false;
+    this.showEdits = true;
   }
 
   onSubmitEdit(): void {
@@ -236,6 +280,12 @@ export class UserAddComponent implements OnInit {
   closeEdit(){
     this.showAdd = true;
     this.showEdit = false;
+    this.showEdits = false;
+  }
+  closeEdits(){
+    this.showAdd = true;
+    this.showEdit = false;
+    this.showEdits = false;
   }
 }
 
