@@ -75,8 +75,8 @@ export class LaporanAddComponent implements OnInit {
     }
     this.http.post<any>(this.global.address+this.global.tambahLaporan, this.form.value, this.global.headers).subscribe({
       next: data => {
-        let valid = data.result;
-        if (valid == "sucess"){
+        let valid = data.valid;
+        if (valid == 1){
           Swal.fire({  
             icon: 'success',  
             title: 'Sukses',  
@@ -89,7 +89,7 @@ export class LaporanAddComponent implements OnInit {
           Swal.fire({  
             icon: 'error',  
             title: 'Error',  
-            text: 'Username sudah ada coba username lain!',  
+            text: 'Error!',  
             background: '#000000',
           })
         }

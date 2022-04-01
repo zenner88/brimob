@@ -60,6 +60,11 @@ export class UserAddComponent implements OnInit {
       position_id: ['',[Validators.required,]],        
       level_user: ['user',[Validators.required,]],        
       detail: 'add user from application',        
+      alamat: ['',[Validators.required,]],        
+      nama: ['',[Validators.required,]],        
+      ktp: ['',[Validators.required,]],        
+      telepon: ['',[Validators.required,]],        
+      email: ['',[Validators.required,]],        
       
       }
     );
