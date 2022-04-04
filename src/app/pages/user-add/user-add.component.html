@@ -29,6 +29,13 @@
                         <tr>
                           <th class="px-md-2">Username</th>
                           <th class="px-md-2">Level User</th>
+                          <th class="px-md-2" hidden>KTP</th>
+                          <th class="px-md-2" hidden>Nama</th>
+                          <th class="px-md-2" hidden>Alamat</th>
+                          <th class="px-md-2" hidden>Telepon</th>
+                          <th class="px-md-2" hidden>Email</th>
+                          <th class="px-md-2" hidden>Position</th>
+                          <th class="px-md-2" hidden>Type</th>
                           <th class="px-md-2" colspan="2"></th>
                         </tr>
                       </thead>
@@ -36,6 +43,13 @@
                         <tr *ngFor="let zz of workorders | filter: filterTerm | slice: (page-1) * pageSize : page * pageSize; index as i">
                           <td class="px-md-2" style="white-space: normal;">{{zz.username}}</td>
                           <td class="px-md-2" style="white-space: normal;width:200px;">{{zz.level_user}}</td>
+                          <td class="px-md-2" style="white-space: normal;width:200px;" hidden>{{zz.ktp}}</td>
+                          <td class="px-md-2" style="white-space: normal;width:200px;" hidden>{{zz.nama}}</td>
+                          <td class="px-md-2" style="white-space: normal;width:200px;" hidden>{{zz.alamat}}</td>
+                          <td class="px-md-2" style="white-space: normal;width:200px;" hidden>{{zz.telepon}}</td>
+                          <td class="px-md-2" style="white-space: normal;width:200px;" hidden>{{zz.email}}</td>
+                          <td class="px-md-2" style="white-space: normal;width:200px;" hidden>{{zz.position_id}}</td>
+                          <td class="px-md-2" style="white-space: normal;width:200px;" hidden>{{zz.level_user}}</td>
                           <td class="px-md-2"><i class="fa fa-user-secret" title="Ganti Password" (click)="editPasswrord(zz)"></i></td>
                           <td class="px-md-2"><i class="fa fa-edit" title="Update User Data" (click)="editUser(zz)"></i></td>
                         </tr>
@@ -206,7 +220,7 @@
                     <label class="form-label">No KTP</label>
                   </div>
                   <div class="col-12 col-lg-9">
-                    <input type="number" class="form-control border border-dark" formControlName="ktp" [ngClass]="{ 'is-invalid': submitted && f.ktp.errors }">
+                    <input type="number" class="form-control border border-dark" formControlName="ktp" [ngClass]="{ 'is-invalid': submitted && f.ktp.errors }" [ngModel]="ktp">
                     <div *ngIf="submitted && f.ktp.errors" class="invalid-feedback">
                       <div *ngIf="f.ktp.errors.required">KTP is required</div>
                     </div>
@@ -217,7 +231,7 @@
                     <label class="form-label">Nama</label>
                   </div>
                   <div class="col-12 col-lg-9">
-                    <input type="text" class="form-control border border-dark" formControlName="nama" [ngClass]="{ 'is-invalid': submitted && f.nama.errors }">
+                    <input type="text" class="form-control border border-dark" formControlName="nama" [ngClass]="{ 'is-invalid': submitted && f.nama.errors }" [ngModel]="nama">
                     <div *ngIf="submitted && f.nama.errors" class="invalid-feedback">
                       <div *ngIf="f.nama.errors.required">Nama is required</div>
                     </div>
@@ -228,7 +242,7 @@
                     <label class="form-label">Alamat</label>
                   </div>
                   <div class="col-12 col-lg-9">
-                    <textarea class="form-control border border-dark" formControlName="alamat" [ngClass]="{ 'is-invalid': submitted && f.alamat.errors }"></textarea> 
+                    <textarea class="form-control border border-dark" formControlName="alamat" [ngClass]="{ 'is-invalid': submitted && f.alamat.errors }" [ngModel]="alamat"></textarea> 
                     <div *ngIf="submitted && f.alamat.errors" class="invalid-feedback">
                       <div *ngIf="f.alamat.errors.required">Alamat is required</div>
                     </div>
@@ -239,7 +253,8 @@
                     <label class="form-label">Telepon</label>
                   </div>
                   <div class="col-12 col-lg-9">
-                    <input type="number" class="form-control border border-dark" formControlName="telepon" [ngClass]="{ 'is-invalid': submitted && f.telepon.errors }">
+                    <input type="number" class="form-control border border-dark" formControlName="telepon" [ngClass]="{ 'is-invalid': submitted && f.telepon.errors }" [ngModel]="telepon">
+                    <input type="number" class="form-control border border-dark" formControlName="order_license" [ngModel]="1" hidden>
                     <div *ngIf="submitted && f.telepon.errors" class="invalid-feedback">
                       <div *ngIf="f.telepon.errors.required">Telepon is required</div>
                     </div>
@@ -250,7 +265,7 @@
                     <label class="form-label">Email</label>
                   </div>
                   <div class="col-12 col-lg-9">
-                    <input type="email" class="form-control border border-dark" formControlName="email" [ngClass]="{ 'is-invalid': submitted && f.email.errors }">
+                    <input type="email" class="form-control border border-dark" formControlName="email" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" [ngModel]="email">
                     <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
                       <div *ngIf="f.email.errors.required">Email is required</div>
                     </div>
@@ -279,7 +294,7 @@
                   </div>
                   <div class="col-12 col-lg-9">
                     <div class="input-group input-group-alternative">
-                    <input [type]="fieldTextType ? 'text' : 'password'" type="password" class="form-control border border-dark" formControlName="password" [ngClass]="{ 'is-invalid': submitted && f.password.errors }">
+                    <input [type]="fieldTextType ? 'text' : 'password'" type="password" class="form-control border border-dark" formControlName="password" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" [ngModel]="123456">
                     <div class="input-group-append">
                       <span class="input-group-text border border-dark bg-dark text-light">
                         <i
@@ -307,7 +322,7 @@
                 <div class="row px-4 py-1">
                   <div class="col-12 col-md-6">
                     <label class="form-label">Position</label>
-                    <select formControlName="position_id" class="form-select form-control border border-dark" [ngModel]="1">
+                    <select formControlName="position_id" class="form-select form-control border border-dark" [ngModel]="position_id">
                       <option *ngFor="let pos of position" value="{{pos.position_id}}">{{pos.position_name}}</option>
                     </select>
                   </div>

@@ -22,6 +22,13 @@ export class UserAddComponent implements OnInit {
   submittedz = false;
   errorMessage: any;
   username: any;
+  position_id: number;
+  level_user: any;
+  ktp: any;
+  nama: any;
+  alamat: any;
+  telepon: any;
+  email: any;
   username2: any;
   position: any;
   fieldTextType: boolean;
@@ -97,7 +104,7 @@ export class UserAddComponent implements OnInit {
       ktp: ['',[Validators.required,]],        
       telepon: ['',[Validators.required,]],        
       email: ['',[Validators.required,]],        
-      
+      order_license: [''],        
       }
     );
     this.formEdit = this.formBuilder2.group(
@@ -129,6 +136,7 @@ export class UserAddComponent implements OnInit {
     next: data => {
       this.collectionSize = data.length;
       this.workorders = data;
+      console.error('Users Data : ', this.workorders);
     },
     error: error => {
         this.errorMessage = error.message;
@@ -197,24 +205,27 @@ export class UserAddComponent implements OnInit {
     console.log(JSON.stringify(this.form.value, null, 2));
   }
 
-  editPasswrord(row:any){
-    
+  editPasswrord(row:any){   
     let iduser = row.iduser;
     this.username2 = row.username;
     let level_user = row.level_user;
-    console.log(iduser, this.username2, level_user);
     console.log(iduser, this.username2, level_user);
     this.showAdd = false;
     this.showEdit = true;
     this.showEdits = false;
   }
-  editUser(row:any){
-    
+  editUser(row:any){  
     let iduser = row.iduser;
     this.username = row.username;
-    let level_user = row.level_user;
+    this.position_id = row.position_id;
+    this.level_user = row.level_user;
+    this.ktp= row.ktp;
+    this.nama = row.nama;
+    this.alamat = row.alamat;
+    this.telepon = row.telepon;
+    this.email = row.email;
+    console.log(iduser, this.username, this.level_user, this.position_id, this.ktp, this.nama, this.alamat, this.telepon, this.email);
 
-    console.log(iduser, this.username, level_user);
     this.showAdd = false;
     this.showEdit = false;
     this.showEdits = true;
@@ -258,6 +269,44 @@ export class UserAddComponent implements OnInit {
       })
     console.log(JSON.stringify(this.formEdit.value, null, 2));
 }
+  onSubmitEdits(): void {
+    this.submittedz = true;
+    if (this.formEdits.value.invalid) {
+      return;
+      console.log("INVALID!!!");
+    }
+    this.http.post<any>(this.global.addressAdmin+this.global.updateUser, this.formEdits.value, this.global.headers).subscribe({
+      next: data => {
+        let valid = data.valid;
+        if (valid == 1){
+          Swal.fire({  
+            icon: 'success',  
+            title: 'Sukses',  
+            text: 'Data User berhasil diganti!',  
+            background: '#000000',
+          })
+          this.onResetEdit();
+          this.closeEdit();
+        }
+        else if (valid == 0){
+          Swal.fire({  
+            icon: 'error',  
+            title: 'Error',  
+            text: 'Data salah!',  
+            background: '#000000',
+          })
+        }
+      },
+      error: error => {
+          this.errorMessage = error.message;
+          console.error('There was an error!', error);
+          if (error.status == 401 ){
+            AuthInterceptor.signOut();
+          }
+      }
+      })
+    console.log(JSON.stringify(this.formEdits.value, null, 2));
+  }
   
   onReset(): void {
     this.submitted = false;

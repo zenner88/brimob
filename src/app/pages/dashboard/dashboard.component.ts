@@ -24,7 +24,7 @@ export class DashboardComponent implements OnInit {
   closes:any = [];
   total: any;
   totals:any = [];
-
+  markers: any;
   public datasets: any;
   public data: any;
   public salesChart;
@@ -60,28 +60,21 @@ export class DashboardComponent implements OnInit {
       })
       this.close = close.length;
 
-    },
-    error: error => {
-        this.errorMessage = error.message;
-        console.error('There was an error!', error);
-        if (error.status == 401 ){
-          AuthInterceptor.signOut();
-        }
-    }
-    })
-
-    // maps 
+      // maps 
     let map = document.getElementById('map-canvas');
     let lat = map.getAttribute('data-lat');
     let lng = map.getAttribute('data-lng');
-    let markers = [
-      { lat: -6.914864, lng: 107.608238, city: "bandung", type: 1 },
-      { lat: -7.797068, lng: 110.370529, city: "Yogyakarta", type: 1 },
-      { lat: -6.923700, lng: 106.928726, city: "Sukabumi", type: 1 },
-      { lat: -6.923700, lng: 106.948726, city: "Sukabumi2", type: 2 },
-      { lat: 3.597031, lng: 98.678513, city: "Medan", type: 1 },
-      { lat: -1.269160, lng: 116.825264, city: "Balikpapan", type: 2 },
-    ];
+    let dataMap = this.workorders
+    console.log("datamap : ",dataMap[0].lat_pelapor);
+    for (let mark of dataMap){
+      // console.log("xxx : ",mark); 
+      // this.markers = mark.lat_pelapor;
+      // this.markers = { "lat" :mark.lat_pelapor, "lng" : mark.long_pelapor, "city" : mark.sub_kategori, "type" : 1};
+      console.log("{lat:",mark.lat_pelapor,"lng:",mark.long_pelapor,"city:",mark.sub_kategori, "type:1}");
+    }
+    // this.markers = dataMark
+
+
     var myLatlng = new google.maps.LatLng(lat, lng);
     var mapOptions = {
         zoom: 5,
@@ -99,11 +92,11 @@ export class DashboardComponent implements OnInit {
           {"featureType":"water","elementType":"all","stylers":[{"color":'#212529'},{"visibility":"on"}]}]
     }
     map = new google.maps.Map(map, mapOptions);
-    markers.forEach(location => {
+    this.markers.forEach(location => {
       // custom logo for marker 
       let markerLogo: string;
       if (location.type == 1){ 
-        markerLogo='accident-logo.png';
+        markerLogo='info.png';
       }else if(location.type == 2){
         markerLogo='traffic-logo.png';
       }
@@ -130,5 +123,14 @@ export class DashboardComponent implements OnInit {
     })
     (marker,contentString,infowindow))
 
-  });
+    });
+    },
+    error: error => {
+        this.errorMessage = error.message;
+        console.error('There was an error!', error);
+        if (error.status == 401 ){
+          AuthInterceptor.signOut();
+        }
+    }
+    })
 }}

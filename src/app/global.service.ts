@@ -30,6 +30,7 @@ export class GlobalService {
   public readonly headers = { headers: this.header };
 
   public readonly address: string = 'http://202.67.10.238:5000/cc';  
+  public readonly addressAdmin: string = 'http://202.67.10.238:5000/admin';  
   public readonly workorder: string = '/laporan';  
   public readonly tambahLaporan: string = '/laporan_add';  
   public readonly subKategori: string = '/subkategori';  
@@ -38,4 +39,5 @@ export class GlobalService {
   public readonly simpanUser: string = '/simpan_user';  
   public readonly listUser: string = '/users';  
   public readonly editPassword: string = '/user_setpass';  
+  public readonly updateUser: string = '/update_user';  
 }
