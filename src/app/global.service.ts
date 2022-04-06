@@ -24,7 +24,6 @@ export class GlobalService {
     "limit" : 1000,
     "sub_kategori_id" : this.departmentId,
     "status" : 1
-
   };
   private header = new HttpHeaders().set('Authorization', `Bearer ${this.token}`);
   public readonly headers = { headers: this.header };
@@ -40,4 +39,5 @@ export class GlobalService {
   public readonly listUser: string = '/users';  
   public readonly editPassword: string = '/user_setpass';  
   public readonly updateUser: string = '/update_user';  
+  public readonly ebooks: string = '/ebooks';  
 }

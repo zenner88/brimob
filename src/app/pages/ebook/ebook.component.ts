@@ -21,8 +21,8 @@ export class EbookComponent implements OnInit {
 
   constructor(private http: HttpClient, private global: GlobalService) { }
 
-  ngOnInit() {       
-    this.http.post<any>(this.global.address+this.global.workorder, this.global.body, this.global.headers).subscribe({
+  ngOnInit() {     
+    this.http.get<any>(this.global.address+this.global.ebooks).subscribe({
     next: data => {
       this.collectionSize = data.length;
       this.workorders = data;
