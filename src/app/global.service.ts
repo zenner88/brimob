@@ -32,7 +32,9 @@ export class GlobalService {
   public readonly addressAdmin: string = 'http://202.67.10.238:5000/admin';  
   public readonly workorder: string = '/laporan';  
   public readonly tambahLaporan: string = '/laporan_add';  
+  public readonly mapLaporan: string = '/laporan_map';  
   public readonly subKategori: string = '/subkategori';  
+  public readonly region: string = '/regions';  
   public readonly position: string = '/position';  
   public readonly login: string = '/login_user';  
   public readonly simpanUser: string = '/simpan_user';  

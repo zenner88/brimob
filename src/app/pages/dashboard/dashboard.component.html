@@ -68,6 +68,30 @@
             </div>
           </div>
         </div>
+        <li class="nav-item" ngbDropdown placement="bottom-left">
+          <a class="nav-link" role="button" ngbDropdownToggle>
+            <i class="fa fa-bars text-dark"></i>
+          </a>
+          <div class="dropdown-menu-arrow bg-gradient-dark dropdown-menu-left col-lg-4" ngbDropdownMenu>
+          <div class="card card-stats bg-gradient-dark text-light px-2 py-2">
+            <form [formGroup]="formFilter1" >
+            <h5 class="text-light">Region</h5>
+            <div class="form-check" *ngFor="let regi of region">
+              <input class="form-check-input" type="checkbox" value="{{regi.id | number}}" (change)="checkRegion($event)">
+              <label class="form-check-label" for="flexCheckDefault">{{regi.region_name}}</label>
+            </div>
+            </form>
+            <div class="dropdown-divider"></div>
+            <form [formGroup]="formFilter2" >
+            <h5 class="text-light">Kategori</h5>
+            <div class="form-check" *ngFor="let kate of kategori">
+              <input class="form-check-input" type="checkbox" value="{{kate.idsubkategori | number}}" id="flexCheckDefault" (change)="checkKategori($event)">
+              <label class="form-check-label" for="flexCheckDefault">{{kate.sub_kategori}}</label>
+            </div>
+            </form>
+          </div>
+          </div>
+        </li>
       </div>
     </div>
   </div>
@@ -77,7 +101,8 @@
   <div class="row">
     <div class="col">
       <div class="card shadow border-0">
-        <div id="map-canvas" class="map-canvas" data-lat="0.7893" data-lng="113.9213" style="height: 600px;"></div>
+        <div id="map-canvas" class="map-canvas" data-lat="0.7893" data-lng="113.9213" style="height: 600px;">
+        </div>
       </div>
     </div>
   </div>
