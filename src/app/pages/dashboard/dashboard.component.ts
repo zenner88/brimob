@@ -3,6 +3,7 @@ import { GlobalService } from '../../global.service';
 import { AuthInterceptor } from '../../_helpers/auth.interceptor';
 import { HttpClient } from '@angular/common/http';
 import { FormBuilder, FormGroup, FormControl, Validators, FormArray} from '@angular/forms';
+import { maps } from 'highcharts';
 declare const google: any;
 
 @Component({
@@ -181,7 +182,6 @@ export class DashboardComponent implements OnInit {
         ],
     }
     map = new google.maps.Map(map, mapOptions);
-    
     this.markers.forEach(location => {
     // custom logo for marker 
     let markerLogo: string;

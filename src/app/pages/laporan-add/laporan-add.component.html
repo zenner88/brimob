@@ -12,19 +12,47 @@
             </div>         
           </div>
  
-          <div class="card-body">
+          <div class="card-body" *ngIf="showKategori">
+            <div class="row">
+              <div class="col-sm-6 col-lg-2 my-2 mx-2" *ngFor="let pos of kategori">
+                <div class="card pointer" style="width: 10rem;" (click)="getKategori($event)">
+                  <img src="{{pos.icon}}" class="card-img-top" alt="{{pos.idsubkategori}}">
+                  <div class="card-body text-center">
+                    <h4 class="card-title">{{pos.sub_kategori}}</h4>
+                    <h5 class="card-title">{{pos.kategori}}</h5>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-body" *ngIf="showForm">
+            <div class="row">
+              <div class="col-8"><img src="{{iconKategori}}" style="width: 5rem;" class="card-img-top float-left"><h2 class="card-title pt-4 float-left">{{ketKategori}}</h2></div>
+              <div class="col-4"><button class="btn btn-primary float-right mt-4" (click)="backKategori()">Back</button>
+              </div>
+            </div>
             <form class="row pt-4" [formGroup]="form" (ngSubmit)="onSubmit()">
               <div class="col-md-6">
                 <label class="form-label mt-2">No Laporan</label>
-                <input type="text" class="form-control" formControlName="no_laporan" [ngClass]="{ 'is-invalid': submitted && f.no_laporan.errors }">
+                <input type="text" class="form-control" formControlName="no_laporan" [ngClass]="{ 'is-invalid': submitted && f.no_laporan.errors }" [ngModel]="nomorLaporan" disabled>
                 <div *ngIf="submitted && f.no_laporan.errors" class="invalid-feedback">
                   <div *ngIf="f.no_laporan.errors.required">Nomor Laporan is required</div>
                 </div>
                 
+                <input type="text" class="form-control" formControlName="sub_kategori_id" [ngClass]="{ 'is-invalid': submitted && f.no_laporan.errors }" [ngModel]="idKategori" hidden>
+
+
                 <label class="form-label mt-2">Kategori</label>
-                <select formControlName="sub_kategori_id" class="form-select form-control" [ngModel]="1">
-                  <option *ngFor="let pos of kategori" value="{{pos.idsubkategori}}" selected>{{pos.sub_kategori}}</option>
+                <select formControlName="laporan_subcategory_id" class="form-select form-control" [ngModel]="1">
+                  <option *ngFor="let sub of subkategori" value="{{sub.id}}" selected>{{sub.name}}</option>
                 </select>
+
+                <label class="form-label mt-2">Total</label>
+                <input type="number" class="form-control" formControlName="laporan_total" [ngClass]="{ 'is-invalid': submitted && f.laporan_total.errors }">
+                <div *ngIf="submitted && f.laporan_total.errors" class="invalid-feedback">
+                  <div *ngIf="f.laporan_total.errors.required">Total is required</div>
+                </div>
 
                 <label class="form-label mt-2">Laporan</label>
                 <textarea class="form-control mb-2" formControlName="laporan_text" rows="3" [ngClass]="{ 'is-invalid': submitted && f.laporan_text.errors }"></textarea> 

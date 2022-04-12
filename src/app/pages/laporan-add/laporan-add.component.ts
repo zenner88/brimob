@@ -15,9 +15,17 @@ declare const google: any;
 
 export class LaporanAddComponent implements OnInit {
   form: FormGroup;
+  formKategori: FormGroup;
   submitted = false;
   kategori : any;
   errorMessage : any; 
+  subkategori: any;
+  showKategori:boolean = true;
+  showForm:boolean =  false;
+  idKategori :any;
+  iconKategori :any;
+  ketKategori :any;
+  nomorLaporan :any;
   constructor(private formBuilder: FormBuilder, private http: HttpClient, private global: GlobalService,) { }
 
   ngOnInit(): void {  
@@ -45,6 +53,13 @@ export class LaporanAddComponent implements OnInit {
           Validators.required,
         ]
       ],    
+      laporan_total: [
+        '',
+        [
+          Validators.required,
+        ]
+      ],    
+      laporan_subcategory_id: '',        
       lat_pelapor: '',        
       long_pelapor: '',        
       }
@@ -63,11 +78,71 @@ export class LaporanAddComponent implements OnInit {
         }
     }
     })
+  
+  // Get SubkategoriLaporan 
+  let body = {
+    "group" : "sitkamtibmas-harian"
+    };
+
+  this.http.post<any>(this.global.address+this.global.laporanSubKategori, body).subscribe({
+    next: data => {
+      this.subkategori = data;
+      console.log(data);
+    },
+    error: error => {
+        this.errorMessage = error.message;
+        console.error('There was an error!', error);
+        if (error.status == 401 ){
+          AuthInterceptor.signOut();
+        }
+    }
+    })
   }
   
   get f(): { [key: string]: AbstractControl } {
     return this.form.controls;
   }
+  getKategori(event){
+    // console.log(event.srcElement.currentSrc);
+    // console.log(event.srcElement.alt);
+    // console.log(event.path[2].innerText);
+    this.idKategori = event.srcElement.alt;
+    this.iconKategori = event.srcElement.currentSrc;
+    this.ketKategori = event.path[2].innerText;
+    let body = {
+      "sub_kategori_id" : this.idKategori
+    }
+    this.http.post<any>(this.global.address+this.global.nomorLaporan, body).subscribe({
+      next: data => {
+        console.log(data);
+        this.nomorLaporan = data.no_laporan;
+        if (data.valid == 1){
+          this.showKategori = false;
+          this.showForm = true;
+        }else{
+          Swal.fire({  
+            icon: 'error',  
+            title: 'Error',  
+            text: 'Laporan Sudah ada',  
+            background: '#000000',
+          })
+        }
+      },
+      error: error => {
+          this.errorMessage = error.message;
+          console.error('There was an error!', error);
+          if (error.status == 401 ){
+            AuthInterceptor.signOut();
+          }
+      }
+      })
+    
+  }
+  backKategori(){
+    this.showKategori = true;
+    this.showForm = false;
+  }
+
   onSubmit(): void {
     this.submitted = true;
     if (this.form.invalid) {

@@ -22,7 +22,8 @@ export class GlobalService {
     "position_id" : this.positionId,
     "start" : 0,
     "limit" : 1000,
-    "sub_kategori_id" : this.departmentId,
+    "sub_kategori_id" : 0,
+    // "sub_kategori_id" : this.departmentId,
     "status" : 1
   };
   private header = new HttpHeaders().set('Authorization', `Bearer ${this.token}`);
@@ -42,4 +43,6 @@ export class GlobalService {
   public readonly editPassword: string = '/user_setpass';  
   public readonly updateUser: string = '/update_user';  
   public readonly ebooks: string = '/ebooks';  
+  public readonly laporanSubKategori: string = '/laporan_subcategory';  
+  public readonly nomorLaporan: string = '/get_laporan_no';  
 }
