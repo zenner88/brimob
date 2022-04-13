@@ -6,6 +6,7 @@ import { MapsComponent } from '../../pages/maps/maps.component';
 import { UserProfileComponent } from '../../pages/user-profile/user-profile.component';
 import { TablesComponent } from '../../pages/tables/tables.component';
 import { LaporanComponent } from 'src/app/pages/laporan/laporan.component';
+import { LaporanBigComponent } from 'src/app/pages/laporan-big/laporan-big.component';
 import { CallcenterComponent } from 'src/app/pages/callcenter/callcenter.component';
 import { LaporanAddComponent } from 'src/app/pages/laporan-add/laporan-add.component';
 import { UserAddComponent } from 'src/app/pages/user-add/user-add.component';
@@ -18,6 +19,7 @@ import { ChartComponent } from 'src/app/pages/chart/chart.component';
 export const AdminLayoutRoutes: Routes = [
     { path: 'dashboard',      component: DashboardComponent },
     { path: 'laporan',      component: LaporanComponent },
+    { path: 'laporan-big',      component: LaporanBigComponent },
     { path: 'callcenter',     component: CallcenterComponent },
     { path: 'user-profile',   component: UserProfileComponent },
     { path: 'tables',         component: TablesComponent },

@@ -95,11 +95,22 @@
                   Chart
               </a>
           </li>
-          <li class="nav-item">
-            <a routerLinkActive="active" routerLink='/laporan' class="nav-link">
-                <i class="ni ni-books text-orange"></i>
-                Submit Laporan
+          <li class="nav-item nav-with-child">
+            <a class="nav-link">
+              <i class="ni ni-books text-orange"></i>Laporan
             </a>
+            <ul class="nav-item-child">
+              <li class="nav-item">
+                <a routerLinkActive="active" routerLink='/laporan-big' class="nav-link">
+                  Laporan
+                </a>
+              </li>
+              <li class="nav-item">
+                <a routerLinkActive="active" routerLink='/laporan' class="nav-link">
+                  Submit Laporan
+                </a>
+              </li>
+            </ul>
           </li>
           <!-- <li class="nav-item">
             <a routerLinkActive="active" routerLink='/callcenter' class="nav-link">

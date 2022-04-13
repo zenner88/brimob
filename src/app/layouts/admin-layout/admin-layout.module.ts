@@ -11,6 +11,7 @@ import { MapsComponent } from '../../pages/maps/maps.component';
 import { UserProfileComponent } from '../../pages/user-profile/user-profile.component';
 import { TablesComponent } from '../../pages/tables/tables.component';
 import { LaporanComponent } from '../../pages/laporan/laporan.component';
+import { LaporanBigComponent } from 'src/app/pages/laporan-big/laporan-big.component';
 import { EbookComponent } from '../../pages/ebook/ebook.component';
 import { LaporanAddComponent } from '../../pages/laporan-add/laporan-add.component';
 import { UserAddComponent } from '../../pages/user-add/user-add.component';
@@ -55,7 +56,8 @@ import { ChartModule } from 'angular-highcharts';
     LicenseComponent,
     NotifComponent,
     SmsComponent,
-    ChartComponent
+    ChartComponent,
+    LaporanBigComponent
   ],
   providers: [ GlobalService ]
 })

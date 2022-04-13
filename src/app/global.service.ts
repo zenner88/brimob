@@ -45,4 +45,7 @@ export class GlobalService {
   public readonly ebooks: string = '/ebooks';  
   public readonly laporanSubKategori: string = '/laporan_subcategory';  
   public readonly nomorLaporan: string = '/get_laporan_no';  
+  public readonly laporanPublished: string = '/laporan_published';  
+  public readonly laporanApprove: string = '/laporan_approve';  
+  public readonly laporanReview: string = '/laporan_review';  
 }
