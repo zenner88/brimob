@@ -15,6 +15,7 @@ declare const google: any;
 
 export class LaporanAddComponent implements OnInit {
   form: FormGroup;
+  formFile: FormGroup;
   formKategori: FormGroup;
   submitted = false;
   kategori : any;
@@ -62,6 +63,13 @@ export class LaporanAddComponent implements OnInit {
       laporan_subcategory_id: '',        
       lat_pelapor: '',        
       long_pelapor: '',        
+      }
+    );
+    this.formFile = this.formBuilder.group(
+      {
+      file: '',        
+      laporan_no: '',        
+      laporan_subcategory_id: '',        
       }
     );
   // Get Subkategori 
@@ -123,7 +131,7 @@ export class LaporanAddComponent implements OnInit {
           Swal.fire({  
             icon: 'error',  
             title: 'Error',  
-            text: 'Laporan Sudah ada',  
+            text: 'Laporan Hari ini Sudah di Approve!',  
             background: '#000000',
           })
         }
@@ -148,6 +156,7 @@ export class LaporanAddComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
+    console.log(this.formFile.value)
     this.http.post<any>(this.global.address+this.global.tambahLaporan, this.form.value, this.global.headers).subscribe({
       next: data => {
         let valid = data.valid;
@@ -158,6 +167,24 @@ export class LaporanAddComponent implements OnInit {
             text: 'Laporan berhasil ditambahkan!',  
             background: '#000000',
           })
+          let file = this.formFile.value;
+          if ( file.file = null || '' || undefined){
+            console.log("file KOSONG!!")
+          }else{
+            this.http.post<any>(this.global.address+this.global.uploadFile, this.formFile.value, this.global.headers).subscribe({
+              next: data => {
+                let valid = data.valid;
+                console.log("file upload : "+data.valid)
+                error: error => {
+                  this.errorMessage = error.message;
+                  console.error('There was an error!', error);
+                  if (error.status == 401 ){
+                    AuthInterceptor.signOut();
+                  }
+              }
+              }
+            })
+          }
           this.onReset();
         }
         else if (valid == 2){
@@ -182,6 +209,7 @@ export class LaporanAddComponent implements OnInit {
   onReset(): void {
     this.submitted = false;
     this.form.reset();
+    this.formFile.reset();
   }
 
   userAddress: string = ''

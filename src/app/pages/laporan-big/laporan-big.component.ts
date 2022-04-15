@@ -159,7 +159,7 @@ review(index:any){
       Swal.fire({  
         // icon: 'info',  
         title: 'No Laporan '+dot[0].no_laporan,  
-        html: 'Kategori : '+dot[0].laporan_subcategory_id+'<BR> Sub Kategori : '+dot[0].sub_kategori_id+'<BR> Status : '+dot[0].status,  
+        html: 'Kategori : '+dot[0].name+'<BR> Sub Kategori : '+dot[0].sub_kategori+'<BR> Status : '+dot[0].status,  
         background: '#fff',
       })
     },
@@ -178,16 +178,26 @@ approve(index:any){
   let body = {
     "no_laporan" : no
     }
-  this.http.post<any>(this.global.address+this.global.laporanApprove, body).subscribe({
+  this.http.post<any>(this.global.address+this.global.laporanApprove, body, this.global.headers).subscribe({
     next: data => {
       console.log(data);
       let dot = data;
-      Swal.fire({  
-        icon: 'info',  
-        title: 'No Laporan '+dot[0].no_laporan,  
-        html: 'Kategori : '+dot[0].laporan_subcategory_id+'<BR> Sub Kategori : '+dot[0].sub_kategori_id+'<BR> Status : '+dot[0].status,  
-        background: '#fff',
-      })
+      if (dot.valid == 1){
+        Swal.fire({  
+          icon: 'info',  
+          title: dot.result,  
+          text: 'Laporan berhasil di Approve!',  
+          background: '#fff',
+        })
+        this.ngOnInit;
+      }else{
+        Swal.fire({  
+          icon: 'warning',  
+          title: dot.result,  
+          text: '?',  
+          background: '#fff',
+        })
+      }
     },
     error: error => {
         this.errorMessage = error.message;

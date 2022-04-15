@@ -34,9 +34,9 @@
               <tr>
                 <th class="px-md-2">No</th>
                 <th class="px-md-2">No Laporan</th>
-                <th class="px-md-2">Approved By</th>
                 <th class="px-md-2">Date Submitted</th>
                 <th class="px-md-2">Date Approved</th>
+                <th class="px-md-2">Approved By</th>
                 <th class="px-md-2">Status</th>
                 <th class="px-md-2" colspan="2"></th>
               </tr>
@@ -45,9 +45,9 @@
               <tr title="CLICK FOR DETAILS..." *ngFor="let zz of workorders | filter: filterTerm | slice: (page-1) * pageSize : page * pageSize; index as i">
                 <td class="px-md-2">{{i+1}}</td>
                 <td class="px-md-2">{{zz.no_laporan}}</td>
-                <td class="px-md-2" style="white-space: normal;">{{zz.approved_by}}</td>
                 <td class="px-md-2">{{zz.date_submitted | date: 'EEEE, d MMMM y'}}</td>
                 <td class="px-md-2">{{zz.date_approved | date: 'EEEE, d MMMM y'}}</td>
+                <td class="px-md-2" style="white-space: normal;">{{zz.username}}</td>
                 <td class="px-md-2" style="white-space: normal;">{{zz.status}}</td>
                 <td class="px-md-2"><i class="fa fa-list-alt text-warning pointer" title="Review" (click)="review(zz)"></i></td>
                 <td class="px-md-2"><i class="fa fa-check-square text-success pointer" title="Approve" (click)="approve(zz)"></i></td>

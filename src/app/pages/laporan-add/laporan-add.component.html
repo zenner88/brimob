@@ -44,7 +44,7 @@
 
 
                 <label class="form-label mt-2">Kategori</label>
-                <select formControlName="laporan_subcategory_id" class="form-select form-control" [ngModel]="1">
+                <select formControlName="laporan_subcategory_id" class="form-select form-control" [ngModel]="1" [(ngModel)]="first" (ngModelChange)="second = first">
                   <option *ngFor="let sub of subkategori" value="{{sub.id}}" selected>{{sub.name}}</option>
                 </select>
 
@@ -73,7 +73,19 @@
                   <div *ngIf="f.lokasiLaporan.errors.required">Isi Pengaduan is required</div>
                 </div>         
                 <div id="map-canvas" class="map-canvas" data-lat="0.7893" data-lng="113.9213" style="height: 220px;"></div>            
-              </div>            
+              </div>    
+              <div class="col-12">
+                <div class="card mb-2">
+                  <div class="card-body">
+                    <form class="row" [formGroup]="formFile" (ngSubmit)="onSubmit()">
+                      <label for="formFile" class="form-label">File Pendukung <i class="text-danger">(optional)</i></label>
+                      <input class="form-control" formControlName="file" type="file" id="formFile">
+                      <input type="text" class="form-control" formControlName="laporan_no" [ngModel]="nomorLaporan">
+                      <input type="text" class="form-control" formControlName="laporan_subcategory_id" [ngModel]="laporan_subcategory_id" [(ngModel)]="second" [value]="first">
+                    </form>
+                  </div>
+                </div>
+              </div>        
               <div class="col-12 card-footer py-2">
                 <button type="submit" class="btn btn-primary">Simpan Laporan</button>
                 <button type="button" (click)="onReset()" class="btn btn-warning float-right">Reset</button>

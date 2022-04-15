@@ -48,4 +48,5 @@ export class GlobalService {
   public readonly laporanPublished: string = '/laporan_published';  
   public readonly laporanApprove: string = '/laporan_approve';  
   public readonly laporanReview: string = '/laporan_review';  
+  public readonly uploadFile: string = '/upload';  
 }
