@@ -5,6 +5,11 @@ import * as am5 from '@amcharts/amcharts5';
 import * as am5xy from '@amcharts/amcharts5/xy';
 import * as am5percent from "@amcharts/amcharts5/percent";
 import am5themes_Animated from '@amcharts/amcharts5/themes/Animated';
+declare global {
+  interface Window {
+    initMap: () => void;
+  }
+}
 
 @Component({
   selector: 'app-chart',
@@ -17,7 +22,9 @@ export class ChartComponent implements OnInit {
 
   constructor(@Inject(PLATFORM_ID) private platformId, private zone: NgZone) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+   
+  }
   
   // Run the function only in the browser
   browserOnly(f: () => void) {

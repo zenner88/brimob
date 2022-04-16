@@ -37,6 +37,7 @@ export class DashboardComponent implements OnInit {
   kategoriId:number;
   formFilter1: FormGroup;
   formFilter2: FormGroup;
+  mapOptions: { zoom: number; scrollwheel: boolean; center: any; mapTypeId: any; styles: ({ elementType: string; stylers: { color: string; }[]; featureType?: undefined; } | { featureType: string; elementType: string; stylers: { color: string; }[]; })[]; };
 
   constructor(private http: HttpClient, private global: GlobalService, private formBuilder: FormBuilder) {
     this.formFilter1 = this.formBuilder.group({
@@ -48,6 +49,42 @@ export class DashboardComponent implements OnInit {
   }
   
   ngOnInit() {
+    let map: google.maps.Map;
+    const chicago = { lat: 41.85, lng: -87.65 };
+    function CenterControl(controlDiv: Element, map: google.maps.Map) {
+      // Set CSS for the control border.
+      const controlUI = document.createElement("div");
+  
+      controlUI.style.backgroundColor = "#E30016";
+      controlUI.style.border = "1px solid #fff";
+      controlUI.style.borderRadius = "5px";
+      controlUI.style.boxShadow = "0 2px 6px rgba(0,0,0,.3)";
+      controlUI.style.cursor = "pointer";
+      controlUI.style.marginTop = "10px";
+      controlUI.style.marginBottom = "22px";
+      controlUI.style.marginRight = "8px";
+      controlUI.style.textAlign = "center";
+      controlUI.title = "Click to Filter map";
+      controlDiv.appendChild(controlUI);
+  
+      // Set CSS for the control interior.
+      const controlText = document.createElement("div");
+  
+      controlText.style.color = "rgb(25,25,25)";
+      controlText.style.fontFamily = "Roboto,Arial,sans-serif";
+      controlText.style.fontSize = "16px";
+      controlText.style.lineHeight = "38px";
+      controlText.style.paddingLeft = "15px";
+      controlText.style.paddingRight = "15px";
+      controlText.innerHTML = "<i class='fa fa-bars text-light'></i>";
+      controlUI.appendChild(controlText);
+  
+      // Setup the click event listeners: simply set the map to Chicago.
+      controlUI.addEventListener("click", () => {
+        "asdasdasdsadsd"
+      });
+    }
+
     this.loadRegion();
     this.loadKategori();
     let body = {      
@@ -89,13 +126,13 @@ export class DashboardComponent implements OnInit {
       // maps 
     let dataMap = this.workorders
     this.markers = dataMap
-    let map = document.getElementById('map-canvas');
-    let lat = map.getAttribute('data-lat');
-    let lng = map.getAttribute('data-lng');
+    let mapi = document.getElementById('map-canvas');
+    let lat = mapi.getAttribute('data-lat');
+    let lng = mapi.getAttribute('data-lng');
 
     var myLatlng = new google.maps.LatLng(lat, lng);
     
-    var mapOptions = {
+    this.mapOptions = {
         zoom: 5,
         scrollwheel: false,
         center: myLatlng,
@@ -181,7 +218,12 @@ export class DashboardComponent implements OnInit {
           },
         ],
     }
-    map = new google.maps.Map(map, mapOptions);
+    map = new google.maps.Map(mapi, this.mapOptions);
+
+    const centerControlDiv = document.createElement("div");
+    CenterControl(centerControlDiv, map);
+    map.controls[google.maps.ControlPosition.RIGHT_TOP].push(centerControlDiv);
+
     this.markers.forEach(location => {
     // custom logo for marker 
     let markerLogo: string;
@@ -270,93 +312,7 @@ loadMaps(){
   let lng = map.getAttribute('data-lng');
 
   var myLatlng = new google.maps.LatLng(lat, lng);
-  var mapOptions = {
-      zoom: 5,
-      scrollwheel: false,
-      center: myLatlng,
-      mapTypeId: google.maps.MapTypeId.ROADMAP,
-      styles: [
-        { elementType: "geometry", stylers: [{ color: "#242f3e" }] },
-        { elementType: "labels.text.stroke", stylers: [{ color: "#242f3e" }] },
-        { elementType: "labels.text.fill", stylers: [{ color: "#746855" }] },
-        {
-          featureType: "administrative.locality",
-          elementType: "labels.text.fill",
-          stylers: [{ color: "#d59563" }],
-        },
-        {
-          featureType: "poi",
-          elementType: "labels.text.fill",
-          stylers: [{ color: "#d59563" }],
-        },
-        {
-          featureType: "poi.park",
-          elementType: "geometry",
-          stylers: [{ color: "#263c3f" }],
-        },
-        {
-          featureType: "poi.park",
-          elementType: "labels.text.fill",
-          stylers: [{ color: "#6b9a76" }],
-        },
-        {
-          featureType: "road",
-          elementType: "geometry",
-          stylers: [{ color: "#38414e" }],
-        },
-        {
-          featureType: "road",
-          elementType: "geometry.stroke",
-          stylers: [{ color: "#212a37" }],
-        },
-        {
-          featureType: "road",
-          elementType: "labels.text.fill",
-          stylers: [{ color: "#9ca5b3" }],
-        },
-        {
-          featureType: "road.highway",
-          elementType: "geometry",
-          stylers: [{ color: "#746855" }],
-        },
-        {
-          featureType: "road.highway",
-          elementType: "geometry.stroke",
-          stylers: [{ color: "#1f2835" }],
-        },
-        {
-          featureType: "road.highway",
-          elementType: "labels.text.fill",
-          stylers: [{ color: "#f3d19c" }],
-        },
-        {
-          featureType: "transit",
-          elementType: "geometry",
-          stylers: [{ color: "#2f3948" }],
-        },
-        {
-          featureType: "transit.station",
-          elementType: "labels.text.fill",
-          stylers: [{ color: "#d59563" }],
-        },
-        {
-          featureType: "water",
-          elementType: "geometry",
-          stylers: [{ color: "#17263c" }],
-        },
-        {
-          featureType: "water",
-          elementType: "labels.text.fill",
-          stylers: [{ color: "#515c6d" }],
-        },
-        {
-          featureType: "water",
-          elementType: "labels.text.stroke",
-          stylers: [{ color: "#17263c" }],
-        },
-      ],
-  }
-  map = new google.maps.Map(map, mapOptions);
+  map = new google.maps.Map(map, this.mapOptions);
   this.markers.forEach(location => {
   // custom logo for marker 
   let markerLogo: string;
@@ -399,6 +355,7 @@ loadMaps(){
   }
   }) 
 }
+
 loadRegion() {
   return this.http.get<any>(this.global.address+this.global.region).subscribe({
     next: regi => {
@@ -426,7 +383,7 @@ loadKategori() {
         AuthInterceptor.signOut();
       }
     }
-    })  
+  })  
 }
 
 checkRegion(e){
@@ -456,4 +413,5 @@ checkKategori(e){
   console.log(this.kategoriId);
   this.loadMaps();
 }
+
 }

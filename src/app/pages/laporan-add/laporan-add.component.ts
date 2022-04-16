@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { AuthInterceptor } from '../../_helpers/auth.interceptor';
 import { GlobalService } from '../../global.service';
 import Swal from 'sweetalert2'
+import { RouterLink } from '@angular/router';
 
 declare const google: any;
 
@@ -27,6 +28,7 @@ export class LaporanAddComponent implements OnInit {
   iconKategori :any;
   ketKategori :any;
   nomorLaporan :any;
+  file: File = null;
   constructor(private formBuilder: FormBuilder, private http: HttpClient, private global: GlobalService,) { }
 
   ngOnInit(): void {  
@@ -150,9 +152,38 @@ export class LaporanAddComponent implements OnInit {
     this.showKategori = true;
     this.showForm = false;
   }
+  
+  onChange(event) {
+    this.file = event.target.files[0];
+    console.log(this.file);
+  }
 
+  // onSubmit(): void {
+  //   const file = this.formFile.value;
+  //   const formData = new FormData();
+  //   formData.append('file', this.file);
+  //   formData.append('laporan_no', '1');
+  //   formData.append('laporan_subcategory_id', file.laporan_subcategory_id);
+  //   if ( file.file = null && '' && undefined){
+  //     console.log("file KOSONG!!")
+  //   }else{
+  //     this.http.post<any>(this.global.address+this.global.uploadFile, formData, this.global.headers).subscribe({
+  //       next: data => {
+  //         let valid = data.valid;
+  //         console.log("file upload : "+data)
+  //         error: (error: { message: any; status: number; }) => {
+  //           this.errorMessage = error.message;
+  //           console.error('There was an error!', error);
+  //           if (error.status == 401 ){
+  //             AuthInterceptor.signOut();
+  //           }
+  //       }
+  //       }
+  //     })
+  //   }
+  // }
   onSubmit(): void {
-    this.submitted = true;
+  this.submitted = true;
     if (this.form.invalid) {
       return;
     }
@@ -167,15 +198,19 @@ export class LaporanAddComponent implements OnInit {
             text: 'Laporan berhasil ditambahkan!',  
             background: '#000000',
           })
-          let file = this.formFile.value;
-          if ( file.file = null || '' || undefined){
-            console.log("file KOSONG!!")
-          }else{
-            this.http.post<any>(this.global.address+this.global.uploadFile, this.formFile.value, this.global.headers).subscribe({
+          const file = this.formFile.value;
+          const formData = new FormData();
+          formData.append('file', this.file);
+          formData.append('laporan_no', '1');
+          formData.append('laporan_subcategory_id', file.laporan_subcategory_id);
+          console.log('isi file :', file.file);
+
+          if ( this.file ){
+            this.http.post<any>(this.global.address+this.global.uploadFile, formData, this.global.headers).subscribe({
               next: data => {
                 let valid = data.valid;
-                console.log("file upload : "+data.valid)
-                error: error => {
+                console.log("file upload : "+data)
+                error: (error: { message: any; status: number; }) => {
                   this.errorMessage = error.message;
                   console.error('There was an error!', error);
                   if (error.status == 401 ){
@@ -184,6 +219,8 @@ export class LaporanAddComponent implements OnInit {
               }
               }
             })
+          }else{
+            console.log("file KOSONG!!")
           }
           this.onReset();
         }
@@ -206,6 +243,7 @@ export class LaporanAddComponent implements OnInit {
       })
     console.log(JSON.stringify(this.form.value, null, 2));
   }
+
   onReset(): void {
     this.submitted = false;
     this.form.reset();

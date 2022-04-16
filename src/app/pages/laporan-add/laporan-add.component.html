@@ -79,9 +79,9 @@
                   <div class="card-body">
                     <form class="row" [formGroup]="formFile" (ngSubmit)="onSubmit()">
                       <label for="formFile" class="form-label">File Pendukung <i class="text-danger">(optional)</i></label>
-                      <input class="form-control" formControlName="file" type="file" id="formFile">
-                      <input type="text" class="form-control" formControlName="laporan_no" [ngModel]="nomorLaporan">
-                      <input type="text" class="form-control" formControlName="laporan_subcategory_id" [ngModel]="laporan_subcategory_id" [(ngModel)]="second" [value]="first">
+                      <input class="form-control" (change)="onChange($event)" formControlName="file" type="file" id="formFile">
+                      <input type="text" class="form-control" formControlName="laporan_no" [ngModel]="nomorLaporan" hidden>
+                      <input type="number" class="form-control" formControlName="laporan_subcategory_id" [ngModel]="laporan_subcategory_id" [(ngModel)]="second" [value]="first" hidden>
                     </form>
                   </div>
                 </div>
