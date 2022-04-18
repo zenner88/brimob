@@ -3,7 +3,6 @@ import { GlobalService } from '../../global.service';
 import { AuthInterceptor } from '../../_helpers/auth.interceptor';
 import { HttpClient } from '@angular/common/http';
 import { FormBuilder, FormGroup, FormControl, Validators, FormArray} from '@angular/forms';
-import { maps } from 'highcharts';
 declare const google: any;
 
 @Component({
@@ -16,6 +15,7 @@ export class DashboardComponent implements OnInit {
   collectionSize: number;
   workorders:any = [];
   open: any;
+  menu: any;
   opens:any = [];
   received: any;
   receiveds:any = [];
@@ -38,6 +38,7 @@ export class DashboardComponent implements OnInit {
   formFilter1: FormGroup;
   formFilter2: FormGroup;
   mapOptions: { zoom: number; scrollwheel: boolean; center: any; mapTypeId: any; styles: ({ elementType: string; stylers: { color: string; }[]; featureType?: undefined; } | { featureType: string; elementType: string; stylers: { color: string; }[]; })[]; };
+  html: string;
 
   constructor(private http: HttpClient, private global: GlobalService, private formBuilder: FormBuilder) {
     this.formFilter1 = this.formBuilder.group({
@@ -49,14 +50,15 @@ export class DashboardComponent implements OnInit {
   }
   
   ngOnInit() {
+    this.html = "<h1>ASLJKHAKSDJHALSKDHLASKD</h1>"
     let map: google.maps.Map;
-    const chicago = { lat: 41.85, lng: -87.65 };
-    function CenterControl(controlDiv: Element, map: google.maps.Map) {
+
+    function FilterControl(controlDiv: Element, map: google.maps.Map) {
       // Set CSS for the control border.
       const controlUI = document.createElement("div");
   
       controlUI.style.backgroundColor = "#E30016";
-      controlUI.style.border = "1px solid #fff";
+      controlUI.style.border = "1px solid #000";
       controlUI.style.borderRadius = "5px";
       controlUI.style.boxShadow = "0 2px 6px rgba(0,0,0,.3)";
       controlUI.style.cursor = "pointer";
@@ -81,8 +83,45 @@ export class DashboardComponent implements OnInit {
   
       // Setup the click event listeners: simply set the map to Chicago.
       controlUI.addEventListener("click", () => {
-        "asdasdasdsadsd"
+        let element = document.getElementById("filterMenu");
+        // console.log(element);
+        // let hidden = element.style.visibility("none");  
+        if (element.style.display === 'none'){
+          element.style.display = 'block';
+        }else{
+          element.style.display = 'none';
+        }
       });
+    }
+    
+    function FilterMenu(controlDiv: Element, map: google.maps.Map) {    
+      // Set CSS for the control border.
+      const controlUI = document.createElement("div");
+  
+      // controlUI.style.backgroundColor = "#E30016";
+      controlUI.style.border = "1px solid #000";
+      controlUI.style.borderRadius = "5px";
+      controlUI.style.boxShadow = "0 2px 6px rgba(0,0,0,.3)";
+      controlUI.style.cursor = "pointer";
+      controlUI.style.marginTop = "-62px";
+      controlUI.style.marginBottom = "22px";
+      controlUI.style.marginRight = "55px";
+      controlUI.style.textAlign = "left";
+      controlUI.title = "Click to Filter map";
+      controlDiv.appendChild(controlUI);
+  
+      // Set CSS for the control interior.
+      const controlText = document.createElement("div");
+  
+      controlText.style.color = "rgb(25,25,25)";
+      controlText.style.fontFamily = "Roboto,Arial,sans-serif";
+      controlText.style.fontSize = "10px";
+      controlText.style.lineHeight = "200px";
+      controlText.style.paddingLeft = "0px";
+      controlText.style.paddingRight = "0px";
+      controlText.innerHTML = '<div id="filterMenu" class="card card-stats bg-gradient-dark text-light px-2 py-2" style="display: none"><form [formGroup]="formFilter1" id="filterRegion"><h5 class="text-light">Region</h5></form></div>';
+      controlUI.appendChild(controlText);
+
     }
 
     this.loadRegion();
@@ -220,10 +259,13 @@ export class DashboardComponent implements OnInit {
     }
     map = new google.maps.Map(mapi, this.mapOptions);
 
-    const centerControlDiv = document.createElement("div");
-    CenterControl(centerControlDiv, map);
-    map.controls[google.maps.ControlPosition.RIGHT_TOP].push(centerControlDiv);
-
+    const filterControlDiv = document.createElement("div");
+    FilterControl(filterControlDiv, map);
+    map.controls[google.maps.ControlPosition.RIGHT_TOP].push(filterControlDiv);
+    
+    const filterMenuDiv = document.createElement("div");
+    FilterMenu(filterMenuDiv, map);
+    map.controls[google.maps.ControlPosition.RIGHT_TOP].push(filterMenuDiv);
     this.markers.forEach(location => {
     // custom logo for marker 
     let markerLogo: string;
@@ -264,9 +306,22 @@ export class DashboardComponent implements OnInit {
           AuthInterceptor.signOut();
         }
     }
-    })       
+    })      
+    // let div = document.getElementById("zen");
+    // console.log(div);
 }
-
+loadZen(){
+  let div = document.getElementById("filterRegion");
+  let div2 = document.getElementById("map-canvas");
+  let cek = document.getElementsByClassName("ada");
+  if (cek.length === 0){
+    div2.setAttribute("class", "ada")
+    let regi = this.region;
+    div.insertAdjacentHTML('beforeend','<div class="form-check" *ngFor="let regi of region"><input class="form-check-input" type="checkbox" value="'+regi[0].id+'" (change)="checkRegion($event)"><label class="form-check-label" for="flexCheckDefault">'+regi[0].region_name+'</label><input class="form-check-input" type="checkbox" value="'+regi[1].id+'" (change)="checkRegion($event)"><label class="form-check-label" for="flexCheckDefault">'+regi[1].region_name+'</label></div>');
+  }
+  // console.log(div2);
+    
+}
 loadMaps(){
   let body = {      
     "level_user" : this.global.levelUser,
@@ -415,3 +470,7 @@ checkKategori(e){
 }
 
 }
+function html(html: any) {
+  throw new Error('Function not implemented.');
+}
+
