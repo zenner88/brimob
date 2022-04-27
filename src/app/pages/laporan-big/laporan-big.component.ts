@@ -1,10 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AuthInterceptor } from '../../_helpers/auth.interceptor';
 import { GlobalService } from '../../global.service';
 import { DomSanitizer, SafeHtml} from '@angular/platform-browser';
 import Swal from 'sweetalert2'
+declare var require: any;
 
+import * as pdfMake from "pdfmake/build/pdfmake";
+import * as pdfFonts from "pdfmake/build/vfs_fonts";
+const htmlToPdfmake = require("html-to-pdfmake");
+(pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 declare const google: any;
 
 @Component({
@@ -14,6 +19,9 @@ declare const google: any;
 })
 
 export class LaporanBigComponent implements OnInit {
+  @ViewChild('pdfTable')
+  pdfTable!: ElementRef;
+
   html : SafeHtml;
   errorMessage:any;
   isShowTable: boolean = false ;
@@ -219,5 +227,13 @@ approve(index:any){
   showHeader (){
       this.isShowTable = true;
       this.isShowDetalis = false;
+  }
+
+  public downloadAsPDF() {
+    const pdfTable = this.pdfTable.nativeElement;
+    var html = htmlToPdfmake(pdfTable.innerHTML);
+    const documentDefinition = { content: html };
+    pdfMake.createPdf(documentDefinition).download(); 
+     
   }
 }
