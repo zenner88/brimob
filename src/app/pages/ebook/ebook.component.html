@@ -25,13 +25,15 @@
                 <th class="px-md-2">No</th>
                 <th class="px-md-2">Nama File</th>
                 <th class="px-md-2">Tanggal</th>
+                <th class="px-md-2"></th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let zz of workorders | filter: filterTerm | slice: (page-1) * pageSize : page * pageSize; index as i" (click)="showDetails(zz)">
+              <tr *ngFor="let zz of workorders | filter: filterTerm | slice: (page-1) * pageSize : page * pageSize; index as i">
                 <td class="px-md-2" style="white-space: normal;">{{i+1}}</td>
                 <td class="px-md-2" style="white-space: normal;">{{zz.filename}}</td>
                 <td class="px-md-2">{{zz.tanggal | date: 'EEEE, d MMMM y'}}</td>
+                <td class="px-md-2"><a onclick="window.open('https://ccntmc.1500669.com/ntmc/fileupload/logo-korlantas.png', '_blank');"><i class="fa fa-download text-danger pointer" title="Download"></i></a></td>
               </tr>
             </tbody>
           </table>
