@@ -1,0 +1,56 @@
+<div class="header bg-gradient-danger pb-5 pt-5 pt-md-8">
+</div>
+<!-- Page content -->
+<div class="container-fluid mt--7 bg-gradient-darker">
+  <!-- Table -->
+  <div class="row">
+    <div class="col">
+      <div class="card shadow border border-dark mx--4">
+        <div class="card-header bg-dark text-light px-4 py-2">
+          <div class="row" [class.hidden]="isShowHeader">
+            <div class="col-6 col-md-9">
+                <h2 class="mb-0 text-light">Laporan Published</h2>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="float-end" >
+                <button class="btn btn-primary btn-sm float-right mt-2" (click)="downloadAsPDF();">Export To PDF</button>
+              </div>
+            </div>
+          </div>        
+        </div>
+        <div class="table-responsive" [class.hidden]="isShowTable" id="pdfTable">
+          <div class=""#pdfTable>
+           <table class="table table-sm row-border table-hover">
+            <thead class="table-dark">
+              <tr>
+                <th class="px-md-2">No</th>
+                <th class="px-md-2">No Laporan</th>
+                <th class="px-md-2">Kategori</th>
+                <th class="px-md-2">Sub Kategori</th>
+                <th class="px-md-2">Date Submitted</th>
+                <th class="px-md-2">Date Approved</th>
+                <!-- <th class="px-md-2">Approved By</th> -->
+                <th class="px-md-2">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr title="CLICK FOR DETAILS..." *ngFor="let zz of workorders | filter: filterTerm | slice: (page-1) * pageSize : page * pageSize; index as i">
+                <td class="px-md-2">{{i+1}}</td>
+                <td class="px-md-2">{{zz.no_laporan}}</td>
+                <td class="px-md-2">{{zz.sub_kategori}}</td>
+                <td class="px-md-2">{{zz.name}}</td>
+                <td class="px-md-2">{{zz.date_submitted | date: 'EEEE, d MMMM y'}}</td>
+                <td class="px-md-2">{{zz.date_approved | date: 'EEEE, d MMMM y'}}</td>
+                <!-- <td class="px-md-2" style="white-space: normal;">{{zz.username}}</td> -->
+                <td class="px-md-2" style="white-space: normal;">{{zz.status}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+          <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [maxSize]="5" [boundaryLinks]="true"
+    [pageSize]="pageSize" class="d-flex justify-content-center mt-4"></ngb-pagination>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -15,11 +15,13 @@ import { LicenseComponent } from 'src/app/pages/license/license.component';
 import { NotifComponent } from 'src/app/pages/notif/notif.component';
 import { SmsComponent } from 'src/app/pages/sms/sms.component';
 import { ChartComponent } from 'src/app/pages/chart/chart.component';
+import { LaporanPrintComponent } from 'src/app/pages/laporan-print/laporan-print.component';
 
 export const AdminLayoutRoutes: Routes = [
     { path: 'dashboard',      component: DashboardComponent },
     { path: 'laporan',      component: LaporanComponent },
     { path: 'laporan-big',      component: LaporanBigComponent },
+    { path: 'laporan-print',      component: LaporanPrintComponent },
     { path: 'callcenter',     component: CallcenterComponent },
     { path: 'user-profile',   component: UserProfileComponent },
     { path: 'tables',         component: TablesComponent },

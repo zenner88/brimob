@@ -12,6 +12,7 @@ import { UserProfileComponent } from '../../pages/user-profile/user-profile.comp
 import { TablesComponent } from '../../pages/tables/tables.component';
 import { LaporanComponent } from '../../pages/laporan/laporan.component';
 import { LaporanBigComponent } from 'src/app/pages/laporan-big/laporan-big.component';
+import { LaporanPrintComponent } from 'src/app/pages/laporan-print/laporan-print.component';
 import { EbookComponent } from '../../pages/ebook/ebook.component';
 import { LaporanAddComponent } from '../../pages/laporan-add/laporan-add.component';
 import { UserAddComponent } from '../../pages/user-add/user-add.component';
@@ -57,7 +58,8 @@ import { ChartModule } from 'angular-highcharts';
     NotifComponent,
     SmsComponent,
     ChartComponent,
-    LaporanBigComponent
+    LaporanBigComponent,
+    LaporanPrintComponent
   ],
   providers: [ GlobalService ]
 })

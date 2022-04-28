@@ -22,6 +22,7 @@ export class NavbarComponent implements OnInit {
   department_name: string[] = [];
   region_name: string[] = [];
   level_user: string[] = [];
+  name: string[] = [];
   // tokenStorageService: TokenStorageService;
 
   constructor(location: Location,  private element: ElementRef, private router: Router, private tokenStorage: TokenStorageService) {
@@ -47,7 +48,7 @@ export class NavbarComponent implements OnInit {
       this.region_name = this.tokenStorage.getUser().region_name;
       this.department_name = this.tokenStorage.getUser().department_name;
       this.level_user = this.tokenStorage.getUser().level_user;
-      
+      this.name = this.tokenStorage.getUser().name;
     }
   }
   getTitle(){

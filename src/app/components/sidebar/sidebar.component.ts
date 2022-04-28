@@ -54,6 +54,7 @@ export class SidebarComponent implements OnInit {
   department_name: string[] = [];
   region_name: string[] = [];
   level_user: string[] = [];
+  name: string[] = [];
   public menuItems: any[];
   public isCollapsed = true;
 
@@ -79,6 +80,7 @@ export class SidebarComponent implements OnInit {
     this.region_name = this.tokenStorage.getUser().region_name;
     this.department_name = this.tokenStorage.getUser().department_name;
     this.level_user = this.tokenStorage.getUser().level_user;
+    this.name = this.tokenStorage.getUser().name;
     
   }
   //  sub menu 
