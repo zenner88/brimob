@@ -1,0 +1,16 @@
+::ng-deep .card {
+    // margin-bottom: 20px;
+    background-color: transparent;
+    border-color: #1d2124;
+    margin: 0em;
+    padding: 0px;
+
+  }
+::ng-deep .card-header {
+    margin-bottom: 0;
+    padding: 1px;
+    background-color: transparent;
+  }
+::ng-deep .card .card-header.active > a > span {
+    color: #1d2124;
+  }

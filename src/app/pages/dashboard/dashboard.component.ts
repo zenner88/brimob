@@ -116,10 +116,10 @@ export class DashboardComponent implements OnInit {
       controlText.style.color = "rgb(25,25,25)";
       controlText.style.fontFamily = "Roboto,Arial,sans-serif";
       controlText.style.fontSize = "10px";
-      controlText.style.lineHeight = "200px";
-      controlText.style.paddingLeft = "0px";
-      controlText.style.paddingRight = "0px";
-      controlText.innerHTML = '<div id="filterMenu" class="card card-stats bg-gradient-dark text-light px-2 py-2" style="display: none"><form [formGroup]="formFilter1" id="filterRegion"><h5 class="text-light">Region</h5></form></div>';
+      controlText.style.lineHeight = "20px";
+      controlText.style.paddingLeft = "-10px";
+      controlText.style.paddingRight = "-10px";
+      controlText.innerHTML = '<div id="filterMenu" class="card card-stats bg-gradient-dark text-light px-2 py-2" style="display: none"><div id="filterRegion"></div></div>';
       controlUI.appendChild(controlText);
 
     }
@@ -317,7 +317,10 @@ loadZen(){
   if (cek.length === 0){
     div2.setAttribute("class", "ada")
     let regi = this.region;
-    div.insertAdjacentHTML('beforeend','<div class="form-check" *ngFor="let regi of region"><input class="form-check-input" type="checkbox" value="'+regi[0].id+'" (change)="checkRegion($event)"><label class="form-check-label" for="flexCheckDefault">'+regi[0].region_name+'</label><input class="form-check-input" type="checkbox" value="'+regi[1].id+'" (change)="checkRegion($event)"><label class="form-check-label" for="flexCheckDefault">'+regi[1].region_name+'</label></div>');
+    const span = document.getElementById('filterz');
+    div.insertAdjacentElement('afterbegin', span);
+    // div.insertAdjacentHTML('beforeend','<ul></ul>');
+    // div.insertAdjacentHTML('beforeend','<div class="form-check" *ngFor="let region of '+regi+'; index as i"><input class="form-check-input" type="checkbox" value="'+regi[0].id+'" (change)="checkRegion($event)"><label class="form-check-label" for="flexCheckDefault">'+regi[0].region_name+'</label><input class="form-check-input" type="checkbox" value="'+regi[1].id+'" (change)="checkRegion($event)"><label class="form-check-label" for="flexCheckDefault">'+regi[1].region_name+'</label></div>');
   }
   // console.log(div2);
     
