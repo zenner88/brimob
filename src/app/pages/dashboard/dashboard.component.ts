@@ -33,12 +33,13 @@ export class DashboardComponent implements OnInit {
   public salesChart;
   public clicked: boolean = true;
   public clicked1: boolean = false;
-  regionId:number;
-  kategoriId:number;
+  regionId: any;
+  kategoriId: any;
   formFilter1: FormGroup;
   formFilter2: FormGroup;
   mapOptions: { zoom: number; scrollwheel: boolean; center: any; mapTypeId: any; styles: ({ elementType: string; stylers: { color: string; }[]; featureType?: undefined; } | { featureType: string; elementType: string; stylers: { color: string; }[]; })[]; };
   html: string;
+  map: any;
 
   constructor(private http: HttpClient, private global: GlobalService, private formBuilder: FormBuilder) {
     this.formFilter1 = this.formBuilder.group({
@@ -49,283 +50,193 @@ export class DashboardComponent implements OnInit {
     })
   }
   
-  ngOnInit() {
-    this.html = "<h1>ASLJKHAKSDJHALSKDHLASKD</h1>"
-    let map: google.maps.Map;
-
-    function FilterControl(controlDiv: Element, map: google.maps.Map) {
-      // Set CSS for the control border.
-      const controlUI = document.createElement("div");
+ngOnInit() {
+  this.loadKategori();
+  this.loadRegion();
   
-      controlUI.style.backgroundColor = "#E30016";
-      controlUI.style.border = "1px solid #000";
-      controlUI.style.borderRadius = "5px";
-      controlUI.style.boxShadow = "0 2px 6px rgba(0,0,0,.3)";
-      controlUI.style.cursor = "pointer";
-      controlUI.style.marginTop = "10px";
-      controlUI.style.marginBottom = "22px";
-      controlUI.style.marginRight = "8px";
-      controlUI.style.textAlign = "center";
-      controlUI.title = "Click to Filter map";
-      controlDiv.appendChild(controlUI);
-  
-      // Set CSS for the control interior.
-      const controlText = document.createElement("div");
-  
-      controlText.style.color = "rgb(25,25,25)";
-      controlText.style.fontFamily = "Roboto,Arial,sans-serif";
-      controlText.style.fontSize = "16px";
-      controlText.style.lineHeight = "38px";
-      controlText.style.paddingLeft = "15px";
-      controlText.style.paddingRight = "15px";
-      controlText.innerHTML = "<i class='fa fa-bars text-light'></i>";
-      controlUI.appendChild(controlText);
-  
-      // Setup the click event listeners: simply set the map to Chicago.
-      controlUI.addEventListener("click", () => {
-        let element = document.getElementById("filterMenu");
-        // console.log(element);
-        // let hidden = element.style.visibility("none");  
-        if (element.style.display === 'none'){
-          element.style.display = 'block';
-        }else{
-          element.style.display = 'none';
-        }
-      });
-    }
-    
-    function FilterMenu(controlDiv: Element, map: google.maps.Map) {    
-      // Set CSS for the control border.
-      const controlUI = document.createElement("div");
-  
-      // controlUI.style.backgroundColor = "#E30016";
-      controlUI.style.border = "1px solid #000";
-      controlUI.style.borderRadius = "5px";
-      controlUI.style.boxShadow = "0 2px 6px rgba(0,0,0,.3)";
-      controlUI.style.cursor = "pointer";
-      controlUI.style.marginTop = "-62px";
-      controlUI.style.marginBottom = "22px";
-      controlUI.style.marginRight = "55px";
-      controlUI.style.textAlign = "left";
-      controlUI.title = "Click to Filter map";
-      controlDiv.appendChild(controlUI);
-  
-      // Set CSS for the control interior.
-      const controlText = document.createElement("div");
-  
-      controlText.style.color = "rgb(25,25,25)";
-      controlText.style.fontFamily = "Roboto,Arial,sans-serif";
-      controlText.style.fontSize = "10px";
-      controlText.style.lineHeight = "20px";
-      controlText.style.paddingLeft = "-10px";
-      controlText.style.paddingRight = "-10px";
-      controlText.innerHTML = '<div id="filterMenu" class="card card-stats bg-gradient-dark text-light px-2 py-2" style="display: none"><div id="filterRegion"></div></div>';
-      controlUI.appendChild(controlText);
+  let map: google.maps.Map;
+  function FilterControl(controlDiv: Element, map: google.maps.Map) {
+    // Set CSS for the control border.
+    const controlUI = document.createElement("div");
 
-    }
+    controlUI.style.backgroundColor = "#E30016";
+    controlUI.style.border = "1px solid #000";
+    controlUI.style.borderRadius = "5px";
+    controlUI.style.boxShadow = "0 2px 6px rgba(0,0,0,.3)";
+    controlUI.style.cursor = "pointer";
+    controlUI.style.marginTop = "10px";
+    controlUI.style.marginBottom = "22px";
+    controlUI.style.marginRight = "8px";
+    controlUI.style.textAlign = "center";
+    controlUI.title = "Click to Filter map";
+    controlDiv.appendChild(controlUI);
 
-    this.loadRegion();
-    this.loadKategori();
-    let body = {      
-      "level_user" : this.global.levelUser,
-      "regions" : [1],
-      "subkategoris" : [1,2,3,4,5,6],
-      "start" : 0,
-      "limit" : 1000,
-      "sub_kategori_id" : 11,
-      "status" : 0
-    }; 
- 
-    // get maps laporan 
-    this.http.post<any>(this.global.address+this.global.mapLaporan, body, this.global.headers).subscribe({
-    next: data => {
-    this.collectionSize = data.length;
-    this.workorders = data;
+    // Set CSS for the control interior.
+    const controlText = document.createElement("div");
 
-    let open = data.filter(element => {
-      return element.status == 1;
-    })
-    this.open = open.length;
+    controlText.style.color = "rgb(25,25,25)";
+    controlText.style.fontFamily = "Roboto,Arial,sans-serif";
+    controlText.style.fontSize = "16px";
+    controlText.style.lineHeight = "38px";
+    controlText.style.paddingLeft = "15px";
+    controlText.style.paddingRight = "15px";
+    controlText.innerHTML = "<i class='fa fa-bars text-light'></i>";
+    controlUI.appendChild(controlText);
 
-    let received = data.filter(element => {
-      return element.status == 2;
-    })
-    this.received = received.length;
-
-    let onprocess = data.filter(element => {
-      return element.status == 3;
-    })
-    this.onprocess = onprocess.length;
-
-    let close = data.filter(element => {
-      return element.status == 4;
-    })
-    this.close = close.length;
-
-      // maps 
-    let dataMap = this.workorders
-    this.markers = dataMap
-    let mapi = document.getElementById('map-canvas');
-    let lat = mapi.getAttribute('data-lat');
-    let lng = mapi.getAttribute('data-lng');
-
-    var myLatlng = new google.maps.LatLng(lat, lng);
-    
-    this.mapOptions = {
-        zoom: 5,
-        scrollwheel: false,
-        center: myLatlng,
-        mapTypeId: google.maps.MapTypeId.ROADMAP,
-        styles: [
-          { elementType: "geometry", stylers: [{ color: "#242f3e" }] },
-          { elementType: "labels.text.stroke", stylers: [{ color: "#242f3e" }] },
-          { elementType: "labels.text.fill", stylers: [{ color: "#746855" }] },
-          {
-            featureType: "administrative.locality",
-            elementType: "labels.text.fill",
-            stylers: [{ color: "#d59563" }],
-          },
-          {
-            featureType: "poi",
-            elementType: "labels.text.fill",
-            stylers: [{ color: "#d59563" }],
-          },
-          {
-            featureType: "poi.park",
-            elementType: "geometry",
-            stylers: [{ color: "#263c3f" }],
-          },
-          {
-            featureType: "poi.park",
-            elementType: "labels.text.fill",
-            stylers: [{ color: "#6b9a76" }],
-          },
-          {
-            featureType: "road",
-            elementType: "geometry",
-            stylers: [{ color: "#38414e" }],
-          },
-          {
-            featureType: "road",
-            elementType: "geometry.stroke",
-            stylers: [{ color: "#212a37" }],
-          },
-          {
-            featureType: "road",
-            elementType: "labels.text.fill",
-            stylers: [{ color: "#9ca5b3" }],
-          },
-          {
-            featureType: "road.highway",
-            elementType: "geometry",
-            stylers: [{ color: "#746855" }],
-          },
-          {
-            featureType: "road.highway",
-            elementType: "geometry.stroke",
-            stylers: [{ color: "#1f2835" }],
-          },
-          {
-            featureType: "road.highway",
-            elementType: "labels.text.fill",
-            stylers: [{ color: "#f3d19c" }],
-          },
-          {
-            featureType: "transit",
-            elementType: "geometry",
-            stylers: [{ color: "#2f3948" }],
-          },
-          {
-            featureType: "transit.station",
-            elementType: "labels.text.fill",
-            stylers: [{ color: "#d59563" }],
-          },
-          {
-            featureType: "water",
-            elementType: "geometry",
-            stylers: [{ color: "#17263c" }],
-          },
-          {
-            featureType: "water",
-            elementType: "labels.text.fill",
-            stylers: [{ color: "#515c6d" }],
-          },
-          {
-            featureType: "water",
-            elementType: "labels.text.stroke",
-            stylers: [{ color: "#17263c" }],
-          },
-        ],
-    }
-    map = new google.maps.Map(mapi, this.mapOptions);
-
-    const filterControlDiv = document.createElement("div");
-    FilterControl(filterControlDiv, map);
-    map.controls[google.maps.ControlPosition.RIGHT_TOP].push(filterControlDiv);
-    
-    const filterMenuDiv = document.createElement("div");
-    FilterMenu(filterMenuDiv, map);
-    map.controls[google.maps.ControlPosition.RIGHT_TOP].push(filterMenuDiv);
-    this.markers.forEach(location => {
-    // custom logo for marker 
-    let markerLogo: string;
-    if (location.sub_kategori_id == 1){ 
-      markerLogo='info.png';
-    }else{
-      markerLogo='info.png';
-    }
-    // marker 
-    var marker = new google.maps.Marker({
-      position: new google.maps.LatLng(location.lat_pelapor, location.long_pelapor),
-      map: map,
-      options: {
-        animation: google.maps.Animation.DROP,
-        icon: "./assets/img/icons/"+markerLogo
+    // Setup the click event listeners: simply set the map to Chicago.
+    controlUI.addEventListener("click", () => {
+      let element = document.getElementById("filterMenu");
+      // console.log(element);
+      // let hidden = element.style.visibility("none");  
+      if (element.style.display === 'none'){
+        element.style.display = 'block';
+      }else{
+        element.style.display = 'none';
       }
     });
-    // info window marker 
-    var contentString = '<div class="info-window-content"><h2>'+location.region_name+'</h2>' +
-    '<p>'+location.sub_kategori+'</p></div>';
-    var infowindow = new google.maps.InfoWindow({
-        content: contentString
-    });
-    google.maps.event.addListener(marker,'click', (function(marker,contentString,infowindow){ 
-      return function() {
-          infowindow.setContent(contentString);
-          infowindow.open(map,marker);
-      };
-    })
-    (marker,contentString,infowindow))
-
-    });
-    },
-    error: error => {
-        this.errorMessage = error.message;
-        console.error('There was an error!', error);
-        if (error.status == 401 ){
-          AuthInterceptor.signOut();
-        }
-    }
-    })      
-    // let div = document.getElementById("zen");
-    // console.log(div);
-}
-loadZen(){
-  let div = document.getElementById("filterRegion");
-  let div2 = document.getElementById("map-canvas");
-  let cek = document.getElementsByClassName("ada");
-  if (cek.length === 0){
-    div2.setAttribute("class", "ada")
-    let regi = this.region;
-    const span = document.getElementById('filterz');
-    div.insertAdjacentElement('afterbegin', span);
-    // div.insertAdjacentHTML('beforeend','<ul></ul>');
-    // div.insertAdjacentHTML('beforeend','<div class="form-check" *ngFor="let region of '+regi+'; index as i"><input class="form-check-input" type="checkbox" value="'+regi[0].id+'" (change)="checkRegion($event)"><label class="form-check-label" for="flexCheckDefault">'+regi[0].region_name+'</label><input class="form-check-input" type="checkbox" value="'+regi[1].id+'" (change)="checkRegion($event)"><label class="form-check-label" for="flexCheckDefault">'+regi[1].region_name+'</label></div>');
   }
-  // console.log(div2);
-    
-}
-loadMaps(){
+  
+  function FilterMenu(controlDiv: Element, map: google.maps.Map) {    
+    // Set CSS for the control border.
+    const controlUI = document.createElement("div");
+
+    // controlUI.style.backgroundColor = "#E30016";
+    controlUI.style.border = "1px solid #000";
+    controlUI.style.borderRadius = "5px";
+    controlUI.style.boxShadow = "0 2px 6px rgba(0,0,0,.3)";
+    controlUI.style.cursor = "pointer";
+    controlUI.style.marginTop = "-62px";
+    controlUI.style.marginBottom = "22px";
+    controlUI.style.marginRight = "55px";
+    controlUI.style.textAlign = "left";
+    controlUI.title = "Click to Filter map";
+    controlDiv.appendChild(controlUI);
+
+    // Set CSS for the control interior.
+    const controlText = document.createElement("div");
+
+    controlText.style.color = "rgb(25,25,25)";
+    controlText.style.fontFamily = "Roboto,Arial,sans-serif";
+    controlText.style.fontSize = "10px";
+    controlText.style.lineHeight = "20px";
+    controlText.style.paddingLeft = "-10px";
+    controlText.style.paddingRight = "-10px";
+    controlText.innerHTML = '<div id="filterMenu" class="card card-stats bg-gradient-dark text-light px-2 py-2" style="display: none"><div id="filterRegion"></div></div>';
+    controlUI.appendChild(controlText);
+
+  }
+  // maps 
+  let mapi = document.getElementById('map-canvas');
+  let lat = mapi.getAttribute('data-lat');
+  let lng = mapi.getAttribute('data-lng');
+
+  var myLatlng = new google.maps.LatLng(lat, lng);
+  
+  this.mapOptions = {
+      zoom: 5,
+      scrollwheel: false,
+      center: myLatlng,
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+      styles: [
+        { elementType: "geometry", stylers: [{ color: "#242f3e" }] },
+        { elementType: "labels.text.stroke", stylers: [{ color: "#242f3e" }] },
+        { elementType: "labels.text.fill", stylers: [{ color: "#746855" }] },
+        {
+          featureType: "administrative.locality",
+          elementType: "labels.text.fill",
+          stylers: [{ color: "#d59563" }],
+        },
+        {
+          featureType: "poi",
+          elementType: "labels.text.fill",
+          stylers: [{ color: "#d59563" }],
+        },
+        {
+          featureType: "poi.park",
+          elementType: "geometry",
+          stylers: [{ color: "#263c3f" }],
+        },
+        {
+          featureType: "poi.park",
+          elementType: "labels.text.fill",
+          stylers: [{ color: "#6b9a76" }],
+        },
+        {
+          featureType: "road",
+          elementType: "geometry",
+          stylers: [{ color: "#38414e" }],
+        },
+        {
+          featureType: "road",
+          elementType: "geometry.stroke",
+          stylers: [{ color: "#212a37" }],
+        },
+        {
+          featureType: "road",
+          elementType: "labels.text.fill",
+          stylers: [{ color: "#9ca5b3" }],
+        },
+        {
+          featureType: "road.highway",
+          elementType: "geometry",
+          stylers: [{ color: "#746855" }],
+        },
+        {
+          featureType: "road.highway",
+          elementType: "geometry.stroke",
+          stylers: [{ color: "#1f2835" }],
+        },
+        {
+          featureType: "road.highway",
+          elementType: "labels.text.fill",
+          stylers: [{ color: "#f3d19c" }],
+        },
+        {
+          featureType: "transit",
+          elementType: "geometry",
+          stylers: [{ color: "#2f3948" }],
+        },
+        {
+          featureType: "transit.station",
+          elementType: "labels.text.fill",
+          stylers: [{ color: "#d59563" }],
+        },
+        {
+          featureType: "water",
+          elementType: "geometry",
+          stylers: [{ color: "#17263c" }],
+        },
+        {
+          featureType: "water",
+          elementType: "labels.text.fill",
+          stylers: [{ color: "#515c6d" }],
+        },
+        {
+          featureType: "water",
+          elementType: "labels.text.stroke",
+          stylers: [{ color: "#17263c" }],
+        },
+      ],
+  }
+  this.map = new google.maps.Map(mapi, this.mapOptions);
+
+  const filterControlDiv = document.createElement("div");
+  FilterControl(filterControlDiv, this.map);
+  this.map.controls[google.maps.ControlPosition.RIGHT_TOP].push(filterControlDiv);
+  
+  const filterMenuDiv = document.createElement("div");
+  FilterMenu(filterMenuDiv, this.map);
+  this.map.controls[google.maps.ControlPosition.RIGHT_TOP].push(filterMenuDiv);
+
+  // get maps laporan 
+  if (this.kategoriId === undefined){
+    this.kategoriId = [1,2,3,4,5,6];
+  }
+  if (this.regionId === undefined){
+    this.regionId = [1];
+  }
+  console.log('region', this.regionId);
+  console.log('kategori', this.kategoriId);
   let body = {      
     "level_user" : this.global.levelUser,
     "regions" : this.regionId,
@@ -335,8 +246,6 @@ loadMaps(){
     "sub_kategori_id" : 11,
     "status" : 0
   }; 
-
-  // get maps laporan 
   this.http.post<any>(this.global.address+this.global.mapLaporan, body, this.global.headers).subscribe({
   next: data => {
   this.collectionSize = data.length;
@@ -362,15 +271,10 @@ loadMaps(){
   })
   this.close = close.length;
 
-    // maps 
   let dataMap = this.workorders
   this.markers = dataMap
-  let map = document.getElementById('map-canvas');
-  let lat = map.getAttribute('data-lat');
-  let lng = map.getAttribute('data-lng');
-
-  var myLatlng = new google.maps.LatLng(lat, lng);
-  map = new google.maps.Map(map, this.mapOptions);
+  
+  // marker
   this.markers.forEach(location => {
   // custom logo for marker 
   let markerLogo: string;
@@ -382,7 +286,7 @@ loadMaps(){
   // marker 
   var marker = new google.maps.Marker({
     position: new google.maps.LatLng(location.lat_pelapor, location.long_pelapor),
-    map: map,
+    map: this.map,
     options: {
       animation: google.maps.Animation.DROP,
       icon: "./assets/img/icons/"+markerLogo
@@ -397,7 +301,7 @@ loadMaps(){
   google.maps.event.addListener(marker,'click', (function(marker,contentString,infowindow){ 
     return function() {
         infowindow.setContent(contentString);
-        infowindow.open(map,marker);
+        infowindow.open(this.map,marker);
     };
   })
   (marker,contentString,infowindow))
@@ -405,13 +309,116 @@ loadMaps(){
   });
   },
   error: error => {
-      this.errorMessage = error.message;
-      console.error('There was an error!', error);
-      if (error.status == 401 ){
-        AuthInterceptor.signOut();
-      }
+    this.errorMessage = error.message;
+    console.error('There was an error!', error);
+    if (error.status == 401 ){
+      AuthInterceptor.signOut();
+    }
+  }
+  })    
+}
+
+loadMaps(){
+    // get maps laporan 
+  if (this.kategoriId === undefined){
+    this.kategoriId = [1,2,3,4,5,6];
+  }
+  if (this.regionId === undefined){
+    this.regionId = [1];
+  }
+  console.log('region', this.regionId);
+  console.log('kategori', this.kategoriId);
+  let body = {      
+    "level_user" : this.global.levelUser,
+    "regions" : this.regionId,
+    "subkategoris" : this.kategoriId,
+    "start" : 0,
+    "limit" : 1000,
+    "sub_kategori_id" : 11,
+    "status" : 0
+  }; 
+  this.http.post<any>(this.global.address+this.global.mapLaporan, body, this.global.headers).subscribe({
+  next: data => {
+  this.collectionSize = data.length;
+  this.workorders = data;
+
+  let open = data.filter(element => {
+    return element.status == 1;
+  })
+  this.open = open.length;
+
+  let received = data.filter(element => {
+    return element.status == 2;
+  })
+  this.received = received.length;
+
+  let onprocess = data.filter(element => {
+    return element.status == 3;
+  })
+  this.onprocess = onprocess.length;
+
+  let close = data.filter(element => {
+    return element.status == 4;
+  })
+  this.close = close.length;
+
+  let dataMap = this.workorders
+  this.markers = dataMap
+  
+  // marker
+  this.markers.forEach(location => {
+  // custom logo for marker 
+  let markerLogo: string;
+  if (location.sub_kategori_id == 1){ 
+    markerLogo='info.png';
+  }else{
+    markerLogo='info.png';
+  }
+  // marker 
+  var marker = new google.maps.Marker({
+    position: new google.maps.LatLng(location.lat_pelapor, location.long_pelapor),
+    map: this.map,
+    options: {
+      animation: google.maps.Animation.DROP,
+      icon: "./assets/img/icons/"+markerLogo
+    }
+  });
+  // info window marker 
+  var contentString = '<div class="info-window-content"><h2>'+location.region_name+'</h2>' +
+  '<p>'+location.sub_kategori+'</p></div>';
+  var infowindow = new google.maps.InfoWindow({
+      content: contentString
+  });
+  google.maps.event.addListener(marker,'click', (function(marker,contentString,infowindow){ 
+    return function() {
+        infowindow.setContent(contentString);
+        infowindow.open(this.map,marker);
+    };
+  })
+  (marker,contentString,infowindow))
+
+  });
+  },
+  error: error => {
+    this.errorMessage = error.message;
+    console.error('There was an error!', error);
+    if (error.status == 401 ){
+      AuthInterceptor.signOut();
+    }
   }
   }) 
+
+}
+
+loadZen(){
+  let div = document.getElementById("filterRegion");
+  let div2 = document.getElementById("map-canvas");
+  let cek = document.getElementsByClassName("ada");
+  if (cek.length === 0){
+    div2.setAttribute("class", "ada")
+    const filterItem = document.getElementById('filterz');
+    div.insertAdjacentElement('afterbegin', filterItem);
+  }    
 }
 
 loadRegion() {
@@ -473,7 +480,3 @@ checkKategori(e){
 }
 
 }
-function html(html: any) {
-  throw new Error('Function not implemented.');
-}
-

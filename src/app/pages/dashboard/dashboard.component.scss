@@ -1,6 +1,6 @@
 ::ng-deep .card {
     // margin-bottom: 20px;
-    background-color: transparent;
+    background-color: rgb(29, 28, 28);
     border-color: #1d2124;
     margin: 0em;
     padding: 0px;
@@ -9,7 +9,7 @@
 ::ng-deep .card-header {
     margin-bottom: 0;
     padding: 1px;
-    background-color: transparent;
+    background-color: #1d2124;
   }
 ::ng-deep .card .card-header.active > a > span {
     color: #1d2124;
