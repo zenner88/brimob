@@ -40,7 +40,7 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr *ngFor="let zz of workorders | filter: filterTerm | slice: (page-1) * pageSize : page * pageSize; index as i">
+                        <tr *ngFor="let zz of workorders | filter: filterTerm | slice: (page-1) * pageSize : page * pageSize; index as i" class="bg-light">
                           <td class="px-md-2" style="white-space: normal;">{{zz.username}}</td>
                           <td class="px-md-2" style="white-space: normal;width:200px;">{{zz.level_user}}</td>
                           <td class="px-md-2" style="white-space: normal;width:200px;" hidden>{{zz.ktp}}</td>
@@ -66,14 +66,14 @@
               <div class="col-lg-6 py-4" *ngIf="showAdd">
                 <form [formGroup]="form" (ngSubmit)="onSubmit()">
                 <div class="card border border-dark boshadow">
-                <div class="card-header bg-dark py-2">
+                <div class="card-header bg-dark px-2 py-2">
                   <div class="row">
                     <div class="col-6">
                     <h3 class="mb-0 text-light">Tambah User</h3>
                     </div>
                   </div>         
                 </div>
-                <div class="row px-4 py-1 mt-2">
+                <div class="row px-4 py-1 mt-2 mb-2">
                   <div class="col-12 col-lg-3">
                     <label class="form-label">No KTP</label>
                   </div>
@@ -177,17 +177,40 @@
                   </div>
                 </div>
                 <div class="row px-4 py-1">
-                  <div class="col-12 col-md-6">
-                    <label class="form-label">Position</label>
-                    <select formControlName="position_id" class="form-select form-control border border-dark" [ngModel]="1">
-                      <option *ngFor="let pos of position" value="{{pos.position_id}}">{{pos.position_name}}</option>
+                  <div class="col-12 col-lg-3">
+                    <label class="form-label">Region</label>
+                  </div>
+                  <div class="col-12 col-lg-9">
+                    <select class="form-select form-control border border-dark" [ngModel]="1" (change)="filterRegion($event)">
+                      <option *ngFor="let pos of position" value="{{pos.region_id}}">{{pos.region_name}}</option>
                     </select>
                   </div>
-                  <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
-                    <div *ngIf="f.password.errors.required">Password is required</div>
+                </div>
+                <div class="row px-4 py-1">
+                  <div class="col-12 col-lg-3">
+                    <label class="form-label">Department</label>
                   </div>
-                  <div class="col-12 col-md-6">
+                  <div class="col-12 col-lg-9">
+                    <select class="form-select form-control border border-dark" [ngModel]="1">
+                      <option *ngFor="let pos of department" value="{{pos.department_id}}">{{pos.department_name}}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="row px-4 py-1">
+                  <div class="col-12 col-lg-3">
+                    <label class="form-label">Position</label>
+                  </div>
+                  <div class="col-12 col-lg-9">
+                    <select formControlName="position_id" class="form-select form-control border border-dark" [ngModel]="1">
+                      <option *ngFor="let pos of posi" value="{{pos.position_id}}">{{pos.position_name}}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="row px-4 py-1">
+                  <div class="col-12 col-lg-3">
                     <label class="form-label">Type</label>
+                  </div>
+                  <div class="col-12 col-lg-9">
                     <select formControlName="level_user" class="form-select form-control border border-dark">
                       <option value="user">User</option>
                       <option value="superadmin">Superadmin</option>
@@ -198,7 +221,7 @@
                   <button type="submit" class="btn btn-primary">Simpan</button>
                   <button type="button" (click)="onReset()" class="btn btn-warning float-right">Reset</button>
                 </div>
-              </div>
+                </div>
               </form>
               </div>
               <!-- update user data  -->

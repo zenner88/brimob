@@ -84,6 +84,16 @@
           <div class="dropdown-menu-arrow bg-gradient-dark dropdown-menu-left col-lg-4" ngbDropdownMenu>
           <div class="card card-stats bg-gradient-dark text-light" id="filterz">
             <ngb-accordion class="">
+              <ngb-panel title="CCTV">
+                <ng-template ngbPanelContent>
+                  <form [formGroup]="formFilter0" >
+                    <div class="form-check" *ngFor="let dev of device">
+                      <input class="form-check-input" type="checkbox" value="{{dev.device_id}}" (change)="checkDevice($event)">
+                      <label class="form-check-label" for="flexCheckDefault">{{dev.device_id}}</label>
+                    </div>
+                  </form>
+                </ng-template>
+              </ngb-panel>
               <ngb-panel title="Region">
                 <ng-template ngbPanelContent>
                   <form [formGroup]="formFilter1" >
@@ -104,11 +114,11 @@
                   </form>
                 </ng-template>
               </ngb-panel>
-              <ngb-panel title="CCTV">
+              <!-- <ngb-panel title="CCTV">
                 <ng-template ngbPanelContent>
                   <i>none</i>
                 </ng-template>
-              </ngb-panel>
+              </ngb-panel> -->
             </ngb-accordion>
           </div>
           </div>

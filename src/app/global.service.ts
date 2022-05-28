@@ -50,4 +50,7 @@ export class GlobalService {
   public readonly laporanReview: string = '/laporan_review';  
   public readonly uploadFile: string = '/upload';  
   public readonly laporanPrint: string = '/laporan_print';  
+  public readonly listDevices: string = '/get_tracker_devices';  
+  public readonly trackerDevice: string = '/get_tracker_device';  
+  public readonly trackerLocation: string = '/get_tracker_loc';  
 }

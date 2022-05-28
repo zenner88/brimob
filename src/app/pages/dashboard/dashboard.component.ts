@@ -35,13 +35,19 @@ export class DashboardComponent implements OnInit {
   public clicked1: boolean = false;
   regionId: any;
   kategoriId: any;
+  formFilter0: FormGroup;
   formFilter1: FormGroup;
   formFilter2: FormGroup;
   mapOptions: { zoom: number; scrollwheel: boolean; center: any; mapTypeId: any; styles: ({ elementType: string; stylers: { color: string; }[]; featureType?: undefined; } | { featureType: string; elementType: string; stylers: { color: string; }[]; })[]; };
   html: string;
   map: any;
+  device: any;
+  deviceiId: any;
 
   constructor(private http: HttpClient, private global: GlobalService, private formBuilder: FormBuilder) {
+    this.formFilter0 = this.formBuilder.group({
+      devices : this.formBuilder.array([], [Validators.required])
+    })
     this.formFilter1 = this.formBuilder.group({
       regions: this.formBuilder.array([], [Validators.required])
     })
@@ -49,10 +55,11 @@ export class DashboardComponent implements OnInit {
       subkategoris: this.formBuilder.array([], [Validators.required])
     })
   }
-  
+
 ngOnInit() {
   this.loadKategori();
   this.loadRegion();
+  this.loadDevice();
   
   let map: google.maps.Map;
   function FilterControl(controlDiv: Element, map: google.maps.Map) {
@@ -407,6 +414,60 @@ loadMaps(){
     }
   }
   }) 
+this.loadDeviceMark();
+}
+
+loadDeviceMark(){
+
+  console.log('device', this.deviceiId);
+  let body = {      
+    "tracker_device_id" : this.deviceiId
+  }; 
+  this.http.post<any>(this.global.address+this.global.trackerLocation, body, this.global.headers).subscribe({
+  next: data => {
+  this.workorders = data;
+
+  let dataMap = this.workorders
+  this.markers = dataMap
+  
+  // marker
+  this.markers.forEach(location => {
+  var marker = new google.maps.Marker({
+    position: new google.maps.LatLng(location.lat, location.lon),
+    map: this.map,
+    options: {
+      animation: google.maps.Animation.DROP,
+      icon: "./assets/img/icons/cctv_calm.png"
+    }
+  });
+  // info window marker 
+  this.http.post<any>(this.global.address+this.global.trackerDevice, body, this.global.headers).subscribe({
+    next: data => {
+    let device = data;
+  
+  var contentString = '<div class="info-window-content"><h2>'+device.device_id+'</h2>' +
+  '<p>'+device.device_id+'<video src='+device.video_url+'></p></div>';
+  var infowindow = new google.maps.InfoWindow({
+      content: contentString
+  });
+  google.maps.event.addListener(marker,'click', (function(marker,contentString,infowindow){ 
+    return function() {
+        infowindow.setContent(contentString);
+        infowindow.open(this.map,marker);
+    };
+  })
+  (marker,contentString,infowindow))
+}})
+  });
+  },
+  error: error => {
+    this.errorMessage = error.message;
+    console.error('There was an error!', error);
+    if (error.status == 401 ){
+      AuthInterceptor.signOut();
+    }
+  }
+  }) 
 
 }
 
@@ -451,6 +512,21 @@ loadKategori() {
   })  
 }
 
+loadDevice() {
+  return this.http.get<any>(this.global.address+this.global.listDevices).subscribe({
+    next: kate => {
+    this.device = kate;
+    },
+    error: error => {
+      this.errorMessage = error.message;
+      console.error('There was an error!', error);
+      if (error.status == 401 ){
+        AuthInterceptor.signOut();
+      }
+    }
+  })  
+}
+
 checkRegion(e){
   const website: FormArray = this.formFilter1.get('regions') as FormArray;
 
@@ -477,6 +553,21 @@ checkKategori(e){
   this.kategoriId = this.formFilter2.value.subkategoris.map(i=>Number(i));
   console.log(this.kategoriId);
   this.loadMaps();
+}
+
+checkDevice(e){
+  const website: FormArray = this.formFilter0.get('devices') as FormArray;
+  console.log("web",website);
+
+  if (e.target.checked) {
+    website.push(new FormControl(e.target.value));
+  } else {
+     const index = website.controls.findIndex(x => x.value === e.target.value);
+     website.removeAt(index);
+  }
+  this.deviceiId = this.formFilter0.value.subkategoris.map(i=>Number(i));
+  console.log("check",this.deviceiId);
+  this.loadDeviceMark();
 }
 
 }

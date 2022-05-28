@@ -37,8 +37,11 @@ export class UserAddComponent implements OnInit {
   showAdd: boolean = true ;
   showEdit: boolean = false ;
   showEdits: boolean = false ;
+  department: any;
+  positions: any;
+  posi: any[];
 
-  constructor(private formBuilder: FormBuilder, private formBuilder2: FormBuilder, private http: HttpClient, private tokenStorage: TokenStorageService, private global: GlobalService) { }
+  constructor(private formBuilder: FormBuilder, private formBuilder2: FormBuilder, private http: HttpClient, private tokenStorage: TokenStorageService, private global: GlobalService) {}
 
   workorders:any = [];
   collectionSize: number;
@@ -146,10 +149,16 @@ export class UserAddComponent implements OnInit {
         }
     }
     })
+
     // Get Subkategori 
     this.http.get<any>(this.global.address+this.global.position).subscribe({
     next: data => {
-      this.position = data;
+      this.positions = data;
+      // this.position = data;
+      // data.filter(data => data.region_id === 1);
+      // console.log("filter", this.position);
+      this.position = this.removeDuplicates(data, "region_id");
+      console.log("uniqueArray is: " + JSON.stringify(this.position));
       console.log(data);
     },
     error: error => {
@@ -160,8 +169,38 @@ export class UserAddComponent implements OnInit {
         }
     }
     })
+    
   }
-  
+
+  removeDuplicates(originalArray, prop) {
+    var newArray = [];
+    var lookupObject  = {};
+
+    for(var i in originalArray) {
+       lookupObject[originalArray[i][prop]] = originalArray[i];
+    }
+
+    for(i in lookupObject) {
+        newArray.push(lookupObject[i]);
+    }
+     return newArray;
+  } 
+
+  filterRegion(xx){
+    console.log("WAAW :", xx.target.value);
+    let id = xx.target.value
+    // this.position = data;
+    let dep = this.positions.filter(x => x.region_id == id);
+    // console.log("filter", this.position);
+    this.department = this.removeDuplicates(dep, "department_id");
+    this.posi = this.removeDuplicates(dep, "position_id");
+    // console.log("uniqueArray is: " + JSON.stringify(this.position));
+    console.log("position",this.positions);
+    console.log("department",this.department);
+    console.log("posi",this.posi);
+
+  }
+
   get f(): { [key: string]: AbstractControl } {
     return this.form.controls;
   }
