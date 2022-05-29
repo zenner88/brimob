@@ -322,7 +322,7 @@ ngOnInit() {
       AuthInterceptor.signOut();
     }
   }
-  })    
+  })  
 }
 
 loadMaps(){
@@ -382,12 +382,19 @@ loadMaps(){
     markerLogo='info.png';
   }
   // marker 
+  var icon = {
+    url: "./assets/img/icons/"+markerLogo,
+    scaledSize: new google.maps.Size(10, 10), // scaled size
+    origin: new google.maps.Point(0,0), // origin
+    anchor: new google.maps.Point(0, 0) // anchor
+};
+
   var marker = new google.maps.Marker({
     position: new google.maps.LatLng(location.lat_pelapor, location.long_pelapor),
     map: this.map,
     options: {
       animation: google.maps.Animation.DROP,
-      icon: "./assets/img/icons/"+markerLogo
+      icon: icon,
     }
   });
   // info window marker 
@@ -414,7 +421,6 @@ loadMaps(){
     }
   }
   }) 
-this.loadDeviceMark();
 }
 
 loadDeviceMark(){
@@ -425,10 +431,11 @@ loadDeviceMark(){
   }; 
   this.http.post<any>(this.global.address+this.global.trackerLocation, body, this.global.headers).subscribe({
   next: data => {
-  this.workorders = data;
+  // this.workorders = data;
 
-  let dataMap = this.workorders
-  this.markers = dataMap
+  // let dataMap = this.workorders
+  this.markers = [data];
+  console.log('tracker', this.markers);
   
   // marker
   this.markers.forEach(location => {
@@ -445,8 +452,8 @@ loadDeviceMark(){
     next: data => {
     let device = data;
   
-  var contentString = '<div class="info-window-content"><h2>'+device.device_id+'</h2>' +
-  '<p>'+device.device_id+'<video src='+device.video_url+'></p></div>';
+  var contentString = '<div class="info-window-content"><h2>Device ID'+device.device_id+'</h2>' +
+  '<iframe width="560" height="315" src="https://www.youtube.com/embed/AY4sLAr6UkY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>';
   var infowindow = new google.maps.InfoWindow({
       content: contentString
   });
@@ -556,16 +563,17 @@ checkKategori(e){
 }
 
 checkDevice(e){
-  const website: FormArray = this.formFilter0.get('devices') as FormArray;
-  console.log("web",website);
+  // const website: FormArray = this.formFilter0.get('devices') as FormArray;
+  // console.log("web",website);
 
-  if (e.target.checked) {
-    website.push(new FormControl(e.target.value));
-  } else {
-     const index = website.controls.findIndex(x => x.value === e.target.value);
-     website.removeAt(index);
-  }
-  this.deviceiId = this.formFilter0.value.subkategoris.map(i=>Number(i));
+  // if (e.target.checked) {
+  //   website.push(new FormControl(e.target.value));
+  // } else {
+  //    const index = website.controls.findIndex(x => x.value === e.target.value);
+  //    website.removeAt(index);
+  // }
+  // this.deviceiId = this.formFilter0.value.subkategoris.map(i=>Number(i));
+  this.deviceiId = e.target.value;
   console.log("check",this.deviceiId);
   this.loadDeviceMark();
 }
