@@ -50,7 +50,7 @@
                 <td class="px-md-2">{{zz.date_approved | date: 'EEEE, d MMMM y'}}</td>
                 <td class="px-md-2" style="white-space: normal;">{{zz.username}}</td>
                 <td class="px-md-2" style="white-space: normal;">{{zz.status}}</td>
-                <td class="px-md-2"><i class="fa fa-list-alt text-danger pointer" title="Review" (click)="review(zz)"></i></td>
+                <td class="px-md-2"><i class="fa fa-list-alt text-danger pointer" title="Review" (click)="review(zz, mymodal)"></i></td>
                 <td class="px-md-2"><i class="fa fa-check-square text-danger pointer" title="Approve" (click)="approve(zz)"></i></td>
               </tr>
             </tbody>
@@ -59,7 +59,74 @@
           <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [maxSize]="5" [boundaryLinks]="true"
     [pageSize]="pageSize" class="d-flex justify-content-center mt-4"></ngb-pagination>
         </div>
+        <ng-template #mymodal let-modal>   
+          <div class="modal-xl">
+          <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">Laporan Published No. {{published[0].no_laporan}}</h4>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body my-2" style="width:100%;overflow-x:scroll;font-family: 'Arial Narrow', Arial, sans-serif;">
+            <div class="row">
+              <div class="col-3">
+                <p class="text-center" style="line-height:150%;">
+                  KORPS BRIMOB POLRI<br style="height:5pt;">
+                  BAGIAN OPERASI
+                </p>                
+              </div>
+              <div class="col-9">
+                <p class="text-center font-weight-bold">
+                  <U>LAPORAN HARIAN SITKAMTIBMAS TANGGAL {{tglLaporan | date}}</U>
+                </p>
+              </div>
+            </div>
+            <table class="table table-sm table-bordered table-hover">
+                <tr>
+                  <th>No</th>
+                  <th>Kesatuan</th>
+                  <th class="px-md-2" *ngFor="let th of published">{{th.name}}</th>
+                  
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td class="px-md-2" *ngFor="let regions of region">{{regions.region_name}}</td>
+                  <td class="px-md-2" *ngFor="let th of published">{{th.laporan_total}}</td>
+                </tr>
+            </table>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Ok</button>
+          </div>
+        </div>
+        </ng-template>
         
+        <div class="modal-body my-2" style="width:100%;overflow-x:scroll;font-family: 'Arial Narrow', Arial, sans-serif;" #pdfTable id="pdfTable" hidden>
+          <div class="row">
+            <div class="col-3">
+              <p class="text-center" style="line-height:150%;">
+                KORPS BRIMOB POLRI<br style="height:5pt;">
+                BAGIAN OPERASI
+              </p>                
+            </div>
+            <div class="col-9">
+              <p class="text-center font-weight-bold">
+                <U>LAPORAN HARIAN SITKAMTIBMAS TANGGAL 30 MEI 2022</U>
+              </p>
+            </div>
+          </div>
+          <table class="table table-sm table-bordered table-hover">
+              <tr>
+                <th>No</th>
+                <th class="px-md-2" *ngFor="let th of published">{{th.name}}</th>
+              </tr>
+              <tr>
+                <td>1</td>
+                <td class="px-md-2" *ngFor="let th of published">{{th.laporan_total}}</td>
+              </tr>
+          </table>
+        </div>
+
         <!-- Details page  -->
         <div class="container-fluid" [class.hidden]="isShowDetalis">
           <div class="row mx--4">
@@ -147,41 +214,7 @@
                     <div id="map-canvas" class="map-canvas px-0" data-lat="0.7893" data-lng="113.9213" style="height: 320px;"></div>
                   </div>
                 </div>
-
-              <!-- <div class="col-12">
-                <div class="card shadow table-hover mx-2 my-2 border border-dark">
-                  <div class="card-header border bg-dark my-2">
-                    <div class="row">
-                      <h3 class="mb-0 text-light">History Penanganan</h3>
-                    </div>         
-                  </div>
-                    <div class="table-responsive">
-                      <table class="table table-sm row-border table-hover">
-                       <thead class="table-dark">
-                         <tr>
-                           <th class="px-md-2">Status</th>
-                           <th class="px-md-2">Tanggal</th>
-                           <th class="px-md-2">Lama Penanganan</th>
-                           <th class="px-md-2">Petugas</th>
-                           <th class="px-md-2">Detail Penanganan</th>
-                         </tr>
-                       </thead>
-                       <tbody>
-                         <tr *ngFor="let zz of workorders | filter: filterTerm | slice: (page-1) * pageSize : page * pageSize; index as i" (click)="showDetails(zz)">
-                           <td class="px-md-2">{{zz.no_pengaduan}}</td>
-                           <td class="px-md-2" style="white-space: normal;">{{zz.nama_pelapor}}</td>
-                           <td class="px-md-2" style="white-space: normal;width:200px;">{{zz.satwil}}</td>
-                           <td class="px-md-2" style="white-space: normal;">{{zz.sub_kategori}}</td>
-                           <td class="px-md-2">{{zz.tgl_kontak | date: 'EEEE, d MMMM y'}}</td>
-                           <td class="px-md-2">0 Detik</td>
-                           <td class="px-md-2">{{zz.keterangan}}</td>
-                           <td class="px-md-2" style="white-space: normal;">{{zz.nama_pelapor}}</td>
-                         </tr>
-                       </tbody>
-                     </table>
-                  </div>
-                </div>
-              </div>      -->
+                 
             </div>
           </div>
 

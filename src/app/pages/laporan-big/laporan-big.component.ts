@@ -5,7 +5,7 @@ import { GlobalService } from '../../global.service';
 import { DomSanitizer, SafeHtml} from '@angular/platform-browser';
 import Swal from 'sweetalert2'
 declare var require: any;
-
+import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import * as pdfMake from "pdfmake/build/pdfmake";
 import * as pdfFonts from "pdfmake/build/vfs_fonts";
 const htmlToPdfmake = require("html-to-pdfmake");
@@ -52,7 +52,10 @@ export class LaporanBigComponent implements OnInit {
   collectionSize: number;
   currentRate = 8;
   htmlString: any;
-  constructor(private http: HttpClient, private global: GlobalService, private sanitizer: DomSanitizer) { }
+  published: any;
+  region: any;
+  tglLaporan: any;
+  constructor(private http: HttpClient, private global: GlobalService, private sanitizer: DomSanitizer, private modalService: NgbModal) { }
 
   ngOnInit() {       
     this.http.get<any>(this.global.address+this.global.laporanPublished).subscribe({
@@ -154,22 +157,21 @@ export class LaporanBigComponent implements OnInit {
   });
   // end maps 
     }
-review(index:any){
+review(index:any, content){
   console.log(index)
   let no = index.no_laporan;
   let body = {
     "no_laporan" : no
-    }
+    };
+  let region = no.slice(-1);
+  console.log("no laporan :",no);
+  console.log("region :",region);
   this.http.post<any>(this.global.address+this.global.laporanReview, body).subscribe({
     next: data => {
       console.log(data);
-      let dot = data;
-      Swal.fire({  
-        // icon: 'info',  
-        title: 'No Laporan '+dot[0].no_laporan,  
-        html: 'Kategori : '+dot[0].name+'<BR> Sub Kategori : '+dot[0].sub_kategori+'<BR> Status : '+dot[0].status,  
-        background: '#fff',
-      })
+      this.published = data;
+      console.log(this.published)
+      this.tglLaporan = data[0].date_submitted;
     },
     error: error => {
         this.errorMessage = error.message;
@@ -179,7 +181,29 @@ review(index:any){
         }
     }
     })
+
+    this.http.get<any>(this.global.address+this.global.region).subscribe({
+      next: data => {
+        this.region = data.filter(x => x.id == region);
+        console.log("region get :",this.region);
+      },
+      error: error => {
+          this.errorMessage = error.message;
+          console.error('There was an error!', error);
+          if (error.status == 401 ){
+            AuthInterceptor.signOut();
+          }
+      }
+      })
+
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'xl'}).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+
   }
+  
 approve(index:any){
   console.log(index)
   let no = index.no_laporan;
@@ -215,6 +239,10 @@ approve(index:any){
         }
     }
     })
+    const pdfTable = this.pdfTable.nativeElement;
+    var html = htmlToPdfmake(pdfTable.innerHTML);
+    const documentDefinition = { content: html, pageSize: 'A4', pageOrientation: 'landscape', pageMargins: [ 10, 10, 10, 10 ]};
+    pdfMake.createPdf(documentDefinition).download(no+'.pdf');
   }
   backToTable(){
     this.isShowTable = false;
@@ -235,5 +263,26 @@ approve(index:any){
     const documentDefinition = { content: html };
     pdfMake.createPdf(documentDefinition).download(); 
      
+  }
+
+  title = 'appBootstrap'; 
+  closeResult: string;
+   
+  open(content) {
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+  
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return  `with: ${reason}`;
+    }
   }
 }

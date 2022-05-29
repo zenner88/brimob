@@ -453,7 +453,7 @@ loadDeviceMark(){
     let device = data;
   
   var contentString = '<div class="info-window-content"><h2>Device ID'+device.device_id+'</h2>' +
-  '<p><video src="'+device.video_url+'" controls></p></div>';
+  '<iframe src="'+device.video_url+'" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>';
   var infowindow = new google.maps.InfoWindow({
       content: contentString
   });
