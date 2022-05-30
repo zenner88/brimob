@@ -43,6 +43,8 @@ export class DashboardComponent implements OnInit {
   map: any;
   device: any;
   deviceiId: any;
+  zoom: number= 5;
+  cctvMark: any;
 
   constructor(private http: HttpClient, private global: GlobalService, private formBuilder: FormBuilder) {
     this.formFilter0 = this.formBuilder.group({
@@ -138,9 +140,8 @@ ngOnInit() {
   let lng = mapi.getAttribute('data-lng');
 
   var myLatlng = new google.maps.LatLng(lat, lng);
-  
   this.mapOptions = {
-      zoom: 5,
+      zoom: this.zoom,
       scrollwheel: false,
       center: myLatlng,
       mapTypeId: google.maps.MapTypeId.ROADMAP,
@@ -282,45 +283,44 @@ ngOnInit() {
   this.markers = dataMap
   
   // marker
-  this.markers.forEach(location => {
-  // custom logo for marker 
-  let markerLogo: string;
-  if (location.sub_kategori_id == 1){ 
-    markerLogo='info.png';
-  }else{
-    markerLogo='info.png';
-  }
+  // this.markers.forEach(location => {
+  // // custom logo for marker 
+  // let markerLogo: string;
+  // if (location.sub_kategori_id == 1){ 
+  //   markerLogo='info.png';
+  // }else{
+  //   markerLogo='info.png';
+  // }
   // marker 
-  var marker = new google.maps.Marker({
-    position: new google.maps.LatLng(location.lat_pelapor, location.long_pelapor),
-    map: this.map,
-    options: {
-      animation: google.maps.Animation.DROP,
-      icon: "./assets/img/icons/"+markerLogo
-    }
-  });
+  // var marker = new google.maps.Marker({
+  //   position: new google.maps.LatLng(location.lat_pelapor, location.long_pelapor),
+  //   map: this.map,
+  //   options: {
+  //     animation: google.maps.Animation.DROP,
+  //     icon: "./assets/img/icons/"+markerLogo
+  //   }
+  // });
   // info window marker 
-  var contentString = '<div class="info-window-content"><h2>'+location.region_name+'</h2>' +
-  '<p>'+location.sub_kategori+'</p></div>';
-  var infowindow = new google.maps.InfoWindow({
-      content: contentString
-  });
-  google.maps.event.addListener(marker,'click', (function(marker,contentString,infowindow){ 
-    return function() {
-        infowindow.setContent(contentString);
-        infowindow.open(this.map,marker);
-    };
-  })
-  (marker,contentString,infowindow))
-
-  });
-  },
-  error: error => {
-    this.errorMessage = error.message;
-    console.error('There was an error!', error);
-    if (error.status == 401 ){
-      AuthInterceptor.signOut();
-    }
+  // var contentString = '<div class="info-window-content"><h2>'+location.region_name+'</h2>' +
+  // '<p>'+location.sub_kategori+'</p></div>';
+  // var infowindow = new google.maps.InfoWindow({
+  //     content: contentString
+  // });
+  // google.maps.event.addListener(marker,'click', (function(marker,contentString,infowindow){ 
+  //   return function() {
+  //       infowindow.setContent(contentString);
+  //       infowindow.open(this.map,marker);
+  //   };
+  // })
+  // (marker,contentString,infowindow))
+  // });
+  // },
+  // error: error => {
+  //   this.errorMessage = error.message;
+  //   console.error('There was an error!', error);
+  //   if (error.status == 401 ){
+  //     AuthInterceptor.signOut();
+  //   }
   }
   })  
 }
@@ -424,22 +424,18 @@ loadMaps(){
 }
 
 loadDeviceMark(){
-
   console.log('device', this.deviceiId);
   let body = {      
     "tracker_device_id" : this.deviceiId
   }; 
   this.http.post<any>(this.global.address+this.global.trackerLocation, body, this.global.headers).subscribe({
   next: data => {
-  // this.workorders = data;
-
-  // let dataMap = this.workorders
   this.markers = [data];
   console.log('tracker', this.markers);
-  
+  let id = this.markers.id
   // marker
   this.markers.forEach(location => {
-  var marker = new google.maps.Marker({
+  this.cctvMark= new google.maps.Marker({
     position: new google.maps.LatLng(location.lat, location.lon),
     map: this.map,
     options: {
@@ -447,24 +443,27 @@ loadDeviceMark(){
       icon: "./assets/img/icons/cctv_calm.png"
     }
   });
+  
   // info window marker 
   this.http.post<any>(this.global.address+this.global.trackerDevice, body, this.global.headers).subscribe({
-    next: data => {
-    let device = data;
+  next: data => {
+  let device = data;
   
   var contentString = '<div class="info-window-content"><h2>Device ID'+device.device_id+'</h2>' +
   '<iframe src="'+device.video_url+'" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>';
   var infowindow = new google.maps.InfoWindow({
       content: contentString
   });
-  google.maps.event.addListener(marker,'click', (function(marker,contentString,infowindow){ 
+  var zoom = this.map.setZoom(11);
+  var pan = this.map.panTo(new google.maps.LatLng(location.lat, location.lon));
+  google.maps.event.addListener(this.cctvMark,'click', (function(marker,contentString,infowindow, zoom){ 
     return function() {
         infowindow.setContent(contentString);
         infowindow.open(this.map,marker);
     };
   })
-  (marker,contentString,infowindow))
-}})
+  (this.cctvMark,contentString,infowindow))
+  }})
   });
   },
   error: error => {
@@ -475,7 +474,6 @@ loadDeviceMark(){
     }
   }
   }) 
-
 }
 
 loadZen(){
@@ -563,19 +561,18 @@ checkKategori(e){
 }
 
 checkDevice(e){
-  // const website: FormArray = this.formFilter0.get('devices') as FormArray;
-  // console.log("web",website);
-
-  // if (e.target.checked) {
-  //   website.push(new FormControl(e.target.value));
-  // } else {
-  //    const index = website.controls.findIndex(x => x.value === e.target.value);
-  //    website.removeAt(index);
-  // }
-  // this.deviceiId = this.formFilter0.value.subkategoris.map(i=>Number(i));
   this.deviceiId = e.target.value;
+  console.log("check!!!",e);
   console.log("check",this.deviceiId);
-  this.loadDeviceMark();
+  let checked = e.target.checked;
+
+  if (checked == true){
+    this.loadDeviceMark();
+  }else{
+    this.cctvMark.setMap(null);
+    console.log("remove");
+  }
+
 }
 
 }
