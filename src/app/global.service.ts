@@ -34,9 +34,9 @@ export class GlobalService {
   public readonly workorder: string = '/laporan';  
   public readonly tambahLaporan: string = '/laporan_add';  
   public readonly mapLaporan: string = '/laporan_map';  
-  public readonly subKategori: string = '/subkategori';  
-  public readonly region: string = '/regions';  
-  public readonly position: string = '/position';  
+  public readonly subKategori: string = '/laporan_subkategori_list';  
+  public readonly region: string = '/get_region_list';  
+  public readonly position: string = '/position_list';  
   public readonly login: string = '/login_user';  
   public readonly simpanUser: string = '/simpan_user';  
   public readonly listUser: string = '/users';  

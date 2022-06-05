@@ -44,7 +44,9 @@ export class DashboardComponent implements OnInit {
   device: any;
   deviceiId: any;
   zoom: number= 5;
-  cctvMark: any;
+  cctvMark: any = [];
+  deviceInfo: any;
+  contentString: string;
 
   constructor(private http: HttpClient, private global: GlobalService, private formBuilder: FormBuilder) {
     this.formFilter0 = this.formBuilder.group({
@@ -431,39 +433,52 @@ loadDeviceMark(){
   this.http.post<any>(this.global.address+this.global.trackerLocation, body, this.global.headers).subscribe({
   next: data => {
   this.markers = [data];
+  this.deviceInfo = data;
   console.log('tracker', this.markers);
   let id = this.markers.id
   // marker
   this.markers.forEach(location => {
-  this.cctvMark= new google.maps.Marker({
+  let cctvMark1 = new google.maps.Marker({
     position: new google.maps.LatLng(location.lat, location.lon),
     map: this.map,
+    id: location.tracker_device_id,
     options: {
       animation: google.maps.Animation.DROP,
       icon: "./assets/img/icons/cctv_calm.png"
     }
   });
-  
+  this.cctvMark.push(cctvMark1);
+  console.log('cctv', this.cctvMark.length);
+
   // info window marker 
-  this.http.post<any>(this.global.address+this.global.trackerDevice, body, this.global.headers).subscribe({
+  for (var i = 0; i < this.cctvMark.length; i++) {
+  let body2 = {      
+    "tracker_device_id" : this.cctvMark[i].id
+  }; 
+  console.log('body2', body2);
+
+  this.http.post<any>(this.global.address+this.global.trackerDevice, body2, this.global.headers).subscribe({
   next: data => {
   let device = data;
   
-  var contentString = '<div class="info-window-content"><h2>Device ID'+device.device_id+'</h2>' +
-  '<iframe src="'+device.video_url+'" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>';
+   this.contentString = '<div class="info-window-content"><h3>'+device.device_name+' ('+device.device_id+')</h3>' +
+  '<iframe src="'+device.video_url+'" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><table border="0" style="width:100%"><tr><td>Device Type</td><td> : </td><td> '+device.device_type+'</td></tr><tr><td>Device Status</td><td> : </td><td> '+device.device_Status+'</td></tr><tr><td>Latitude</td><td> : </td><td> '+this.deviceInfo.lat+'</td></tr><tr><td>Longitude</td><td> : </td><td> '+this.deviceInfo.lon+'</td></tr><tr><td>Speed</td><td> : </td><td> '+this.deviceInfo.speed+'</td></tr></table></div>';
+  }})
   var infowindow = new google.maps.InfoWindow({
-      content: contentString
+      content: this.contentString
   });
+
   var zoom = this.map.setZoom(11);
   var pan = this.map.panTo(new google.maps.LatLng(location.lat, location.lon));
-  google.maps.event.addListener(this.cctvMark,'click', (function(marker,contentString,infowindow, zoom){ 
+  google.maps.event.addListener(this.cctvMark[i],'click', (function(marker,contentString,infowindow, zoom){ 
     return function() {
         infowindow.setContent(contentString);
         infowindow.open(this.map,marker);
     };
   })
-  (this.cctvMark,contentString,infowindow))
-  }})
+  (this.cctvMark[i],this.contentString,infowindow))
+  
+  }
   });
   },
   error: error => {
@@ -565,14 +580,28 @@ checkDevice(e){
   console.log("check!!!",e);
   console.log("check",this.deviceiId);
   let checked = e.target.checked;
-
+  console.log('cctvMark bot', this.cctvMark);
+  let markers = [];
+  
   if (checked == true){
     this.loadDeviceMark();
   }else{
-    this.cctvMark.setMap(null);
-    console.log("remove");
+  console.log('cctvMark bot', this.cctvMark);
+
+    // let marker = this.cctvMark.id
+    // this.cctvMark.setMap(null);
+    //Find and remove the marker from the Array
+    for (var i = 0; i < this.cctvMark.length; i++) {
+      if (this.cctvMark[i].id == this.deviceiId) {
+          //Remove the marker from Map                  
+          this.cctvMark[i].setMap(null);
+
+          //Remove the marker from array.
+          this.cctvMark.splice(i, 1);
+          return;
+      }
   }
 
 }
-
+}
 }

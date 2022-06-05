@@ -1,0 +1,34 @@
+<body style="background-color: #fff;">
+  
+</body>
+<div class="modal-body my-2" style="width:100%;overflow-x:scroll;font-family: 'Arial Narrow', Arial, sans-serif; background-color: #fff;" #pdfTable id="pdfTable">
+  <table border="0" style="width: 1400px;">
+    <tr>
+      <td style="width: 15%;">
+        <p class="text-center" style="line-height:150%;">
+          KORPS BRIMOB POLRI<br style="height:5pt;">
+          BAGIAN OPERASI
+        </p>
+        <hr>
+      </td>
+      <td style="width: 85%;">
+        <p class="text-center font-weight-bold">
+          <U>LAPORAN HARIAN SITKAMTIBMAS TANGGAL </U>
+        </p>
+      </td>
+    </tr>
+  </table>
+  <table class="table table-sm table-bordered table-hover">
+      <tr>
+        <th>No</th>
+        <th>Kesatuan</th>
+        <th class="px-md-2" *ngFor="let th of published">{{th.name}}</th>
+        
+      </tr>
+      <tr>
+        <td>1</td>
+        <td class="px-md-2" *ngFor="let regions of region">{{regions.region_name}}</td>
+        <td class="px-md-2" *ngFor="let th of published">{{th.laporan_total}}</td>
+      </tr>
+  </table>
+</div>
