@@ -48,6 +48,9 @@ export class DashboardComponent implements OnInit {
   cctvMark: any = [];
   deviceInfo: any;
   contentString: string;
+  lat: string;
+  lng: string;
+  lon: any;
 
   constructor(private http: HttpClient, private global: GlobalService, private formBuilder: FormBuilder) {
     this.formFilter0 = this.formBuilder.group({
@@ -139,10 +142,10 @@ ngOnInit() {
   }
   // maps 
   let mapi = document.getElementById('map-canvas');
-  let lat = mapi.getAttribute('data-lat');
-  let lng = mapi.getAttribute('data-lng');
+  this.lat = mapi.getAttribute('data-lat');
+  this.lng = mapi.getAttribute('data-lng');
 
-  var myLatlng = new google.maps.LatLng(lat, lng);
+  var myLatlng = new google.maps.LatLng(this.lat, this.lng);
   this.mapOptions = {
       zoom: this.zoom,
       scrollwheel: false,
@@ -474,10 +477,10 @@ loadDeviceMark(){
 
   var zoom = this.map.setZoom(11);
   var pan = this.map.panTo(new google.maps.LatLng(location.lat, location.lon));
-  google.maps.event.addListener(this.cctvMark,'click', (function(marker,contentString,infowindow2, zoom,){ 
+  google.maps.event.addListener(this.cctvMark,'click', (function(cctvMark1,contentString,infowindow2, zoom,){ 
     return function() {
         infowindow2.setContent(contentString);
-        infowindow2.open(this.map,marker);
+        infowindow2.open(this.map,cctvMark1);
     };
   })
   (this.cctvMark,this.contentString,infowindow2))
@@ -587,6 +590,9 @@ checkKategori(e){
 }
 
 checkDevice(e){
+  this.map.setZoom(5);
+  this.map.panTo(new google.maps.LatLng(this.lat, this.lng));
+
   this.deviceiId = e.target.value;
   console.log("check!!!",e);
   console.log("check",this.deviceiId);
