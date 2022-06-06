@@ -3,6 +3,7 @@ import { GlobalService } from '../../global.service';
 import { AuthInterceptor } from '../../_helpers/auth.interceptor';
 import { HttpClient } from '@angular/common/http';
 import { FormBuilder, FormGroup, FormControl, Validators, FormArray} from '@angular/forms';
+import { MapInfoWindow } from '@angular/google-maps';
 declare const google: any;
 
 @Component({
@@ -426,6 +427,7 @@ loadMaps(){
 }
 
 loadDeviceMark(){
+  this.contentString = "";
   console.log('device', this.deviceiId);
   let body = {      
     "tracker_device_id" : this.deviceiId
@@ -448,38 +450,47 @@ loadDeviceMark(){
     }
   });
   this.cctvMark.push(cctvMark1);
-  console.log('cctv', this.cctvMark.length);
-
+  
   // info window marker 
-  for (var i = 0; i < this.cctvMark.length; i++) {
+  // cctvMark1.addListener("click", (marker) => {
+    console.log('klik', cctvMark1.id);
+
   let body2 = {      
-    "tracker_device_id" : this.cctvMark[i].id
+    "tracker_device_id" : cctvMark1.id
   }; 
-  console.log('body2', body2);
 
   this.http.post<any>(this.global.address+this.global.trackerDevice, body2, this.global.headers).subscribe({
   next: data => {
   let device = data;
   
-   this.contentString = '<div class="info-window-content"><h3>'+device.device_name+' ('+device.device_id+')</h3>' +
+  this.contentString = '<div class="info-window-content"><h3>'+device.device_name+' ('+device.device_id+')</h3>' +
   '<iframe src="'+device.video_url+'" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><table border="0" style="width:100%"><tr><td>Device Type</td><td> : </td><td> '+device.device_type+'</td></tr><tr><td>Device Status</td><td> : </td><td> '+device.device_Status+'</td></tr><tr><td>Latitude</td><td> : </td><td> '+this.deviceInfo.lat+'</td></tr><tr><td>Longitude</td><td> : </td><td> '+this.deviceInfo.lon+'</td></tr><tr><td>Speed</td><td> : </td><td> '+this.deviceInfo.speed+'</td></tr></table></div>';
-  }})
-  var infowindow = new google.maps.InfoWindow({
-      content: this.contentString
+  
+  var infowindow2 = new google.maps.InfoWindow({
+    content: this.contentString
   });
+  infowindow2.setContent(this.contentString);
+  infowindow2.open(this.map,cctvMark1);
 
   var zoom = this.map.setZoom(11);
   var pan = this.map.panTo(new google.maps.LatLng(location.lat, location.lon));
-  google.maps.event.addListener(this.cctvMark[i],'click', (function(marker,contentString,infowindow, zoom){ 
+  google.maps.event.addListener(this.cctvMark,'click', (function(marker,contentString,infowindow2, zoom,){ 
     return function() {
-        infowindow.setContent(contentString);
-        infowindow.open(this.map,marker);
+        infowindow2.setContent(contentString);
+        infowindow2.open(this.map,marker);
     };
   })
-  (this.cctvMark[i],this.contentString,infowindow))
+  (this.cctvMark,this.contentString,infowindow2))
+  }})
+  // var infowindow2 = new google.maps.InfoWindow({
+  //   content: this.contentString
+  // });
   
+  // infowindow2.setContent(this.contentString);
+  // infowindow2.open(this.map, cctvMark1);
   }
-  });
+  );
+  // });
   },
   error: error => {
     this.errorMessage = error.message;
