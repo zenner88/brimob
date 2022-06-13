@@ -51,6 +51,7 @@ export class DashboardComponent implements OnInit {
   lat: string;
   lng: string;
   lon: any;
+  newMarkId: any;
 
   constructor(private http: HttpClient, private global: GlobalService, private formBuilder: FormBuilder) {
     this.formFilter0 = this.formBuilder.group({
@@ -455,9 +456,10 @@ loadDeviceMark(){
   this.cctvMark.push(cctvMark1);
   
   // info window marker 
-  // cctvMark1.addListener("click", (marker) => {
-    console.log('klik', cctvMark1.id);
-
+  // cctvMark1.addListener("click", () => {
+  //   console.log('klik', cctvMark1.id);
+  //   this.newMarkId = cctvMark1.id;
+  // })
   let body2 = {      
     "tracker_device_id" : cctvMark1.id
   }; 
@@ -475,25 +477,17 @@ loadDeviceMark(){
   infowindow2.setContent(this.contentString);
   infowindow2.open(this.map,cctvMark1);
 
-  var zoom = this.map.setZoom(11);
-  var pan = this.map.panTo(new google.maps.LatLng(location.lat, location.lon));
-  google.maps.event.addListener(this.cctvMark,'click', (function(cctvMark1,contentString,infowindow2, zoom,){ 
-    return function() {
-        infowindow2.setContent(contentString);
-        infowindow2.open(this.map,cctvMark1);
-    };
+  this.map.setZoom(11);
+  this.map.panTo(new google.maps.LatLng(location.lat, location.lon));
+  // dibawah masih salah 
+  cctvMark1.addListener("click", () => {
+    infowindow2.setContent(this.contentString);
+    infowindow2.open(this.map,cctvMark1);
+    return
   })
-  (this.cctvMark,this.contentString,infowindow2))
   }})
-  // var infowindow2 = new google.maps.InfoWindow({
-  //   content: this.contentString
-  // });
-  
-  // infowindow2.setContent(this.contentString);
-  // infowindow2.open(this.map, cctvMark1);
   }
   );
-  // });
   },
   error: error => {
     this.errorMessage = error.message;

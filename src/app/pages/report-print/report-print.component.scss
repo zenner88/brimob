@@ -1,1 +1,10 @@
 body {background-color: #fff;}
+tr {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  td {
+    padding: 0;
+    flex: calc(100% / 12) ;
+  }

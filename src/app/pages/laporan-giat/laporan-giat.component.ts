@@ -13,12 +13,12 @@ const htmlToPdfmake = require("html-to-pdfmake");
 declare const google: any;
 
 @Component({
-  selector: 'app-laporan-big',
-  templateUrl: './laporan-big.component.html',
-  styleUrls: ['./laporan-big.component.scss']
+  selector: 'app-laporan-giat',
+  templateUrl: './laporan-giat.component.html',
+  styleUrls: ['./laporan-giat.component.scss']
 })
 
-export class LaporanBigComponent implements OnInit {
+export class LaporanGiatComponent implements OnInit {
   @ViewChild('pdfTable')
   pdfTable!: ElementRef;
 

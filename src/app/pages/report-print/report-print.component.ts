@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../../_services/auth.service';
-import { TokenStorageService } from '../../_services/token-storage.service';
-import { Router, CanActivate } from '@angular/router';
+import { Router } from '@angular/router';
 import { GlobalService } from '../../global.service';
-import Swal from 'sweetalert2'
+import { ActivatedRoute } from '@angular/router';
+import { AuthInterceptor } from '../../_helpers/auth.interceptor';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-report-print',
@@ -11,73 +11,60 @@ import Swal from 'sweetalert2'
   styleUrls: ['./report-print.component.scss']
 })
 export class ReportPrintComponent implements OnInit {
-  form: any = {
-    username: null,
-    password: null
-  };
-  isLoggedIn = false;
-  isLoginFailed = false;
-  errorMessage = '';
-  roles: string[] = [];
-  token!: string;
-  DashboardComponent: any;
-  fieldTextType: boolean;
-  tokenStorageService: TokenStorageService;
-  constructor(private authService: AuthService, private tokenStorage: TokenStorageService, public router: Router, private global: GlobalService) { }
+  noLaporan: any;
+  tglLaporan: any;
+  published: any;
+  errorMessage: any;
+  region: any;
+  subKategori: any;
+
+  constructor(private http: HttpClient, public router: Router, private global: GlobalService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    if (this.tokenStorage.getToken()) {
-      this.isLoggedIn = true;
-      this.roles = this.tokenStorage.getUser().name;
-      this.token = this.tokenStorage.getUser().token;
-
-    }
-  }
-
-  onSubmit(): void {
-    const { username, password } = this.form;
-    this.authService.login(username, password).subscribe({
-      next: data => {
-        this.tokenStorage.saveToken(data.token);
-        this.tokenStorage.saveUser(data);
-        this.isLoginFailed = false;
-        this.isLoggedIn = true;
-        this.roles = this.tokenStorage.getUser().roles;
-        this.reloadPage();
-        return false;
-      },
-      error: err => {
-        this.errorMessage = err.statusText;
-        this.isLoginFailed = true;
+    // http://localhost:4200/#/report?n=1234567
+    this.route.queryParams
+      .subscribe(params => {
+        console.log(params);
+        this.noLaporan = params.n;
+        console.log(this.noLaporan);
       }
-    });
-  }
-
-  reloadPage(): void {
-    let tokens = this.tokenStorage.getToken();
-    let valid = this.tokenStorage.getUser().valid;
-     if (tokens == undefined || valid == 2 ){
-       Swal.fire({  
-        icon: 'error',  
-        title: 'Login Failed',  
-        text: 'Your Username or Password invalid',  
-        background: '#000000',
-       }).then(function() {
-         window.sessionStorage.clear();
-         window.location.reload();
-       });    }
-     else {
-       this.router.navigate(['dashboard']);
-      //  window.location.reload();
-     }
-  }
-  logout() {
-    // this.tokenStorageService.signOut();
-    window.sessionStorage.clear();
-    window.location.reload();
-  }
-  // <!-- Switching method -->
-  toggleFieldTextType() {
-    this.fieldTextType = !this.fieldTextType;
-  }
+    );
+    let no = this.noLaporan;
+    let body = {
+      "no_laporan" : no
+      };
+    let region = no.slice(-1);
+    console.log("no laporan :",no);
+    console.log("region :",region);
+    this.http.post<any>(this.global.address+this.global.laporanReview, body).subscribe({
+      next: data => {
+        // console.log(data);
+        this.published = data;
+        console.log("published : ",this.published)
+        this.tglLaporan = data[0].tgl_laporan;
+        this.subKategori = data[0].sub_kategori;
+      },
+      error: error => {
+          this.errorMessage = error.message;
+          console.error('There was an error!', error);
+          if (error.status == 401 ){
+            AuthInterceptor.signOut();
+          }
+      }
+      })
+  
+    this.http.get<any>(this.global.address+this.global.region).subscribe({
+      next: data => {
+        this.region = data.filter(x => x.id == region);
+        console.log("region get :",this.region);
+      },
+      error: error => {
+          this.errorMessage = error.message;
+          console.error('There was an error!', error);
+          if (error.status == 401 ){
+            AuthInterceptor.signOut();
+          }
+      }
+      })
+  }    
 }
