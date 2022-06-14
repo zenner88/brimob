@@ -56,10 +56,12 @@ export class LaporanGiatComponent implements OnInit {
   region: any;
   tglLaporan: any;
   subKategori: any;
+  tgl_laporan: any;
+  laporanDetails: any;
   constructor(private http: HttpClient, private global: GlobalService, private sanitizer: DomSanitizer, private modalService: NgbModal) { }
 
   ngOnInit() {       
-    this.http.get<any>(this.global.address+this.global.laporanPublished).subscribe({
+    this.http.get<any>(this.global.address+this.global.laporanGiat).subscribe({
     next: data => {
       this.collectionSize = data.length;
       this.workorders = data;
@@ -83,8 +85,7 @@ export class LaporanGiatComponent implements OnInit {
     this.position_name = row.position_name;
     this.sub_kategori = row.sub_kategori;
     this.status = row.status;
-    this.tgl_submitted = row.tgl_submitted;
-    this.tgl_approved = row.tgl_approved;
+    this.tgl_laporan = row.tgl_laporan;
     this.keterangan = row.keterangan;
     this.user_id = row.user_id;
     this.lat = row.lat_pelapor;
@@ -270,12 +271,76 @@ approve(index:any){
   title = 'appBootstrap'; 
   closeResult: string;
    
-  open(content) {
+  open(zz, content) {
+    console.log(zz);
+    this.laporanDetails = zz;
+    this.lat = zz.lat_pelapor;
+    this.long = zz.long_pelapor;
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
+
+    let map = document.getElementById('map-canvas');
+    // let lat = map.getAttribute('data-lat');
+    // let lng = map.getAttribute('data-lng');
+    console.log(map);
+
+    let lat = this.lat;
+    let lng = this.long;
+    let markers = [
+      { lat: this.lat, lng: this.long, city: "bandung", type: 1 },
+    ];
+    var myLatlng = new google.maps.LatLng(lat, lng);
+    var mapOptions = {
+        zoom: 15,
+        scrollwheel: false,
+        center: myLatlng,
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+        styles: [
+          {"featureType":"administrative","elementType":"labels.text.fill","stylers":[{"color":"#444444"}]},
+          {"featureType":"landscape","elementType":"all","stylers":[{"color":"#f2f2f2"}]},
+          // {"featureType":"poi","elementType":"all","stylers":[{"visibility":"off"}]},
+          {"featureType":"road","elementType":"all","stylers":[{"saturation":-100},{"lightness":45}]},
+          {"featureType":"road.highway","elementType":"all","stylers":[{"visibility":"simplified"}]},
+          // {"featureType":"road.arterial","elementType":"labels.icon","stylers":[{"visibility":"off"}]},
+          // {"featureType":"transit","elementType":"all","stylers":[{"visibility":"off"}]},
+          {"featureType":"water","elementType":"all","stylers":[{"color":'#5e72e4'},{"visibility":"on"}]}]
+    }
+    map = new google.maps.Map(map, mapOptions);
+    markers.forEach(location => {
+      // custom logo for marker 
+      let markerLogo: string;
+      if (location.type == 1){ 
+        markerLogo='https://aicc.1500669.com/assets/icon/3polisi.png';
+      }else if(location.type == 2){
+        markerLogo='https://aicc.1500669.com/assets/icon/3polisi.png';
+      }
+      // marker 
+      var marker = new google.maps.Marker({
+        position: new google.maps.LatLng(location.lat, location.lng),
+        map: map,
+        options: {
+          animation: google.maps.Animation.DROP,
+          icon: "https://aicc.1500669.com/assets/icon/3polisi.png",optimized: true 
+        }
+      });
+      // info window marker 
+      var contentString = '<div class="info-window-content"><h2>'+location.city+'</h2>' +
+      '<p>Ini '+location.city+' bro!</p></div>';
+      var infowindow = new google.maps.InfoWindow({
+          content: contentString
+      });
+      google.maps.event.addListener(marker,'click', (function(marker,contentString,infowindow){ 
+        return function() {
+            infowindow.setContent(contentString);
+            infowindow.open(map,marker);
+        };
+    })
+    (marker,contentString,infowindow))
+  });
+  // end maps 
   }
   
   private getDismissReason(reason: any): string {

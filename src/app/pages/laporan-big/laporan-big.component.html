@@ -13,20 +13,17 @@
                   Tambah Laporan
                 </a> -->
                 <h2 class="mb-0 text-light">Laporan Published</h2>
+                <button class="btn bg-danger btn-sm text-light pull-right" (click)="open(modalLaporan)"><i class="fa fa-plus"></i>  Tambah Laporan</button>
+
             </div>
             <div class="col-6 col-md-3">
               <form>
                 <div class="form-group float-end" >
-                  <input placeholder="NO PENGADUAN/ NAMA" class="form-control form-control-sm form-control-success" type="text" [(ngModel)]="filterTerm"/>
+                  <input placeholder="NO PENGADUAN/ NAMA" class="form-control form-control-md form-control-success" type="text" [(ngModel)]="filterTerm"/>
                 </div>
               </form>
             </div>
-          </div> 
-          <div class="row" [class.hidden]="isShowBack">
-            <div class="col-12">
-            <button class="btn btn-primary btn-block col-4 col-lg-1" (click)="backToTable()">Back</button>
-            </div>
-          </div>         
+          </div>        
         </div>
         <div class="table-responsive" [class.hidden]="isShowTable" id="pdfTable">
         <!-- <div class="table-responsive" [class.hidden]="isShowTable" id="pdfTable" #pdfTable> -->
@@ -51,20 +48,21 @@
                 <td class="px-md-2" style="white-space: normal;">{{zz.username}}</td>
                 <td class="px-md-2" style="white-space: normal;">{{zz.status}}</td>
                 <td class="px-md-2"><i class="fa fa-list-alt text-danger pointer" title="Review" (click)="review(zz, mymodal)"></i></td>
-                <td class="px-md-2"><i class="fa fa-check-square text-danger pointer" title="Approve" (click)="approve(zz)"></i></td>
+                <td class="px-md-2"><i class="fa fa-check-square text-danger pointer" title="Approve" (click)="approve(zz)" *ngIf="zz.status == ''"></i><i class="fa fa-file-pdf text-danger pointer" title="Approve"  *ngIf="zz.status == 'approved'"></i></td>
               </tr>
             </tbody>
           </table>
-          <!-- <button class="btn btn-primary btn-sm float-right mt-2" (click)="downloadAsPDF();">Export To PDF</button> -->
           <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [maxSize]="5" [boundaryLinks]="true"
-    [pageSize]="pageSize" class="d-flex justify-content-center mt-4"></ngb-pagination>
+          [pageSize]="pageSize" class="d-flex justify-content-center mt-4"></ngb-pagination>
         </div>
+        
+        <!-- Modal Review -->
         <ng-template #mymodal let-modal>   
-          <div class="modal-xl">
-          <div class="modal-header">
-            <h4 class="modal-title" id="modal-basic-title">Laporan Published No. {{published[0].no_laporan}}</h4>
+          <div class="modal-xl border-dark">
+          <div class="modal-header bg-dark text-white">
+            <h4 class="modal-title text-white" id="modal-basic-title">Laporan Published No. {{published[0].no_laporan}}</h4>
             <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-              <span aria-hidden="true">×</span>
+              <span class="text-white" aria-hidden="true">×</span>
             </button>
           </div>
           <div class="modal-body my-2 container-fluid"  style="width:100%;overflow-x:scroll;font-family: 'Arial Narrow', Arial, sans-serif;">
@@ -98,12 +96,83 @@
                 </tr>
             </table>
           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Ok</button>
+        </div>
+        </ng-template>
+        <!-- End Modal Review -->
+
+        <!-- Modal Tambah Laporan -->
+        <ng-template #modalLaporan let-modal>   
+          <div class="modal-xl border-dark">
+          <div class="modal-header bg-dark text-white">
+            <h4 class="modal-title text-white" id="modal-basic-title">Tambah Laporan</h4>
+            <button type="button" class="close text-white" aria-label="Close" (click)="modal.dismiss('Cross click')">
+              <span class="text-white" aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body my-2 container-fluid">
+            <form [formGroup]="laporanForm" (ngSubmit)="simpanLaporan()">
+              <div class="row px-4 py-1">
+                <div class="col-12 col-lg-3">
+                  <label class="form-label">Region</label>
+                </div>
+                <div class="col-12 col-lg-9">
+                  <select class="form-select form-control border border-dark" (change)="filterRegion($event)" formControlName="region_id" [ngClass]="{ 'is-invalid': submitted && f.region_id.errors }">
+                    <option *ngFor="let pos of position" value="{{pos.region_id}}">{{pos.region_name}}</option>
+                  </select>
+                </div>
+                <div *ngIf="submitted && f.region_id.errors" class="invalid-feedback">
+                  <div *ngIf="f.region_id.errors.required">Region is required</div>
+                </div>
+              </div>
+              <div class="row px-4 py-1">
+                <div class="col-12 col-lg-3">
+                  <label class="form-label">Department</label>
+                </div>
+                <div class="col-12 col-lg-9">
+                  <select class="form-select form-control border border-dark" [ngModel]="1" formControlName="department_id" [ngClass]="{ 'is-invalid': submitted && f.department_id.errors }">
+                    <option *ngFor="let pos of department" value="{{pos.department_id}}">{{pos.department_name}}</option>
+                  </select>
+                </div>
+                <div *ngIf="submitted && f.department_id.errors" class="invalid-feedback">
+                  <div *ngIf="f.department_id.errors.required">Department is required</div>
+                </div>
+              </div>
+              <div class="row px-4 py-1">
+                <div class="col-12 col-lg-3">
+                  <label class="form-label">Kategori</label>
+                </div>
+                <div class="col-12 col-lg-9">
+                  <select class="form-select form-control border border-dark" [ngModel]="1" formControlName="sub_kategori_id" [ngClass]="{ 'is-invalid': submitted && f.sub_kategori_id.errors }">
+                    <option *ngFor="let pos of kategori" value="{{pos.idsubkategori}}">{{pos.sub_kategori}}</option>
+                  </select>
+                </div>
+                <div *ngIf="submitted && f.sub_kategori_id.errors" class="invalid-feedback">
+                  <div *ngIf="f.sub_kategori_id.errors.required">Kategori is required</div>
+                </div>
+              </div>
+              <div class="row px-4 py-1">
+                <div class="col-12 col-lg-3">
+                  <label class="form-label">Tanggal</label>
+                </div>
+                <div class="col-12 col-lg-9">
+                  <div class="input-group input-group-alternative">
+                    <input class="form-control datepicker border border-dark" placeholder="Select date" type="date" formControlName="tgl_laporan" [ngClass]="{ 'is-invalid': submitted && f.tgl_laporan.errors }"/>
+                  </div>
+                  <div *ngIf="submitted && f.tgl_laporan.errors" class="invalid-feedback">
+                    <div *ngIf="f.tgl_laporan.errors.required">Tanggal is required</div>
+                  </div>
+                </div>
+              </div>
+              <div class="pull-right">
+                <button type="submit" class="btn bg-danger text-white" (click)="modal.close('Save click')">Simpan</button>
+              </div>
+          </form>
           </div>
         </div>
         </ng-template>
+        <!-- End Modal Tambah Laporan -->
         
+        <!-- PDF -->
         <div class="modal-body my-2" style="width:100%;overflow-x:scroll;font-family: 'Arial Narrow', Arial, sans-serif;" #pdfTable id="pdfTable" hidden>
           <table border="0" style="width: 1400px;">
             <tr>
@@ -135,101 +204,7 @@
               </tr>
           </table>
         </div>
-
-        <!-- Details page  -->
-        <div class="container-fluid" [class.hidden]="isShowDetalis">
-          <div class="row mx--4">
-            <div class="col">
-              <div class="row">
-
-                <div class="col-lg-6 mb-2">
-                <div class="card shadow table-hover my-4 border border-dark">
-                  <div class="card-header bg-dark border">
-                    <div class="row">
-                      <h3 class="mb-0 text-light">Detail Laporan</h3>
-                    </div>         
-                  </div>
-                  <div class="card-body">                      
-                    <div class="row py-2 divcol">
-                      <div class="col">
-                        <h4>No Laporan</h4>
-                      </div>
-                      <div class="col">
-                        {{no_laporan}}
-                      </div>
-                    </div> 
-                    <div class="row py-2">
-                      <div class="col">
-                        <h4>Nama Pelapor</h4>
-                      </div>
-                      <div class="col">
-                        {{nama}}
-                      </div>
-                    </div> 
-                    <div class="row py-2 divcol">
-                      <div class="col">
-                        <h4>Position</h4>
-                      </div>
-                      <div class="col">
-                        {{position_name}}
-                      </div>
-                    </div> 
-                    <div class="row py-2">
-                      <div class="col">
-                        <h4>Kategori</h4>
-                      </div>
-                      <div class="col">
-                        {{sub_kategori}}
-                      </div>
-                    </div> 
-                    <div class="row py-2 divcol">
-                      <div class="col">
-                        <h4>Status</h4>
-                      </div>
-                      <div class="col">
-                        {{keterangan}}
-                      </div>
-                    </div>                                   
-                    <div class="row py-2">
-                      <div class="col">
-                        <h4>Tanggal Submit</h4>
-                      </div>
-                      <div class="col">
-                        {{tgl_submitted | date: 'EEEE, d MMMM y'}}
-                      </div>
-                    </div>            
-                    <div class="row py-2 divcol">
-                      <div class="col">
-                        <h4>Tanggal Approve</h4>
-                      </div>
-                      <div class="col">
-                        {{tgl_approved | date: 'EEEE, d MMMM y'}}
-                      </div>
-                    </div>   
-                    <div class="row py-2">
-                      <div class="col">
-                        <h4>Laporan</h4>
-                      </div>
-                      <div class="col">
-                        {{laporan}}
-                      </div>
-                    </div>          
-                  </div>
-                </div>
-                </div>
-
-                <div class="col-lg-6 mb-2">
-                  <div class="card shadow table-hover my-4 border border-dark">
-                    <div id="map-canvas" class="map-canvas px-0" data-lat="0.7893" data-lng="113.9213" style="height: 320px;"></div>
-                  </div>
-                </div>
-                 
-            </div>
-          </div>
-
-        </div>
-
-      </div>
+        <!-- END PDF -->
     </div>
   </div>
 </div>

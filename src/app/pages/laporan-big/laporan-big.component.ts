@@ -1,5 +1,6 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { FormGroup, AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { AuthInterceptor } from '../../_helpers/auth.interceptor';
 import { GlobalService } from '../../global.service';
 import { DomSanitizer, SafeHtml} from '@angular/platform-browser';
@@ -11,14 +12,17 @@ import * as pdfFonts from "pdfmake/build/vfs_fonts";
 const htmlToPdfmake = require("html-to-pdfmake");
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 declare const google: any;
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-laporan-big',
   templateUrl: './laporan-big.component.html',
-  styleUrls: ['./laporan-big.component.scss']
+  styleUrls: ['./laporan-big.component.scss'],
+  providers: [DatePipe]
 })
 
 export class LaporanBigComponent implements OnInit {
+  laporanForm : FormGroup;
   @ViewChild('pdfTable')
   pdfTable!: ElementRef;
 
@@ -56,9 +60,27 @@ export class LaporanBigComponent implements OnInit {
   region: any;
   tglLaporan: any;
   subKategori: any;
-  constructor(private http: HttpClient, private global: GlobalService, private sanitizer: DomSanitizer, private modalService: NgbModal) { }
+  positions: any;
+  department: any[];
+  posi: any[];
+  position: any[];
+  kategori: any;
+  submitted = false;
+  constructor(private http: HttpClient, private global: GlobalService, private sanitizer: DomSanitizer, private modalService: NgbModal, private formBuilder: FormBuilder, private datePipe: DatePipe) { }
 
-  ngOnInit() {       
+  get f(): { [key: string]: AbstractControl } {
+    return this.laporanForm.controls;
+  }
+
+  ngOnInit(): void { 
+    this.laporanForm = this.formBuilder.group(
+      {
+      region_id: ['',[Validators.required,]],
+      department_id: ['',[Validators.required,]],
+      sub_kategori_id: ['',[Validators.required,]],
+      tgl_laporan: ['',[Validators.required,]],
+      })  
+
     this.http.get<any>(this.global.address+this.global.laporanPublished).subscribe({
     next: data => {
       this.collectionSize = data.length;
@@ -73,6 +95,39 @@ export class LaporanBigComponent implements OnInit {
         }
     }
     })
+
+    // Get region && department 
+    this.http.get<any>(this.global.address+this.global.position).subscribe({
+      next: data => {
+        this.positions = data;
+        // this.position = data;
+        // data.filter(data => data.region_id === 1);
+        // console.log("filter", this.position);
+        this.position = this.removeDuplicates(data, "region_id");
+        console.log("uniqueArray is: " + JSON.stringify(this.position));
+        console.log(data);
+      },
+      error: error => {
+          this.errorMessage = error.message;
+          console.error('There was an error!', error);
+          if (error.status == 401 ){
+            AuthInterceptor.signOut();
+          }
+      }
+      })
+    // Get Kategori 
+    this.http.get<any>(this.global.address+this.global.getSubkategori).subscribe({
+      next: data => {
+        this.kategori = data;
+      },
+      error: error => {
+          this.errorMessage = error.message;
+          console.error('There was an error!', error);
+          if (error.status == 401 ){
+            AuthInterceptor.signOut();
+          }
+      }
+      })
   }
 
   showDetails (row:any){
@@ -224,6 +279,7 @@ approve(index:any){
           background: '#fff',
         })
         this.ngOnInit;
+        window.location.reload();
       }else{
         Swal.fire({  
           icon: 'warning',  
@@ -241,22 +297,57 @@ approve(index:any){
         }
     }
     })
-    const pdfTable = this.pdfTable.nativeElement;
-    var html = htmlToPdfmake(pdfTable.innerHTML);
-    const documentDefinition = { content: html, pageSize: 'A4', pageOrientation: 'landscape', pageMargins: [ 10, 10, 10, 10 ]};
-    pdfMake.createPdf(documentDefinition).download(no+'.pdf');
+    // const pdfTable = this.pdfTable.nativeElement;
+    // var html = htmlToPdfmake(pdfTable.innerHTML);
+    // const documentDefinition = { content: html, pageSize: 'A4', pageOrientation: 'landscape', pageMargins: [ 10, 10, 10, 10 ]};
+    // pdfMake.createPdf(documentDefinition).download(no+'.pdf');
   }
-  backToTable(){
-    this.isShowTable = false;
-    this.isShowDetalis = true;
-    this.isShowHeader = false;
-    this.isShowBack = true;
-    this.tittle = "Laporan";
-  }
-  
-  showHeader (){
-      this.isShowTable = true;
-      this.isShowDetalis = false;
+
+  simpanLaporan(){
+    this.submitted = true;
+    if (this.laporanForm.invalid) {
+      return;
+    }else{
+      console.log(this.laporanForm.value);
+      let date = new Date(this.laporanForm.value.tgl_laporan);
+      console.log(this.datePipe.transform(date, 'yyyy-MM-dd HH:mm:ss'));
+      let Data = {
+        "tgl_laporan" : this.datePipe.transform(date, 'yyyy-MM-dd HH:mm:ss'),
+        "sub_kategori_id" : this.laporanForm.value.sub_kategori_id,
+        "region_id" : this.laporanForm.value.region_id,
+        "department_id" : this.laporanForm.value.department_id
+      }
+      this.http.post<any>(this.global.address+this.global.createLaporan, Data, this.global.headers).subscribe({
+        next: data => {
+          console.log(data);
+          let dot = data;
+          if (dot.valid == 1){
+            Swal.fire({  
+              icon: 'info',  
+              title: dot.result,  
+              text: 'Laporan berhasil di Tambah!',  
+              background: '#fff',
+            })
+            this.ngOnInit;
+            window.location.reload();
+          }else{
+            Swal.fire({  
+              icon: 'warning',  
+              title: dot.result,  
+              text: 'Isian Laporan Tidak Valid',  
+              background: '#fff',
+            })
+          }
+        },
+        error: error => {
+            this.errorMessage = error.message;
+            console.error('There was an error!', error);
+            if (error.status == 401 ){
+              AuthInterceptor.signOut();
+            }
+        }
+      })
+    }
   }
 
   public downloadAsPDF() {
@@ -267,7 +358,6 @@ approve(index:any){
      
   }
 
-  title = 'appBootstrap'; 
   closeResult: string;
    
   open(content) {
@@ -286,5 +376,34 @@ approve(index:any){
     } else {
       return  `with: ${reason}`;
     }
+  }
+
+  removeDuplicates(originalArray, prop) {
+    var newArray = [];
+    var lookupObject  = {};
+
+    for(var i in originalArray) {
+       lookupObject[originalArray[i][prop]] = originalArray[i];
+    }
+
+    for(i in lookupObject) {
+        newArray.push(lookupObject[i]);
+    }
+     return newArray;
+  } 
+
+  filterRegion(xx){
+    console.log("WAAW :", xx.target.value);
+    let id = xx.target.value
+    // this.position = data;
+    let dep = this.positions.filter(x => x.region_id == id);
+    // console.log("filter", this.position);
+    this.department = this.removeDuplicates(dep, "department_id");
+    this.posi = this.removeDuplicates(dep, "position_id");
+    // console.log("uniqueArray is: " + JSON.stringify(this.position));
+    console.log("position",this.positions);
+    console.log("department",this.department);
+    console.log("posi",this.posi);
+
   }
 }

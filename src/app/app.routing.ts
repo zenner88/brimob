@@ -17,6 +17,11 @@ const routes: Routes =[
     pathMatch: 'full',
   }, 
   {
+    path: 'report',
+    redirectTo: 'report',
+    pathMatch: '',
+  }, 
+  {
     path: '',
     component: AdminLayoutComponent,
     canActivate: [AuthGuard],
