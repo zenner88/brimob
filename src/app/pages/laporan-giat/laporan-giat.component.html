@@ -35,10 +35,11 @@
               <tr>
                 <th class="px-md-2">No</th>
                 <th class="px-md-2">No Laporan</th>
-                <th class="px-md-2">Date Submitted</th>
-                <th class="px-md-2">Date Approved</th>
-                <th class="px-md-2">Approved By</th>
-                <th class="px-md-2">Status</th>
+                <th class="px-md-2">Tgl Laporan</th>
+                <th class="px-md-2">Region</th>
+                <th class="px-md-2">Department</th>
+                <th class="px-md-2">Kategori</th>
+                <th class="px-md-2">Keterangan</th>
                 <th class="px-md-2" colspan="2"></th>
               </tr>
             </thead>
@@ -46,12 +47,12 @@
               <tr title="CLICK FOR DETAILS..." *ngFor="let zz of workorders | filter: filterTerm | slice: (page-1) * pageSize : page * pageSize; index as i">
                 <td class="px-md-2">{{i+1}}</td>
                 <td class="px-md-2">{{zz.no_laporan}}</td>
-                <td class="px-md-2">{{zz.date_submitted | date: 'EEEE, d MMMM y'}}</td>
-                <td class="px-md-2">{{zz.date_approved | date: 'EEEE, d MMMM y'}}</td>
-                <td class="px-md-2" style="white-space: normal;">{{zz.username}}</td>
-                <td class="px-md-2" style="white-space: normal;">{{zz.status}}</td>
-                <td class="px-md-2"><i class="fa fa-list-alt text-danger pointer" title="Review" (click)="review(zz, mymodal)"></i></td>
-                <td class="px-md-2"><i class="fa fa-check-square text-danger pointer" title="Approve" (click)="approve(zz)"></i></td>
+                <td class="px-md-2">{{zz.tgl_laporan | date: 'EEEE, d MMMM y'}}</td>
+                <td class="px-md-2">{{zz.region_name}}</td>
+                <td class="px-md-2">{{zz.department_name}}</td>
+                <td class="px-md-2">{{zz.sub_kategori}}</td>
+                <td class="px-md-2" style="white-space: normal;">{{zz.laporan_text}}</td>
+                <td class="px-md-2"><i class="fa fa-list-alt text-danger pointer" title="Details" (click)="open(zz, mymodal)"></i></td>
               </tr>
             </tbody>
           </table>
@@ -59,89 +60,21 @@
           <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [maxSize]="5" [boundaryLinks]="true"
     [pageSize]="pageSize" class="d-flex justify-content-center mt-4"></ngb-pagination>
         </div>
-        <ng-template #mymodal let-modal>   
-          <div class="modal-xl">
-          <div class="modal-header">
-            <h4 class="modal-title" id="modal-basic-title">Laporan Published No. {{published[0].no_laporan}}</h4>
-            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-              <span aria-hidden="true">×</span>
-            </button>
-          </div>
-          <div class="modal-body my-2 container-fluid"  style="width:100%;overflow-x:scroll;font-family: 'Arial Narrow', Arial, sans-serif;">
-            <table border="0" style="width: 1400px;">
-              <tr>
-                <td style="width: 15%;">
-                  <p class="text-center" style="line-height:150%;">
-                    KORPS BRIMOB POLRI<br style="height:5pt;">
-                    BAGIAN OPERASI
-                  </p>
-                  <hr>
-                </td>
-                <td style="width: 85%;">
-                  <p class="text-center font-weight-bold">
-                    <U>LAPORAN HARIAN SITKAMTIBMAS TANGGAL {{tglLaporan | date}}</U>
-                  </p>
-                </td>
-              </tr>
-            </table>
-            <table class="table table-sm table-bordered table-hover">
-                <tr>
-                  <th>No</th>
-                  <th>Kesatuan</th>
-                  <th class="px-md-2" *ngFor="let th of published">{{th.name}}</th>
-                  
-                </tr>
-                <tr>
-                  <td>1</td>
-                  <td class="px-md-2" *ngFor="let regions of region">{{regions.region_name}}</td>
-                  <td class="px-md-2" *ngFor="let th of published">{{th.laporan_total}}</td>
-                </tr>
-            </table>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Ok</button>
-          </div>
-        </div>
-        </ng-template>
-        
-        <div class="modal-body my-2" style="width:100%;overflow-x:scroll;font-family: 'Arial Narrow', Arial, sans-serif;" #pdfTable id="pdfTable" hidden>
-          <table border="0" style="width: 1400px;">
-            <tr>
-              <td style="width: 15%;">
-                <p class="text-center" style="line-height:150%;">
-                  KORPS BRIMOB POLRI<br style="height:5pt;">
-                  BAGIAN OPERASI
-                </p>
-                <hr>
-              </td>
-              <td style="width: 85%;">
-                <p class="text-center font-weight-bold">
-                  <U>LAPORAN HARIAN {{subKategori}} TANGGAL {{tglLaporan | date}}</U>
-                </p>
-              </td>
-            </tr>
-          </table>
-          <table class="table table-sm table-bordered table-hover">
-              <tr>
-                <th>No</th>
-                <th>Kesatuan</th>
-                <th class="px-md-2" *ngFor="let th of published">{{th.name}}</th>
-                
-              </tr>
-              <tr>
-                <td>1</td>
-                <td class="px-md-2" *ngFor="let regions of region">{{regions.region_name}}</td>
-                <td class="px-md-2" *ngFor="let th of published">{{th.laporan_total}}</td>
-              </tr>
-          </table>
-        </div>
 
-        <!-- Details page  -->
-        <div class="container-fluid" [class.hidden]="isShowDetalis">
+
+      <!-- Modal Details -->
+      <ng-template #mymodal let-modal>   
+        <div class="border-dark modal-xl">
+        <div class="modal-header bg-dark text-white">
+          <h4 class="modal-title text-white" id="modal-basic-title">Laporan Giat No. {{laporanDetails.no_laporan}}</h4>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+              <span class="text-white" aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body container-fluid">
           <div class="row mx--4">
             <div class="col">
               <div class="row">
-
                 <div class="col-lg-6 mb-2">
                 <div class="card shadow table-hover my-4 border border-dark">
                   <div class="card-header bg-dark border">
@@ -155,23 +88,23 @@
                         <h4>No Laporan</h4>
                       </div>
                       <div class="col">
-                        {{no_laporan}}
+                        {{laporanDetails.no_laporan}}
                       </div>
                     </div> 
                     <div class="row py-2">
                       <div class="col">
-                        <h4>Nama Pelapor</h4>
+                        <h4>Region</h4>
                       </div>
                       <div class="col">
-                        {{nama}}
+                        {{laporanDetails.region_name}}
                       </div>
                     </div> 
                     <div class="row py-2 divcol">
                       <div class="col">
-                        <h4>Position</h4>
+                        <h4>Department</h4>
                       </div>
                       <div class="col">
-                        {{position_name}}
+                        {{laporanDetails.department_name}}
                       </div>
                     </div> 
                     <div class="row py-2">
@@ -179,57 +112,40 @@
                         <h4>Kategori</h4>
                       </div>
                       <div class="col">
-                        {{sub_kategori}}
+                        {{laporanDetails.sub_kategori}}
                       </div>
-                    </div> 
-                    <div class="row py-2 divcol">
-                      <div class="col">
-                        <h4>Status</h4>
-                      </div>
-                      <div class="col">
-                        {{keterangan}}
-                      </div>
-                    </div>                                   
+                    </div>                                  
                     <div class="row py-2">
                       <div class="col">
-                        <h4>Tanggal Submit</h4>
+                        <h4>Tanggal Laporan</h4>
                       </div>
                       <div class="col">
-                        {{tgl_submitted | date: 'EEEE, d MMMM y'}}
+                        {{laporanDetails.tgl_laporan | date: 'EEEE, d MMMM y'}}
                       </div>
                     </div>            
-                    <div class="row py-2 divcol">
-                      <div class="col">
-                        <h4>Tanggal Approve</h4>
-                      </div>
-                      <div class="col">
-                        {{tgl_approved | date: 'EEEE, d MMMM y'}}
-                      </div>
-                    </div>   
                     <div class="row py-2">
                       <div class="col">
-                        <h4>Laporan</h4>
+                        <h4>Keterangan</h4>
                       </div>
                       <div class="col">
-                        {{laporan}}
+                        {{laporanDetails.laporan_text}}
                       </div>
                     </div>          
                   </div>
                 </div>
                 </div>
-
                 <div class="col-lg-6 mb-2">
                   <div class="card shadow table-hover my-4 border border-dark">
-                    <div id="map-canvas" class="map-canvas px-0" data-lat="0.7893" data-lng="113.9213" style="height: 320px;"></div>
+                    <div id="map-canvas" class="map-canvas px-0" data-lat="{{laporanDetails.lat_pelapor}}" data-lng="{{laporanDetails.long_pelapor}}" style="height: 320px;"></div>
                   </div>
-                </div>
-                 
+                </div> 
+              </div>
             </div>
           </div>
-
         </div>
-
       </div>
+      </ng-template>
+      <!-- End Modal Details -->
     </div>
   </div>
 </div>
