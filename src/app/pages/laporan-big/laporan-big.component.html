@@ -48,7 +48,7 @@
                 <td class="px-md-2" style="white-space: normal;">{{zz.username}}</td>
                 <td class="px-md-2" style="white-space: normal;">{{zz.status}}</td>
                 <td class="px-md-2"><i class="fa fa-list-alt text-danger pointer" title="Review" (click)="review(zz, mymodal)"></i></td>
-                <td class="px-md-2"><i class="fa fa-check-square text-danger pointer" title="Approve" (click)="approve(zz)" *ngIf="zz.status == ''"></i><i class="fa fa-file-pdf text-danger pointer" title="Approve"  *ngIf="zz.status == 'approved'"></i></td>
+                <td class="px-md-2"><i class="fa fa-check-square text-danger pointer" title="Approve" (click)="approve(zz)" *ngIf="zz.status == ''"></i><i class="fa fa-file-pdf text-danger pointer" title="Download PDF"  *ngIf="zz.status == 'approved'" (click)="downloadPdf(zz)"></i></td>
               </tr>
             </tbody>
           </table>
@@ -174,34 +174,34 @@
         
         <!-- PDF -->
         <div class="modal-body my-2" style="width:100%;overflow-x:scroll;font-family: 'Arial Narrow', Arial, sans-serif;" #pdfTable id="pdfTable" hidden>
-          <table border="0" style="width: 1400px;">
+          <!-- <table border="0" style="width: 1400px; border: none !important;">
             <tr>
-              <td style="width: 15%;">
+              <td style="width: 100px;"> -->
                 <p class="text-center" style="line-height:150%;">
                   KORPS BRIMOB POLRI<br style="height:5pt;">
                   BAGIAN OPERASI
                 </p>
-                <hr>
+                <!-- <hr style="width: 100px;">
               </td>
-              <td style="width: 85%;">
+              <td style="width: 800px;"> -->
                 <p class="text-center font-weight-bold">
-                  <U>LAPORAN HARIAN {{subKategori}} TANGGAL {{tglLaporan | date}}</U>
+                  <U>LAPORAN HARIAN {{subKategori}} TANGGAL {{tglLaporan | date: 'd MMMM y'}}</U>
                 </p>
-              </td>
+              <!-- </td>
             </tr>
-          </table>
-          <table class="table table-sm table-bordered table-hover">
-              <tr>
-                <th>No</th>
-                <th>Kesatuan</th>
-                <th class="px-md-2" *ngFor="let th of published">{{th.name}}</th>
-                
-              </tr>
-              <tr>
-                <td>1</td>
-                <td class="px-md-2" *ngFor="let regions of region">{{regions.region_name}}</td>
-                <td class="px-md-2" *ngFor="let th of published">{{th.laporan_total}}</td>
-              </tr>
+          </table> -->
+          <table class="table table-sm table-bordered table-hover" id="data">
+            <tr>
+              <td>No</td>
+              <td>Kesatuan</td>
+              <td class="px-md-2" *ngFor="let th of published">{{th.name}}</td>
+              
+            </tr>
+            <tr>
+              <td>1</td>
+              <td class="px-md-2" *ngFor="let regions of region">{{regions.region_name}}</td>
+              <td class="px-md-2" *ngFor="let td of published">{{td.laporan_total}}</td>
+            </tr>
           </table>
         </div>
         <!-- END PDF -->

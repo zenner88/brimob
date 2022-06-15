@@ -271,6 +271,14 @@ approve(index:any){
   title = 'appBootstrap'; 
   closeResult: string;
    
+  opens(content:any) {
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
   open(zz, content) {
     console.log(zz);
     this.laporanDetails = zz;
@@ -323,7 +331,7 @@ approve(index:any){
         map: map,
         options: {
           animation: google.maps.Animation.DROP,
-          icon: "https://aicc.1500669.com/assets/icon/3polisi.png",optimized: true 
+          icon: "./assets/img/icons/cctv_calm.png" 
         }
       });
       // info window marker 

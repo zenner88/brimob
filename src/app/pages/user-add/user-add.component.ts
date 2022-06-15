@@ -223,6 +223,7 @@ export class UserAddComponent implements OnInit {
             background: '#000000',
           })
           this.onReset();
+          window.location.reload();
         }
         else if (valid == 2){
           Swal.fire({  

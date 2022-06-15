@@ -303,6 +303,50 @@ approve(index:any){
     // pdfMake.createPdf(documentDefinition).download(no+'.pdf');
   }
 
+  downloadPdf(index: any){
+    let no = index.no_laporan;
+    let body = {
+      "no_laporan" : no
+      };
+    let region = no.slice(-1);
+    console.log("no laporan :",no);
+    console.log("region :",region);
+    this.http.post<any>(this.global.address+this.global.laporanReview, body).subscribe({
+      next: data => {
+        console.log(data);
+        this.published = data;
+        console.log(this.published)
+        this.tglLaporan = data[0].date_submitted;
+        this.subKategori = data[0].sub_kategori;
+      },
+      error: error => {
+          this.errorMessage = error.message;
+          console.error('There was an error!', error);
+          if (error.status == 401 ){
+            AuthInterceptor.signOut();
+          }
+      }
+    })
+  
+    this.http.get<any>(this.global.address+this.global.region).subscribe({
+      next: data => {
+        this.region = data.filter(x => x.id == region);
+        console.log("region get :",this.region);
+      },
+      error: error => {
+          this.errorMessage = error.message;
+          console.error('There was an error!', error);
+          if (error.status == 401 ){
+            AuthInterceptor.signOut();
+          }
+        }
+      })
+    const pdfTable = this.pdfTable.nativeElement;
+    var html = htmlToPdfmake(pdfTable.innerHTML);
+    const documentDefinition = { content: html, pageSize: 'A4', pageOrientation: 'landscape', pageMargins: [ 10, 10, 10, 10 ]};
+    pdfMake.createPdf(documentDefinition).download(no+'.pdf');
+  }
+
   simpanLaporan(){
     this.submitted = true;
     if (this.laporanForm.invalid) {
