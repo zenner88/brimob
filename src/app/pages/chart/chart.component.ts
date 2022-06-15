@@ -53,17 +53,17 @@ export class ChartComponent implements OnInit {
       // Define data
       let data = [
         {
-          category: "Research",
+          category: "KORBRIMOB",
           value1: 1000,
           value2: 588
         },
         {
-          category: "Marketing",
+          category: "SATLAT BRIMOB",
           value1: 1200,
           value2: 1800
         },
         {
-          category: "Sales",
+          category: "SAT BANTEK",
           value1: 850,
           value2: 1230
         }
@@ -135,13 +135,13 @@ export class ChartComponent implements OnInit {
 
   // Define data
   var data = [{
-    country: "France",
+    country: "KORBRIMOB",
     sales: 100000
   }, {
-    country: "Spain",
+    country: "SATLAT BRIMOB",
     sales: 160000
   }, {
-    country: "United Kingdom",
+    country: "SAT BANTEK",
     sales: 80000
   }];
 
@@ -180,13 +180,13 @@ export class ChartComponent implements OnInit {
 
   // Define data
   var data = [{
-    country: "France",
+    country: "KORBRIMOB",
     sales: 100000
   }, {
-    country: "Spain",
+    country: "SATLAT BRIMOB",
     sales: 160000
   }, {
-    country: "United Kingdom",
+    country: "SAT BANTEK",
     sales: 80000
   }];
 
