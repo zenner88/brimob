@@ -61,10 +61,10 @@
     [pageSize]="pageSize" class="d-flex justify-content-center mt-4"></ngb-pagination>
         </div>
 
-
       <!-- Modal Details -->
+      
       <ng-template #mymodal let-modal>   
-        <div class="border-dark modal-xl">
+        <div class="border-dark modal-lg">
         <div class="modal-header bg-dark text-white">
           <h4 class="modal-title text-white" id="modal-basic-title">Laporan Giat No. {{laporanDetails.no_laporan}}</h4>
             <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
@@ -75,8 +75,8 @@
           <div class="row mx--4">
             <div class="col">
               <div class="row">
-                <div class="col-lg-6 mb-2">
-                <div class="card shadow table-hover my-4 border border-dark">
+                <div class="col-lg-12 mb-1">
+                <div class="card shadow table-hover my-1 border border-dark">
                   <div class="card-header bg-dark border">
                     <div class="row">
                       <h3 class="mb-0 text-light">Detail Laporan</h3>
@@ -134,8 +134,8 @@
                   </div>
                 </div>
                 </div>
-                <div class="col-lg-6 mb-2">
-                  <div class="card shadow table-hover my-4 border border-dark">
+                <div class="col-lg-12 mb-2">
+                  <div class="card shadow table-hover my-1 border border-dark">
                     <div id="map-canvas" class="map-canvas px-0" data-lat="{{laporanDetails.lat_pelapor}}" data-lng="{{laporanDetails.long_pelapor}}" style="height: 320px;"></div>
                   </div>
                 </div> 
